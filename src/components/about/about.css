@@ -1,9 +1,9 @@
 .about-shadow {
   box-shadow:
-    8px 8px 24px 0 rgba(17, 23, 26, 0.25), /* dark outer shadow */
-    -8px -8px 24px 0 rgba(255, 255, 255, 0.12), /* light outer shadow */
-    inset 2px 2px 8px 0 rgba(17, 23, 26, 0.12), /* dark inner shadow */
-    inset -2px -2px 8px 0 rgba(255, 255, 255, 0.18); /* light inner shadow */
-  border-radius: 1.5rem;
+    inset 4px 4px 10px rgba(17, 23, 26, 0.9),
+    inset -4px -4px 8px rgba(27, 37, 42, 0.9);
+  border-top-left-radius: 1.5rem;
+  border-bottom-left-radius: 1.5rem;
+  border-right: none;
   background: #181f23;
 }

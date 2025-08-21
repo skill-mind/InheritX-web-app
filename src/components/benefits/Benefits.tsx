@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import "./benefits.css";
 
 // Reusable BenefitCard component
@@ -60,21 +61,17 @@ const Benefits = () => {
             Benefits Of InheritX
           </h2>
           <p className="text-[10px] md:text-[14px] text-[#92A5A8] max-w-2xl">
-            Here's why you should choose us
+            Here&apos;s why you should choose us
           </p>
         </div>
 
         {/* Description Section */}
         <div className="max-w-4xl mx-auto mb-2">
           <p className="text-[18px] text-[#FCFFFF] leading-relaxed mb-8 text-left sm:text-left">
-            Inherit X helps you plan and share your assets with the right
-            people, at the right time. We make inheritance simple, secure, and
-            stress-free — without unnecessary delays or complications.
+            Inherit X helps you plan and share your assets with the right people, at the right time. We make inheritance simple, secure, and stress-free — without unnecessary delays or complications.
           </p>
           <p className="text-[18px] text-gray-300 leading-relaxed text-center sm:text-left">
-            Think of it as planting a tree: your roots are the assets you've
-            built, and we make sure the branches grow to those you care about
-            most.
+            Think of it as planting a tree: your roots are the assets you&apos;ve built, and we make sure the branches grow to those you care about most.
           </p>
         </div>
       </div>
@@ -84,7 +81,7 @@ const Benefits = () => {
       {/* Benefits Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-10">
         {benefitsData.map((benefit, index) => (
-          <div className="benefits-shadow p-[40px]">
+          <div key={index} className="benefits-shadow p-[40px]">
             <BenefitCard
               key={index}
               title={benefit.title}
@@ -98,7 +95,12 @@ const Benefits = () => {
       <div className="mx-auto flex items-center justify-center">
         <button className="group bg-[#33C5E0] hover:bg-cyan-300 space-x-4 text-[#161E22] text-[14px] font-medium px-8 py-4 rounded-b-[24px] rounded-t-[8px] transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-cyan-400/25 flex items-center">
           <span>CREATE YOUR PLAN</span>
-          <img src="/assets/icons/arrowup.svg" alt="arrow up icon" />
+          <Image
+            src="/assets/icons/arrowup.svg"
+            alt="arrow up icon"
+            width={12}
+            height={12}
+          />
         </button>
       </div>
     </div>

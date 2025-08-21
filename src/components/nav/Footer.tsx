@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 import Link from "next/link";
 
@@ -22,16 +23,16 @@ const Footer: React.FC<FooterProps> = ({ logo, socialIcons = [] }) => {
   ];
 
   const defaultSocialIcons = [
-    { icon: <img src="/assets/icons/github.svg" alt="GitHub" className="h-6 w-6" />, href: "https://github.com/", label: "GitHub" },
-    { icon: <img src="/assets/icons/x.svg" alt="X (Twitter)" className="h-6 w-6" />, href: "https://x.com/", label: "X (Twitter)" },
-    { icon: <img src="/assets/icons/send.svg" alt="Email" className="h-6 w-6" />, href: "mailto:support@inheritx.io", label: "Email" },
+    { icon: <Image src="/assets/icons/github.svg" alt="GitHub" width={24} height={24} />, href: "https://github.com/", label: "GitHub" },
+    { icon: <Image src="/assets/icons/x.svg" alt="X (Twitter)" width={24} height={24} />, href: "https://x.com/", label: "X (Twitter)" },
+    { icon: <Image src="/assets/icons/send.svg" alt="Email" width={24} height={24} />, href: "mailto:support@inheritx.io", label: "Email" },
   ];
 
   const iconsToRender =
     socialIcons.length > 0 ? socialIcons : defaultSocialIcons;
 
   return (
-    <footer className="bg-[#182024] rounded-[60px] py-12 px-4 sm:px-6 lg:px-8 max-w-[100rem] mx-auto">
+    <footer className="bg-[#182024] rounded-[60px] py-12 px-4 sm:px-6 lg:px-8 max-w-[100rem] mx-auto mt-[10rem] mb-[5rem]">
       <div className="max-w-7xl mx-auto">
         {/* Main Footer Content */}
         <div className="flex flex-col lg:flex-row justify-between items-center lg:items-start gap-8 lg:gap-4">
@@ -40,15 +41,19 @@ const Footer: React.FC<FooterProps> = ({ logo, socialIcons = [] }) => {
             <h3 className="text-[#92A5A8] text-[14px] font-medium mb-4 text-center lg:text-left">
               Quick Links
             </h3>
-            <nav className="flex flex-wrap justify-center lg:justify-start gap-6 lg:gap-8">
+            <nav className="flex flex-wrap justify-center lg:justify-start gap-0 items-center">
               {quickLinks.map((link, index) => (
-                <a
-                  key={index}
-                  href={link.href}
-                  className="text-[#FCFFFF] text-sm font-semibold underline hover:text-cyan-400 transition-colors duration-200"
-                >
-                  {link.label}
-                </a>
+                <React.Fragment key={index}>
+                  <a
+                    href={link.href}
+                    className="text-[#FCFFFF] text-sm font-semibold underline hover:text-cyan-400 transition-colors duration-200"
+                  >
+                    {link.label}
+                  </a>
+                  {index < quickLinks.length - 1 && (
+                    <span className="mx-2 w-[8px] h-[8px] bg-[#2A3338] inline-block"></span>
+                  )}
+                </React.Fragment>
               ))}
             </nav>
           </div>
@@ -57,10 +62,12 @@ const Footer: React.FC<FooterProps> = ({ logo, socialIcons = [] }) => {
           <div className="order-1 lg:order-2 flex justify-center">
             {logo || (
               <Link href="/" className="flex items-center">
-                <img
+                <Image
                   src="/assets/icons/logo.svg"
-                  className="h-[48px] w-[48px]"
+                  className="h-[93px] w-[93px]"
                   alt="logo"
+                  width={93}
+                  height={93}
                 />
               </Link>
             )}
@@ -71,18 +78,18 @@ const Footer: React.FC<FooterProps> = ({ logo, socialIcons = [] }) => {
             <h3 className="text-[#92A5A8] text-sm font-medium mb-4 text-center lg:text-right">
               Social Links
             </h3>
-            <div className="flex justify-center lg:justify-end gap-4 items-center">
+            <div className="flex justify-center lg:justify-end gap-2 items-center">
               {iconsToRender.map((social, index) => (
                 <React.Fragment key={index}>
                   <a
                     href={social.href}
                     aria-label={social.label}
-                    className="w-10 h-10 bg-gray-700 rounded-lg flex items-center justify-center hover:bg-gray-600 transition-colors duration-200"
+                    className="w-10 h-10 bg-transparent rounded-lg flex items-center justify-center hover:bg-gray-600 transition-colors duration-200"
                   >
                     {social.icon}
                   </a>
                   {index < iconsToRender.length - 1 && (
-                    <span className="mx-1 text-gray-400 text-xl">•</span>
+                    <span className="mx-1 w-[8px] h-[8px] bg-[#2A3338]"></span>
                   )}
                 </React.Fragment>
               ))}

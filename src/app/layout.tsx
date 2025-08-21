@@ -98,19 +98,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <img
-          src="/assets/images/tree.svg"
-          alt="background vector"
-          className="absolute right-0 top-0 z-0 w-full h-auto pointer-events-none select-none"
-        />
-        <Navbar />
-        {children}
-      </body>
+    <>
+      <html lang="en">
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          <Navbar />
+          {children}
+        </body>
+      </html>
       <Footer />
-    </html>
+    </>
   );
 }
