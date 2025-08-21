@@ -100,7 +100,7 @@ const Footer: React.FC<FooterProps> = ({ logo, socialIcons = [] }) => {
         {/* Copyright Section */}
         <div className="mt-12 pt-8 border-t border-gray-700">
           <p className="text-gray-400 text-sm text-center">
-            Copyright © InheritX 2025, All Rights Reserved
+            Copyright © InheritX {new Date().getFullYear()}, All Rights Reserved
           </p>
         </div>
       </div>
