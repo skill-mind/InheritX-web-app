@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { ChevronDown, ArrowUpRight, Headphones } from "lucide-react";
+import { Headphones } from "lucide-react";
 
 import Image from "next/image";
 
@@ -44,18 +44,26 @@ const FAQItemComponent: React.FC<FAQItemProps> = ({
         <span className="text-[#FCFFFF] text-[14px] md:text-[18px] font-medium flex-1">
           {faq.question}
         </span>
-
         {faq.isExpandable ? (
-          <ChevronDown
-            className={`w-6 h-6 text-cyan-400 transition-transform duration-200 flex-shrink-0 ${
-              isExpanded ? "rotate-180" : ""
+          <Image
+            src="/assets/icons/arrowdown.svg"
+            alt="arrow down icon"
+            width={14}
+            height={14}
+            className={`transition-transform duration-200 flex-shrink-0 ${
+              isExpanded ? "-rotate-90" : "rotate-0"
             }`}
           />
         ) : (
-          <ArrowUpRight className="w-6 h-6 text-cyan-400 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-200 flex-shrink-0" />
+          <Image
+            src="/assets/icons/arrowdown.svg"
+            alt="arrow down icon"
+            width={24}
+            height={24}
+            className="transition-transform duration-200 flex-shrink-0 rotate-0 opacity-50"
+          />
         )}
       </button>
-
       {faq.isExpandable && faq.answer && (
         <div
           className={`overflow-hidden transition-all duration-300 ease-in-out ${
@@ -90,27 +98,30 @@ const faqData: FAQItem[] = [
   {
     id: 3,
     question: "3. IS MY INFORMATION SAFE?",
-    isExpandable: false,
+    answer:
+      "Yes. We use bank-level encryption and strict privacy controls so only you and your chosen beneficiaries can access your details.",
+    isExpandable: true,
   },
   {
     id: 4,
     question: "4. CAN I CHANGE MY PLAN LATER?",
-    isExpandable: false,
+    answer:
+      "Absolutely. You can update your assets, beneficiaries, or rules anytime from your account.",
+    isExpandable: true,
   },
   {
     id: 5,
     question: "5. DO I NEED A LAWYER TO USE INHERIT X?",
-    isExpandable: false,
+    answer:
+      "Not necessarily. Our platform is designed so you can do it yourself — but you can involve a lawyer if you prefer.",
+    isExpandable: true,
   },
   {
     id: 6,
     question: "6. HOW DO BENEFICIARIES GET NOTIFIED?",
-    isExpandable: false,
-  },
-  {
-    id: 7,
-    question: "7. WHAT DOES IT COST?",
-    isExpandable: false,
+    answer:
+      "Once your plan is triggered, we securely inform each beneficiary and guide them through receiving what’s theirs.",
+    isExpandable: true,
   },
 ];
 
@@ -134,7 +145,36 @@ export default function FAQsPage() {
   };
 
   return (
-    <div className="w-full min-h-screen relative mt-[5rem]">
+    <div className="w-full min-h-screen relative mt-[5rem] mb-[20rem]">
+      {/* Desktop - Faq Bacground Particles */}
+      <Image
+        src="/assets/images/faq_tree.svg"
+        alt="background vector"
+        fill={false}
+        width={1920}
+        height={400}
+        className="absolute right-0 top-0 z-0 w-full h-auto pointer-events-none select-none hidden md:block"
+      />
+
+      {/* Desktop -  Page-Bottom-Section Bacground Particles */}
+      <Image
+        src="/assets/images/small_tree_left.svg"
+        alt="background vector"
+        fill={false}
+        width={200}
+        height={200}
+        className="absolute left-0 top-[115%] z-0 h-auto pointer-events-none select-none hidden md:block"
+      />
+
+      <Image
+        src="/assets/images/small_tree_right.svg"
+        alt="background vector"
+        fill={false}
+        width={200}
+        height={200}
+        className="absolute right-0 top-[115%] z-0 h-auto pointer-events-none select-none hidden md:block"
+      />
+
       {/* Main Content Container */}
       <div className="max-w-[110rem] mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
         {/* Header Section */}
@@ -149,9 +189,12 @@ export default function FAQsPage() {
 
         {/* FAQ Items Container */}
         <div className=" max-w-[883px]">
-          <div className="space-y-6">
+          <div className="space-y-4">
             {faqData.map((faq, index) => (
-              <div key={index} className="faqs-box rounded-l-[8px] rounded-r-[48px]">
+              <div
+                key={index}
+                className="faqs-box rounded-l-[8px] rounded-r-[48px]"
+              >
                 <FAQItemComponent
                   key={faq.id}
                   faq={faq}
@@ -172,16 +215,16 @@ export default function FAQsPage() {
               <Image
                 src="/assets/icons/arrowup.svg"
                 alt="arrow up icon"
-                width={24}
-                height={24}
+                width={12}
+                height={12}
               />
             </button>
           </div>
 
           {/* Contact Support */}
-          <div className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors duration-200 cursor-pointer group">
-            <Headphones className="w-6 h-6 group-hover:text-cyan-400 transition-colors duration-200" />
-            <span className="text-lg font-medium">Contact Support</span>
+          <div className="flex mt-[-45rem] items-center gap-3 text-[#92A5A8] text-[14px] bg-[#182024] hover:text-white transition-colors duration-200 cursor-pointer group">
+            <Headphones className="w-[16px] h-[16px] group-hover:text-cyan-400 transition-colors duration-200" />
+            <span className="text-[14px] font-medium">Contact Support</span>
           </div>
         </div>
       </div>
