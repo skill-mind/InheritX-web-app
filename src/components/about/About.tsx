@@ -14,7 +14,7 @@ const About = () => {
         height={400}
         className="absolute left-0 top-[24%] z-0 h-auto pointer-events-none select-none hidden md:block"
       />
-      <div className="py-16 sm:py-20 lg:py-24 px-6 sm:px-8 lg:px-12 max-w-[100rem] mx-auto">
+      <div className="py-16 sm:py-20 lg:py-24 px-6 sm:px-8 lg:px-12 max-w-[100rem] mx-auto mt-[4rem] md:mt-0">
         {/* What Is InheritX Section */}
         <div className="mb-20 lg:mb-32">
           <div className="grid grid-cols-1 gap-12 items-start max-w-3xl mx-auto">
@@ -27,12 +27,12 @@ const About = () => {
                 <p className="text-[#92A5A8] text-[14px] font-medium">
                   Without mincing words,
                 </p>
-                <p className="text-[#FCFFFF] text-[18px]">
+                <p className="text-[#FCFFFF] text-[14px] md:text-[18px]">
                   InheritX helps you plan and share your assets with the right
                   people, at the right time. We make inheritance simple, secure,
                   and stress-free — without unnecessary delays or complications.
                 </p>
-                <p className="text-[#FCFFFF] text-[18px]">
+                <p className="text-[#FCFFFF] text-[14px] md:text-[18px]">
                   Think of it as planting a tree: your roots are the assets you&apos;ve built, and we make sure the branches grow to those you care about most.
                 </p>
               </div>

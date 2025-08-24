@@ -23,9 +23,42 @@ const Footer: React.FC<FooterProps> = ({ logo, socialIcons = [] }) => {
   ];
 
   const defaultSocialIcons = [
-    { icon: <Image src="/assets/icons/github.svg" alt="GitHub" width={24} height={24} />, href: "https://github.com/", label: "GitHub" },
-    { icon: <Image src="/assets/icons/x.svg" alt="X (Twitter)" width={24} height={24} />, href: "https://x.com/", label: "X (Twitter)" },
-    { icon: <Image src="/assets/icons/send.svg" alt="Email" width={24} height={24} />, href: "mailto:support@inheritx.io", label: "Email" },
+    {
+      icon: (
+        <Image
+          src="/assets/icons/github.svg"
+          alt="GitHub"
+          width={24}
+          height={24}
+        />
+      ),
+      href: "https://github.com/",
+      label: "GitHub",
+    },
+    {
+      icon: (
+        <Image
+          src="/assets/icons/x.svg"
+          alt="X (Twitter)"
+          width={24}
+          height={24}
+        />
+      ),
+      href: "https://x.com/",
+      label: "X (Twitter)",
+    },
+    {
+      icon: (
+        <Image
+          src="/assets/icons/send.svg"
+          alt="Email"
+          width={24}
+          height={24}
+        />
+      ),
+      href: "mailto:support@inheritx.io",
+      label: "Email",
+    },
   ];
 
   const iconsToRender =
@@ -99,6 +132,11 @@ const Footer: React.FC<FooterProps> = ({ logo, socialIcons = [] }) => {
 
         {/* Copyright Section */}
         <div className="mt-12 pt-8 border-t border-gray-700">
+          <ul className="flex item-center justify-center space-x-4 text-[#92A5A8] text-[12px] mb-[2rem]">
+            <li className="underline">Privacy Policy</li>
+            <li className="underline">Terms & Conditions</li>
+            <li className="underline">Code of Ethics</li>
+          </ul>
           <p className="text-gray-400 text-sm text-center">
             Copyright © InheritX {new Date().getFullYear()}, All Rights Reserved
           </p>

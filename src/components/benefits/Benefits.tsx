@@ -87,7 +87,7 @@ const Benefits = () => {
       <div className="bg-[#1C252A] mx-auto p-8 md:p-12 w-fit rounded-[48px] mb-4">
         {/* Header Section */}
         <div className="text-left mb-4 max-w-4xl mx-auto">
-          <h2 className="text-[30px] md:text-[32px] font-bold text-[#FCFFFF] mb-2">
+          <h2 className="text-[28px] md:text-[32px] font-bold text-[#FCFFFF] mb-2">
             Benefits Of InheritX
           </h2>
           <p className="text-[14px] text-[#92A5A8] max-w-2xl">
@@ -97,12 +97,12 @@ const Benefits = () => {
 
         {/* Description Section */}
         <div className="max-w-4xl mx-auto mb-2">
-          <p className="text-[18px] text-[#FCFFFF] leading-relaxed mb-8 text-left sm:text-left">
+          <p className="text-[14px] md:text-[18px] text-[#FCFFFF] leading-relaxed mb-4 md:mb-8 text-left sm:text-left">
             InheritX helps you plan and share your assets with the right people,
             at the right time. We make inheritance simple, secure, and
             stress-free — without unnecessary delays or complications.
           </p>
-          <p className="text-[18px] text-gray-300 leading-relaxed text-left sm:text-left">
+          <p className="text-[14px] md:text-[18px] text-gray-300 leading-relaxed text-left sm:text-left">
             Think of it as planting a tree: your roots are the assets
             you&apos;ve built, and we make sure the branches grow to those you
             care about most.
