@@ -32,7 +32,7 @@ const Footer: React.FC<FooterProps> = ({ logo, socialIcons = [] }) => {
     socialIcons.length > 0 ? socialIcons : defaultSocialIcons;
 
   return (
-    <footer className="bg-[#182024] rounded-[60px] py-12 px-4 sm:px-6 lg:px-8 max-w-[100rem] mx-auto mt-[10rem] mb-[5rem]">
+    <footer className="bg-[#182024] md:rounded-[60px] py-12 px-4 sm:px-6 lg:px-8 max-w-[100rem] mx-auto mt-[10rem] mb-[10rem]">
       <div className="max-w-7xl mx-auto">
         {/* Main Footer Content */}
         <div className="flex flex-col lg:flex-row justify-between items-center lg:items-start gap-8 lg:gap-4">

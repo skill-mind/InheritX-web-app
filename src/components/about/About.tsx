@@ -20,7 +20,7 @@ const About = () => {
           <div className="grid grid-cols-1 gap-12 items-start max-w-3xl mx-auto">
             {/* Left Content */}
             <div className="space-y-6  w-full">
-              <h2 className="text-xl lg:text-[32px] font-bold text-[#FCFFFF] leading-tight">
+              <h2 className="text-[30px] md:text-[32px] font-bold text-[#FCFFFF] leading-tight">
                 What Is InheritX?
               </h2>
               <div className="space-y-4 text-gray-300 text-base sm:text-lg leading-relaxed">
@@ -72,10 +72,10 @@ const About = () => {
               Why this works:
             </h3>
 
-            <div className="space-y-4 text-[#92A5A8] text-[14px] rounded-[48px]">
+            <div className="space-y-1 text-[#92A5A8] text-[14px] rounded-[48px]">
               <div className="flex items-start space-x-3">
                 <div className="w-2 h-2 bg-cyan-400 rounded-full mt-2 flex-shrink-0"></div>
-                <p className="text-base sm:text-lg leading-relaxed">
+                <p className="text-[14px] leading-relaxed">
                   <span className="font-medium">Starts With Purpose</span> —
                   Helping Your Legacy Reach The People Who Matter Sets An
                   Emotional Tone.
@@ -84,7 +84,7 @@ const About = () => {
 
               <div className="flex items-start space-x-3">
                 <div className="w-2 h-2 bg-cyan-400 rounded-full mt-2 flex-shrink-0"></div>
-                <p className="text-base sm:text-lg leading-relaxed">
+                <p className="text-[14px] leading-relaxed">
                   <span className="font-medium">One Short Paragraph</span> —
                   Easy To Scan.
                 </p>
@@ -92,7 +92,7 @@ const About = () => {
 
               <div className="flex items-start space-x-3">
                 <div className="w-2 h-2 bg-cyan-400 rounded-full mt-2 flex-shrink-0"></div>
-                <p className="text-base sm:text-lg leading-relaxed">
+                <p className="text-[14px] leading-relaxed">
                   <span className=" font-medium">Metaphor Works</span> —
                   Connects To Your Tree Concept In A Natural Way.
                 </p>

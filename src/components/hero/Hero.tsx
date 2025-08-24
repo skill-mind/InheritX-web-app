@@ -6,7 +6,7 @@ const Hero = () => {
     <div className="relative min-h-screen overflow-hidden">
 
       {/* Main Content Container */}
-      <div className="relative z-10 flex flex-col justify-top mt-[20rem] min-h-screen px-6 sm:px-8 lg:px-12 w-full max-w-[100rem] mx-auto">
+      <div className="relative z-10 flex flex-col justify-top mt-[28rem] md:mt-[20rem] md:min-h-screen px-6 sm:px-8 lg:px-12 w-full max-w-[100rem] mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           {/* Left Content */}
           <div className="lg:col-span-7 xl:col-span-6">
@@ -29,7 +29,7 @@ const Hero = () => {
               
               {/* CTA Button */}
               <div className="pt-4">
-                <button className="group bg-[#33C5E0] hover:bg-cyan-300 space-x-4 text-[#161E22] text-[14px] font-medium px-8 py-4 rounded-b-[24px] rounded-t-[8px] transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-cyan-400/25 flex items-center">
+                <button className="group bg-[#33C5E0] hover:bg-cyan-300 space-x-4 text-[#161E22] text-[14px] font-semibold px-8 py-4 rounded-b-[24px] rounded-t-[8px] transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-cyan-400/25 flex items-center">
                   <span>START NOW</span>
                   <Image src="/assets/icons/arrowup.svg" alt="arrow up icon" width={12} height={12} />
                 </button>
