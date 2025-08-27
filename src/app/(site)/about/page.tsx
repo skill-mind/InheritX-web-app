@@ -76,7 +76,7 @@ const AboutPage = () => {
             <p className="text-sm sm:text-[14px] text-[#92A5A8] mb-4 sm:mb-6 tracking-wider">
               To Make Digital Inheritance Seamless, Secure, & Automated.{" "}
             </p>
-            <p className="text-gray-300 text-base sm:text-[16px] text-[#FCFFFF] leading-[28px]">
+            <p className="text-base sm:text-[16px] text-[#FCFFFF] leading-[28px]">
               We envision a world where passing down cryptocurrencies and NFTs
               is automated, secure, and effortless. By leveraging cutting-edge
               blockchain technology, we aim to be the trusted partner for
@@ -92,7 +92,7 @@ const AboutPage = () => {
             <p className="text-sm sm:text-[14px] text-[#92A5A8] mb-4 sm:mb-6 tracking-wider">
               To Secure Digital Wealth for Generations
             </p>
-            <p className="text-gray-300 text-base sm:text-[16px] text-[#FCFFFF] leading-[28px]">
+            <p className="text-base sm:text-[16px] text-[#FCFFFF] leading-[28px]">
               We believe digital assets deserve the same trust, security, and
               transparency as traditional assets. InheritX is dedicated to
               building a decentralized inheritance platform that empowers users

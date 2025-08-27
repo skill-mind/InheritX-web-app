@@ -23,7 +23,7 @@ const Hero = () => {
 
               {/* CTA Button */}
               <div className="pt-4">
-                <button className="group w-[244px] text-[14px] flex items-center justify-center text-center  h-[60px] bg-[#33C5E0] hover:bg-cyan-300 space-x-4 text-[#161E22] text-[14px] font-semibold px-8 py-4 rounded-b-[24px] rounded-t-[8px] transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-cyan-400/25 flex items-center">
+                <button className="group w-[244px] justify-center text-center  h-[60px] bg-[#33C5E0] hover:bg-cyan-300 space-x-4 text-[#161E22] text-[14px] font-semibold px-8 py-4 rounded-b-[24px] rounded-t-[8px] transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-cyan-400/25 flex items-center">
                   <span>START NOW</span>
                   <Image
                     src="/assets/icons/arrowup.svg"
@@ -43,7 +43,7 @@ const Hero = () => {
         </div>
       </div>
 
-      <button className="absolute top-2/3 right-0 p-4 flex items-center space-x-4 h-[48px] w-[200px] bg-[#182024] rounded-l-[24px] rounded-r-[8px] hover:border-cyan-400 transition-all duration-200 hover:shadow-lg hover:shadow-cyan-400/20 hidden md:flex">
+      <button className="absolute top-2/3 right-0 p-4 items-center space-x-4 h-[48px] w-[200px] bg-[#182024] rounded-l-[24px] rounded-r-[8px] hover:border-cyan-400 transition-all duration-200 hover:shadow-lg hover:shadow-cyan-400/20 hidden md:flex">
         <Image
           src="/assets/icons/contact.svg"
           alt="contact icon"

@@ -222,7 +222,7 @@ export default function FAQsPage() {
           </div>
 
           {/* Contact Support */}
-          <div className="flex mt-[-45rem] items-center gap-3 text-[#92A5A8] text-[14px] bg-[#182024] hover:text-white transition-colors duration-200 cursor-pointer group">
+          <div className="flex md:mt-[-45rem] items-center gap-3 text-[#92A5A8] text-[14px] bg-[#182024] hover:text-white transition-colors duration-200 cursor-pointer group">
             <Headphones className="w-[16px] h-[16px] group-hover:text-cyan-400 transition-colors duration-200" />
             <span className="text-[14px] font-medium">Contact Support</span>
           </div>
