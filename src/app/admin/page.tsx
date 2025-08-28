@@ -7,9 +7,13 @@ import RecentActivities from "./components/tab/RecentActivities";
 import SupportTicketTable from "./components/tab/SupportTicketTable";
 import InheritancePlanTable from "./components/tab/InheritancePlanTable";
 import PlatformTransactionTable from "./components/tab/PlatformTransactionTable";
+import UserVerificationRequestModal from "./components/KYCVerificationModal";
 
 export default function AdminDashboardPage() {
   const [activeTab, setActiveTab] = useState("All");
+  const [showUserVerificationModal, setShowUserVerificationModal] =
+    useState(false);
+  const [selectedUser, setSelectedUser] = useState<any>(null);
 
   const activities = [
     { id: 1, title: "User Verification", newCount: 2 },
@@ -18,12 +22,33 @@ export default function AdminDashboardPage() {
     { id: 4, title: "Platform Transaction", newCount: 5 },
   ];
 
-  // User verification mock data
+  // User verification mock data (add more fields for modal)
   const userVerifications = [
-    { id: 1, username: "Dolly Creed", type: "Biometric", status: "PENDING", timestamp: "Aug 12" },
-    { id: 2, username: "Dolly Creed", type: "Biometric", status: "PENDING", timestamp: "Aug 12" },
-    { id: 3, username: "Dolly Creed", type: "Biometric", status: "PENDING", timestamp: "Aug 12" },
-    { id: 4, username: "Dolly Creed", type: "Biometric", status: "PENDING", timestamp: "Aug 12" },
+    {
+      id: 1,
+      username: "Dolly Creed",
+      type: "Biometric",
+      status: "PENDING",
+      timestamp: "Aug 12",
+      fullName: "Dolly Creed",
+      email: "dollycreed@email.com",
+      dateSubmitted: "12 Aug 2025, 3:47 PM",
+      verificationType: "Biometric",
+      documents: [
+        { src: "/assets/images/doc.svg", label: "ID - Front PNG" },
+        { src: "/assets/images/doc.svg", label: "ID - Back PNG" },
+        { src: "/assets/images/doc.svg", label: "Selfie" },
+        { src: "/assets/images/doc.svg", label: "ImagePNG" },
+        { src: "/assets/images/doc.svg", label: "Image.PNG" },
+        { src: "/assets/images/doc.svg", label: "Image.PNG" },
+      ],
+      activityHistory: [
+        { text: "User submitted verification request.", date: "12 Aug 2025" },
+        { text: "Automated document check passed.", date: "13 Aug 2025" },
+      ],
+      notes: "No suspicious activity detected in last 30 days.",
+    },
+    // ...add more users as needed...
   ];
 
   // Support ticket mock data (simple list)
@@ -47,7 +72,7 @@ export default function AdminDashboardPage() {
       docIcon: "/assets/icons/file.svg",
       planId: "P-1001",
       creator: "Ahmed King",
-      beneficiaries: ["Dolly Creed"],
+      beneficiaries: 1,
       creationDate: "2024-01-01",
       claimDate: "2024-06-01",
     },
@@ -62,7 +87,7 @@ export default function AdminDashboardPage() {
       docIcon: "/assets/icons/file.svg",
       planId: "P-1002",
       creator: "Ahmed King",
-      beneficiaries: ["Dolly Creed"],
+      beneficiaries: 1,
       creationDate: "2024-01-02",
       claimDate: "2024-06-02",
     },
@@ -77,7 +102,7 @@ export default function AdminDashboardPage() {
       docIcon: "/assets/icons/file.svg",
       planId: "P-1003",
       creator: "Ahmed King",
-      beneficiaries: ["Dolly Creed"],
+      beneficiaries: 1,
       creationDate: "2024-01-03",
       claimDate: "2024-06-03",
     },
@@ -92,7 +117,7 @@ export default function AdminDashboardPage() {
       docIcon: "/assets/icons/file.svg",
       planId: "P-1004",
       creator: "Ahmed King",
-      beneficiaries: ["Dolly Creed"],
+      beneficiaries: 1,
       creationDate: "2024-01-04",
       claimDate: "2024-06-04",
     },
@@ -154,6 +179,29 @@ export default function AdminDashboardPage() {
     },
   ];
 
+  // Example user for modal (replace with real data as needed)
+  const kycUser = {
+    fullName: "Grace Adeyemi",
+    username: "@grace.art",
+    email: "graceadeyemi@email.com",
+    dateSubmitted: "12 Aug 2025, 3:47 PM",
+    verificationType: "Government ID",
+    status: "Pending Review",
+    documents: [
+      { src: "/assets/images/doc.svg", label: "ID - Front PNG" },
+      { src: "/assets/images/doc", label: "ID - Back PNG" },
+      { src: "/assets/images/doc", label: "Selfie" },
+      { src: "/assets/images/doc.svg", label: "Image.PNG" },
+      { src: "/assets/images/doc.svg", label: "Image.PNG" },
+      { src: "/assets/images/doc.svg", label: "Image.PNG" },
+    ],
+    activityHistory: [
+      { text: "User submitted verification request.", date: "12 Aug 2025" },
+      { text: "Automated document check passed.", date: "13 Aug 2025" },
+    ],
+    notes: "No suspicious activity detected in last 30 days.",
+  };
+
   // Filter activities based on activeTab
   const filteredActivities =
     activeTab === "All"
@@ -164,45 +212,20 @@ export default function AdminDashboardPage() {
 
   return (
     <section className="flex items-start gap-4 justify-between">
+      {/* User Verification Request Modal */}
+      <UserVerificationRequestModal
+        isOpen={showUserVerificationModal}
+        onClose={() => setShowUserVerificationModal(false)}
+        onApprove={() => setShowUserVerificationModal(false)}
+        onReject={() => setShowUserVerificationModal(false)}
+        user={selectedUser}
+      />
+
       <div className="w-[80%]">
         <h1 className="text-[24px] font-medium mb-2">Good morning, EBUBE</h1>
         <p className="text-[#92A5A8] text-[14px] font-normal mb-6">
           Monitor, protect, and manage the platform.
         </p>
-
-        {/* Action buttons */}
-        <div className="flex space-x-4 mb-8">
-          <button className="bg-[#33C5E0] space-x-4 hover:bg-cyan-600 text-[#161E22] text-[14px] font-medium px-[24px] py-[14px] w-[208px] h-[60px] rounded-[24px]">
-            <Image
-              src="/assets/icons/arrowup.svg"
-              alt="Arrowup Icon"
-              width={13.5}
-              height={13.5}
-              className="inline-block mr-2"
-            />
-            <span>Approve KYC</span>
-          </button>
-          <button className="bg-[#33C5E014] space-x-4 hover:bg-cyan-600 hover:text-[#161E22] text-[#33C5E0] text-[14px] font-medium px-[24px] py-[14px] w-[208px] h-[60px] rounded-[24px]">
-            <Image
-              src="/assets/icons/arrowdown.svg"
-              alt="ArrowUp Icon"
-              width={13.5}
-              height={13.5}
-              className="inline-block mr-2 rotate-[270deg]"
-            />
-            <span>Create Ticket</span>
-          </button>
-          <button className="bg-[#33C5E014] space-x-4 hover:bg-cyan-600 hover:text-[#161E22] text-[#33C5E0] text-[14px] font-medium px-[24px] py-[14px] w-[208px] h-[60px] rounded-[24px]">
-            <Image
-              src="/assets/icons/arrowdown.svg"
-              alt="Arrowup Icon"
-              width={13.5}
-              height={13.5}
-              className="inline-block mr-2 rotate-[270deg]"
-            />
-            <span>Assign Dispute</span>
-          </button>
-        </div>
 
         {/* Recent Activities */}
         <div>
@@ -236,7 +259,9 @@ export default function AdminDashboardPage() {
                 key={tab}
                 onClick={() => setActiveTab(tab)}
                 className={`cursor-pointer h-[48px] rounded-b-[20px] flex items-center justify-center py-[12px] px-[16px] ${
-                  activeTab === tab ? "text-[#33C5E0] bg-[#1C252A] border border-[#1C252A] font-semibold" : ""
+                  activeTab === tab
+                    ? "text-[#33C5E0] bg-[#1C252A] border border-[#1C252A] font-semibold"
+                    : ""
                 }`}
               >
                 {tab}
@@ -245,7 +270,14 @@ export default function AdminDashboardPage() {
           </ul>
           {/* Tab Content */}
           {activeTab === "User Verification" ? (
-            <UserVerificationTable users={userVerifications} />
+            <UserVerificationTable
+              users={userVerifications}
+              onApproveClick={(user) => {
+                setSelectedUser(user);
+                setShowUserVerificationModal(true);
+              }}
+              onRejectClick={() => {}}
+            />
           ) : activeTab === "Support Ticket" ? (
             <SupportTicketTable tickets={inheritancePlans} />
           ) : activeTab === "Inheritance Plan" ? (
