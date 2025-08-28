@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import MessageUserModal from "./tab/user-verification-modals/MessageUserModal";
 
 export interface Document {
   src: string;
@@ -34,6 +35,7 @@ export default function UserVerificationRequestModal({
   user,
 }: UserVerificationRequestModalProps) {
   const [expandedDocIdx, setExpandedDocIdx] = useState<number | null>(null);
+  const [showMessageModal, setShowMessageModal] = useState(false);
   if (!isOpen) return null;
 
   // Expanded document modal
@@ -226,7 +228,7 @@ export default function UserVerificationRequestModal({
         <div className="flex flex-col md:flex-row gap-3 md:gap-4 mt-2">
           <button
             className="flex-1 bg-[#222C32] text-[#FCFFFF] hover:bg-[#1C252A] rounded-full py-3 font-medium text-[14px] border border-[#222C32]"
-            onClick={onClose}
+            onClick={() => setShowMessageModal(true)}
           >
             <Image
               src="/assets/icons/message.svg"
@@ -264,6 +266,15 @@ export default function UserVerificationRequestModal({
             <span> Approve KYC</span>
           </button>
         </div>
+        <MessageUserModal
+          isOpen={showMessageModal}
+          userFullName={user.fullName}
+          onClose={() => setShowMessageModal(false)}
+          onSend={(subject, message) => {
+            // handle send logic here
+            setShowMessageModal(false);
+          }}
+        />
       </div>
     </div>
   );
