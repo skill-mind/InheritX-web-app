@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import MessageUserModal from "./tab/user-verification-modals/MessageUserModal";
+import MessageUserSuccessModal from "./tab/user-verification-modals/MessageUserSuccessModal";
 
 export interface Document {
   src: string;
@@ -36,6 +37,7 @@ export default function UserVerificationRequestModal({
 }: UserVerificationRequestModalProps) {
   const [expandedDocIdx, setExpandedDocIdx] = useState<number | null>(null);
   const [showMessageModal, setShowMessageModal] = useState(false);
+  const [showMessageSuccess, setShowMessageSuccess] = useState(false);
   if (!isOpen) return null;
 
   // Expanded document modal
@@ -271,9 +273,15 @@ export default function UserVerificationRequestModal({
           userFullName={user.fullName}
           onClose={() => setShowMessageModal(false)}
           onSend={(subject, message) => {
-            // handle send logic here
             setShowMessageModal(false);
+            setShowMessageSuccess(true);
           }}
+        />
+        <MessageUserSuccessModal
+          isOpen={showMessageSuccess}
+          userFullName={user.fullName}
+          onClose={() => setShowMessageSuccess(false)}
+          onNext={() => setShowMessageSuccess(false)}
         />
       </div>
     </div>

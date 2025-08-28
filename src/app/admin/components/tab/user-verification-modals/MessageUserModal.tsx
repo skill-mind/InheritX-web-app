@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import MessageUserSuccessModal from "./MessageUserSuccessModal";
 
 interface MessageUserModalProps {
   isOpen: boolean;
@@ -19,6 +20,7 @@ export default function MessageUserModal({
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
   const [touched, setTouched] = useState(false);
+  const [showMessageSuccess, setShowMessageSuccess] = useState(false);
 
   const subjectError = touched && subject.trim() === "";
   const messageError = touched && message.trim() === "";
@@ -48,6 +50,7 @@ export default function MessageUserModal({
               setSubject("");
               setMessage("");
               setTouched(false);
+              setShowMessageSuccess(true);
             }
           }}
         >
@@ -90,6 +93,12 @@ export default function MessageUserModal({
             </button>
           </div>
         </form>
+        <MessageUserSuccessModal
+          isOpen={showMessageSuccess}
+          userFullName={userFullName}
+          onClose={() => setShowMessageSuccess(false)}
+          onNext={() => setShowMessageSuccess(false)}
+        />
       </div>
     </div>
   );
