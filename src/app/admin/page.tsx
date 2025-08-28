@@ -8,11 +8,13 @@ import SupportTicketTable from "./components/tab/SupportTicketTable";
 import InheritancePlanTable from "./components/tab/InheritancePlanTable";
 import PlatformTransactionTable from "./components/tab/PlatformTransactionTable";
 import UserVerificationRequestModal from "./components/KYCVerificationModal";
+import UserVerificationSuccessModal from "./components/UserVerificationSuccessModal";
 
 export default function AdminDashboardPage() {
   const [activeTab, setActiveTab] = useState("All");
   const [showUserVerificationModal, setShowUserVerificationModal] =
     useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState<any>(null);
 
   const activities = [
@@ -212,11 +214,24 @@ export default function AdminDashboardPage() {
 
   return (
     <section className="flex items-start gap-4 justify-between">
+      {/* User Verification Success Modal */}
+      <UserVerificationSuccessModal
+        isOpen={showSuccessModal}
+        userFullName={selectedUser?.fullName || ""}
+        onClose={() => setShowSuccessModal(false)}
+        onNext={() => {
+          setShowSuccessModal(false);
+          // Optionally, load next request here
+        }}
+      />
       {/* User Verification Request Modal */}
       <UserVerificationRequestModal
         isOpen={showUserVerificationModal}
         onClose={() => setShowUserVerificationModal(false)}
-        onApprove={() => setShowUserVerificationModal(false)}
+        onApprove={() => {
+          setShowUserVerificationModal(false);
+          setShowSuccessModal(true);
+        }}
         onReject={() => setShowUserVerificationModal(false)}
         user={selectedUser}
       />
