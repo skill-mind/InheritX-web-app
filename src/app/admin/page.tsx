@@ -11,20 +11,20 @@ import UserVerificationRequestModal from "./components/KYCVerificationModal";
 import UserVerificationSuccessModal from "./components/UserVerificationSuccessModal";
 
 // Type for user verification
-interface UserVerification {
-  id: number;
-  username: string;
-  type: string;
-  status: string;
-  timestamp: string;
-  fullName: string;
-  email: string;
-  dateSubmitted: string;
-  verificationType: string;
-  documents: { src: string; label: string }[];
-  activityHistory: { text: string; date: string }[];
-  notes: string;
-}
+// interface UserVerification {
+//   id: number;
+//   username: string;
+//   type: string;
+//   status: string;
+//   timestamp: string;
+//   fullName: string;
+//   email: string;
+//   dateSubmitted: string;
+//   verificationType: string;
+//   documents: { src: string; label: string }[];
+//   activityHistory: { text: string; date: string }[];
+//   notes: string;
+// }
 
 // Types for tables
 interface UserVerificationTableRow {
