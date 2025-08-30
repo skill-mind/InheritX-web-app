@@ -21,7 +21,11 @@ export default function MessageUserSuccessModal({
       <div className="relative flex flex-col items-center justify-between h-[534px] w-[844px] max-w-2xl mx-4 md:mx-0 rounded-[24px] bg-[#161E22] border border-[#2A3338] p-8 md:p-12 shadow-xl gap-8">
         <div className="text-center w-full">
           <span className="text-[16px] md:text-[18px] text-[#FCFFFF] font-normal">
-            Message sent to <span className="text-[#33C5E0] font-semibold">"{userFullName}"</span> successfully!
+            Message sent to{" "}
+            <span className="text-[#33C5E0] font-semibold">
+              &quot;{userFullName}&quot;
+            </span>{" "}
+            successfully!
           </span>
         </div>
         <div className="flex items-center justify-center w-full">

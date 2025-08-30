@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const SwapPage = () => {
   return (
-    <main className="flex flex-col gap-8 p-4 md:p-8 w-full">
+    <main className="flex flex-col gap-8 p-2 md:p-8 w-full">
       <section className="mb-2">
         <h2 className="text-lg md:text-2xl font-medium text-[#FCFFFF] mb-1">
           Swap
@@ -14,8 +14,8 @@ const SwapPage = () => {
       </section>
       <div className="flex flex-col lg:flex-row gap-6 w-full">
         {/* Swap Form */}
-        <div className="flex-1 max-w-[420px] relative rounded-2xl p-6 flex flex-col gap-2">
-          <div className="bg-[#182024] p-[24px] rounded-[24px]">
+        <div className="flex-1 max-w-full lg:max-w-[420px] relative rounded-2xl p-2 sm:p-4 md:p-6 flex flex-col gap-2">
+          <div className="bg-[#182024] p-4 sm:p-6 rounded-[24px]">
             <div>
               <span className="text-[#92A5A8] text-[13px] flex items-center justify-between">
                 <span> Swap From:</span>
@@ -56,7 +56,7 @@ const SwapPage = () => {
               </div>
             </div>
           </div>
-          <div className="flex justify-center my-2 absolute right-[50%] top-[10rem]">
+          <div className="flex justify-center my-2 absolute left-1/2 -translate-x-1/2 top-[10rem] lg:static lg:translate-x-0">
             <div className="bg-[#232B36] rounded-full p-2 flex items-center justify-center">
               <Image
                 src="/assets/icons/swap.svg"
@@ -66,7 +66,7 @@ const SwapPage = () => {
               />
             </div>
           </div>
-          <div className="bg-[#182024] p-[24px] rounded-[24px]">
+          <div className="bg-[#182024] p-4 sm:p-6 rounded-[24px]">
             <div>
               <span className="text-[#92A5A8] text-[13px] flex items-center justify-between">
                 <span> Swap To:</span>
@@ -118,15 +118,15 @@ const SwapPage = () => {
           </button>
         </div>
         {/* Asset Rate Slippage */}
-        <div className="flex-1 flex flex-col gap-4">
-          <div className="bg-[#33C5E014] border border-[#33C5E014] rounded-t-2xl py-3 px-6 text-center text-[#33C5E0] font-medium text-[14px] tracking-wide">
+        <div className="flex-1 flex flex-col gap-4 min-w-0">
+          <div className="bg-[#33C5E014] border border-[#33C5E014] rounded-t-2xl py-3 px-2 sm:px-6 text-center text-[#33C5E0] font-medium text-[14px] tracking-wide">
             ASSET RATE SLIPPAGE
           </div>
-          <div className="flex gap-4 justify-between bg-transparent rounded-b-2xl p-4">
+          <div className="flex flex-col sm:flex-row gap-4 justify-between bg-transparent rounded-b-2xl p-2 sm:p-4">
             {[0.24, 0.24, -0.24].map((rate, i) => (
               <div
                 key={i}
-                className="flex flex-col items-center justify-between gap-2 bg-[#182024] rounded-[16px] py-[20px] px-[16px] min-h-[118px] min-w-[180px]"
+                className="flex flex-col items-center justify-between gap-2 bg-[#182024] rounded-[16px] py-[20px] px-[12px] min-h-[118px] min-w-0 w-full sm:min-w-[180px]"
               >
                 <div className="flex items-center w-full gap-2 justify-between">
                   <div className="flex items-center gap-2">
@@ -165,7 +165,7 @@ const SwapPage = () => {
             ))}
           </div>
           <div className="flex items-center justify-center text-center text-cyan-400 text-[12px] font-normal rounded-b-[24px] mt-2 bg-[#182024] w-full h-[48px] border-t border-[#33C5E014]">
-            You Will Receive At Least 1790 USDC (If The Price Doesn't Move More
+            You Will Receive At Least 1790 USDC (If The Price Doesn&apos;t Move More
             Than 0.5%).
           </div>
         </div>
@@ -175,7 +175,7 @@ const SwapPage = () => {
         <h3 className="text-[#BFC6C8] text-[15px] font-medium mb-4">
           Recent transactions
         </h3>
-        <div className="flex flex-col bg-[#182024] rounded-[24px] py-[64px] px-[24px] min-h-[220px] items-center justify-center flex-1">
+        <div className="flex flex-col bg-[#182024] rounded-[24px] py-[64px] px-4 sm:px-[24px] min-h-[220px] items-center justify-center flex-1">
           <span className="text-[#FCFFFF] mb-2 text-center text-[18px] font-normal">
             You don’t have an activity record yet.
           </span>

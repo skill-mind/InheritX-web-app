@@ -18,11 +18,6 @@ const ContactPage = () => {
     subject: "",
     message: "",
   });
-  const [touched, setTouched] = useState({
-    fullName: false,
-    subject: false,
-    message: false,
-  });
 
   const isFormValid =
     formData.fullName.trim() !== "" &&
@@ -39,7 +34,6 @@ const ContactPage = () => {
       ...prev,
       [name]: value,
     }));
-    setTouched((prev) => ({ ...prev, [name]: true }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -87,7 +81,7 @@ const ContactPage = () => {
               Contact Support
             </h1>
             <p className="text-[#92A5A8] text-[12px] md:text-[14px]">
-              We're here if you need help or clarity on things concerning
+              We&apos;re here if you need help or clarity on things concerning
               InheritX
             </p>
           </div>

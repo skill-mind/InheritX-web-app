@@ -22,9 +22,7 @@ export default function UserVerificationSuccessModal({
         <div className="text-center w-full">
           <span className="text-[14px] md:text-[16px] text-[#FCFFFF] font-normal">
             KYC for{" "}
-            <span className="text-[#33C5E0] font-semibold">
-              "{userFullName}"
-            </span>{" "}
+            <span className="text-[#33C5E0] font-semibold">&quot;{userFullName}&quot;</span>{" "}
             successfully{" "}
             <span className="text-[#FCFFFF] font-bold">APPROVED!</span>
           </span>

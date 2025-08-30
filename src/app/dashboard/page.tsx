@@ -1,7 +1,6 @@
 import React from "react";
 
 import Image from "next/image";
-import { Slabo_13px } from "next/font/google";
 
 const summaryCards = [
   {
@@ -40,7 +39,7 @@ const activityTabs = [
 
 export default function DashboardHome() {
   return (
-    <main className="flex flex-col gap-6 p-4 md:p-8 w-full">
+    <main className="flex flex-col gap-6 p-2 md:p-8 w-full mb-[10rem]">
       <section className="mb-4">
         <h2 className="text-lg md:text-2xl font-medium text-[#FCFFFF] mb-1">
           Good morning, EBUBE
@@ -49,11 +48,11 @@ export default function DashboardHome() {
           Monitor, protect, and manage the platform.
         </p>
       </section>
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <section className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {summaryCards.map((card) => (
           <div
             key={card.label}
-            className="bg-[#182024] w-[252px] h-[212px] rounded-xl py-[32px] px-[20px] flex flex-col items-center shadow-md"
+            className="bg-[#182024] w-full h-[212px] rounded-xl py-[32px] px-[20px] flex flex-col items-center shadow-md"
           >
             <span className="text-3xl md:text-4xl font-semibold text-[#FCFFFF] mb-2">
               {card.value}
@@ -74,8 +73,8 @@ export default function DashboardHome() {
           </div>
         ))}
       </section>
-      <section className="bg-transparent p-6 flex flex-col gap-4">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-2">
+      <section className=" md:p-6 flex flex-col gap-4 bg-transparent">
+        <div className="flex flex-row md:items-center justify-between gap-2 mb-2 w-full">
           <span className="text-[#BFC6C8] font-medium text-[14px]">
             RECENT ACTIVITIES
           </span>
@@ -90,7 +89,7 @@ export default function DashboardHome() {
             <span> Filter</span>
           </button>
         </div>
-        <div className="flex flex-wrap gap-2 mb-4">
+        <div className="flex flex-wrap gap-y-1 gap-x-1.5-2 mb-4">
           {activityTabs.map((tab) => (
             <button
               key={tab}
@@ -104,7 +103,7 @@ export default function DashboardHome() {
           <span className="text-[#FCFFFF] mb-4 text-center text-[18px] font-normal">
             No activity yet.
           </span>
-          <span className="text-[#99A9A2] text-[12px] font-normal mb-[2rem]">
+          <span className="text-[#99A9A2] text-[12px] text-center font-normal mb-[2rem]">
             Add Beneficiaries, Add Guardians or Create Plans to get started
           </span>
           <button className="w-[171px] h-[52px] rounded-[24px] px-6 py-2 border border-[#33C5E03D] text-cyan-400 hover:bg-cyan-900/30 transition-colors">

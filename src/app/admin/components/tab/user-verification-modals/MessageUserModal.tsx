@@ -36,7 +36,7 @@ export default function MessageUserModal({
             <Image src="/assets/icons/back.svg" alt="back" width={18} height={15} />
           </button>
           <span className="text-[#92A5A8] text-[14px] font-medium">
-            MESSAGE "{userFullName.toUpperCase()}"
+            MESSAGE &quot;{userFullName.toUpperCase()}&quot;
           </span>
         </div>
         {/* Form */}

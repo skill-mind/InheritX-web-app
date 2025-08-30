@@ -272,7 +272,7 @@ export default function UserVerificationRequestModal({
           isOpen={showMessageModal}
           userFullName={user.fullName}
           onClose={() => setShowMessageModal(false)}
-          onSend={(subject, message) => {
+          onSend={() => {
             setShowMessageModal(false);
             setShowMessageSuccess(true);
           }}

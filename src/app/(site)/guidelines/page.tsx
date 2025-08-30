@@ -1,7 +1,6 @@
 import React from "react";
 import "./guidelines.css";
 import Image from "next/image";
-import { Headphones } from "lucide-react";
 
 const GuidelinesPage = () => {
   return (

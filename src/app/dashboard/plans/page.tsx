@@ -32,7 +32,7 @@ const PlansPage = () => {
         </p>
       </section>
       <section className="bg-transparent p-0 md:p-2 flex flex-col gap-4">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-2 border-t border-t-[#1C252A]">
+        <div className="flex flex-row md:items-center justify-between gap-2 mb-2 border-t border-t-[#1C252A]">
           <div className="flex gap-2">
             {tabs.map((tab, idx) => (
               <button
@@ -61,7 +61,7 @@ const PlansPage = () => {
         </div>
         {activeTab === 0 ? (
           <div className="flex flex-col bg-[#182024] rounded-[24px] py-[64px] px-[24px] min-h-[320px] items-center justify-center flex-1">
-            <span className="text-[#FCFFFF] mb-2 text-center text-[18px] font-normal">
+            <span className="text-[#FCFFFF] mb-2 text-center text-[16px] md:text-[18px] font-normal">
               You haven’t created any inheritance plans yet.
             </span>
             <span className="text-[#99A9A2] text-[12px] font-normal mb-8 text-center">
