@@ -1,5 +1,8 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 import Link from "next/link";
 
@@ -14,6 +17,7 @@ interface FooterProps {
 }
 
 const Footer: React.FC<FooterProps> = ({ logo, socialIcons = [] }) => {
+  const pathname = usePathname();
   const quickLinks = [
     { label: "HOME", href: "/" },
     { label: "ABOUT", href: "/about" },
@@ -64,6 +68,12 @@ const Footer: React.FC<FooterProps> = ({ logo, socialIcons = [] }) => {
   const iconsToRender =
     socialIcons.length > 0 ? socialIcons : defaultSocialIcons;
 
+  const copyrightLinks = [
+    { label: "Privacy Policy", href: "/privacy-policy" },
+    { label: "Terms & Conditions", href: "/terms-conditions" },
+    { label: "Code of Ethics", href: "/code-ethics" },
+  ];
+
   return (
     <footer className="bg-[#182024] md:rounded-[60px] py-12 px-4 sm:px-6 lg:px-8 max-w-[100rem] mx-auto mt-[10rem] mb-[10rem]">
       <div className="max-w-7xl mx-auto">
@@ -79,7 +89,9 @@ const Footer: React.FC<FooterProps> = ({ logo, socialIcons = [] }) => {
                 <React.Fragment key={index}>
                   <a
                     href={link.href}
-                    className="text-[#FCFFFF] text-sm font-semibold underline hover:text-cyan-400 transition-colors duration-200"
+                    className={`text-sm font-semibold underline hover:text-cyan-400 transition-colors duration-200 text-[#FCFFFF] ${
+                      pathname === link.href ? "!text-[#33C5E0]" : ""
+                    }`}
                   >
                     {link.label}
                   </a>
@@ -133,9 +145,18 @@ const Footer: React.FC<FooterProps> = ({ logo, socialIcons = [] }) => {
         {/* Copyright Section */}
         <div className="mt-12 pt-8 border-t border-gray-700">
           <ul className="flex item-center justify-center space-x-4 text-[#92A5A8] text-[12px] mb-[2rem]">
-            <li className="underline">Privacy Policy</li>
-            <li className="underline">Terms & Conditions</li>
-            <li className="underline">Code of Ethics</li>
+            {copyrightLinks.map((link) => (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  className={`underline transition-colors duration-200 ${
+                    pathname === link.href ? "!text-[#FCFFFF]" : ""
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
           </ul>
           <p className="text-gray-400 text-sm text-center">
             Copyright © InheritX {new Date().getFullYear()}, All Rights Reserved
