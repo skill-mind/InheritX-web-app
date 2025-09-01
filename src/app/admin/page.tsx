@@ -84,7 +84,8 @@ export default function AdminDashboardPage() {
   const [showUserVerificationModal, setShowUserVerificationModal] =
     useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [selectedUser, setSelectedUser] = useState<UserVerificationModalProfile | null>(null);
+  const [selectedUser, setSelectedUser] =
+    useState<UserVerificationModalProfile | null>(null);
 
   const activities = [
     { id: 1, title: "User Verification", newCount: 2 },
@@ -119,13 +120,14 @@ export default function AdminDashboardPage() {
     // ...add more profiles as needed...
   ];
   // Table rows for UserVerificationTable
-  const userVerifications: UserVerificationTableRow[] = userVerificationProfiles.map((u, idx) => ({
-    id: idx + 1,
-    username: u.username,
-    type: u.verificationType,
-    status: u.status,
-    timestamp: u.dateSubmitted,
-  }));
+  const userVerifications: UserVerificationTableRow[] =
+    userVerificationProfiles.map((u, idx) => ({
+      id: idx + 1,
+      username: u.username,
+      type: u.verificationType,
+      status: u.status,
+      timestamp: u.dateSubmitted,
+    }));
 
   // Inheritance plan mock data (detailed table)
   const inheritancePlans: InheritancePlan[] = [
@@ -247,7 +249,7 @@ export default function AdminDashboardPage() {
         );
 
   return (
-    <section className="flex items-start gap-4 justify-between">
+    <section className="flex flex-col lg:flex-row items-start gap-4 justify-between w-full px-2 sm:px-4 md:px-8 lg:px-0 mb-[10rem]">
       {/* User Verification Success Modal */}
       <UserVerificationSuccessModal
         isOpen={showSuccessModal}
@@ -270,16 +272,18 @@ export default function AdminDashboardPage() {
         user={selectedUser || userVerificationProfiles[0]}
       />
 
-      <div className="w-[80%]">
-        <h1 className="text-[24px] font-medium mb-2">Good morning, EBUBE</h1>
-        <p className="text-[#92A5A8] text-[14px] font-normal mb-6">
+      <div className="w-full lg:w-[80%] mb-6 lg:mb-0">
+        <h1 className="text-[20px] sm:text-[24px] font-medium mb-2">
+          Good morning, EBUBE
+        </h1>
+        <p className="text-[#92A5A8] text-[13px] sm:text-[14px] font-normal mb-6">
           Monitor, protect, and manage the platform.
         </p>
 
         {/* Recent Activities */}
         <div>
-          <div className="flex items-center justify-between">
-            <h2 className="text-[14px] text-[#BFC6C8] font-medium">
+          <div className="flex flex-row items-center justify-between gap-2 sm:gap-0">
+            <h2 className="text-[13px] sm:text-[14px] text-[#BFC6C8] font-medium">
               RECENT ACTIVITIES
             </h2>
             <h3>
@@ -296,7 +300,7 @@ export default function AdminDashboardPage() {
             </h3>
           </div>
           {/* Tabs */}
-          <ul className="flex items-center space-x-6 border-t border-[#1C252A] mt-[.7rem] text-[#BFC6C8] text-[14px] px-6">
+          <ul className="flex flex-wrap items-center border-t border-[#1C252A] mt-[.7rem] text-[#BFC6C8] text-[13px] sm:text-[14px] px-2 sm:px-6 overflow-x-auto scrollbar-thin scrollbar-thumb-[#222] gap-x-2 sm:gap-x-6">
             {[
               "All",
               "User Verification",
@@ -307,7 +311,7 @@ export default function AdminDashboardPage() {
               <li
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`cursor-pointer h-[48px] rounded-b-[20px] flex items-center justify-center py-[12px] px-[16px] ${
+                className={`cursor-pointer h-[40px] sm:h-[48px] rounded-b-[16px] sm:rounded-b-[20px] flex items-center justify-center py-[8px] sm:py-[12px] px-[10px] sm:px-[16px] whitespace-nowrap transition-all duration-150 ${
                   activeTab === tab
                     ? "text-[#33C5E0] bg-[#1C252A] border border-[#1C252A] font-semibold"
                     : ""
@@ -318,45 +322,53 @@ export default function AdminDashboardPage() {
             ))}
           </ul>
           {/* Tab Content */}
-          {activeTab === "User Verification" ? (
-            <UserVerificationTable
-              users={userVerifications}
-              onApproveClick={(user) => {
-                const profile = userVerificationProfiles.find(
-                  (u) => u.username === user.username
-                );
-                setSelectedUser(profile || userVerificationProfiles[0]);
-                setShowUserVerificationModal(true);
-              }}
-              onRejectClick={() => {}}
-            />
-          ) : activeTab === "Support Ticket" ? (
-            <SupportTicketTable tickets={supportTickets} />
-          ) : activeTab === "Inheritance Plan" ? (
-            <InheritancePlanTable plans={inheritancePlans} />
-          ) : activeTab === "Platform Transaction" ? (
-            <PlatformTransactionTable transactions={platformTransactions} />
-          ) : (
-            <RecentActivities activities={filteredActivities} />
-          )}
+          <div className="w-full overflow-x-auto mt-2">
+            {activeTab === "User Verification" ? (
+              <UserVerificationTable
+                users={userVerifications}
+                onApproveClick={(user) => {
+                  const profile = userVerificationProfiles.find(
+                    (u) => u.username === user.username
+                  );
+                  setSelectedUser(profile || userVerificationProfiles[0]);
+                  setShowUserVerificationModal(true);
+                }}
+                onRejectClick={() => {}}
+              />
+            ) : activeTab === "Support Ticket" ? (
+              <SupportTicketTable tickets={supportTickets} />
+            ) : activeTab === "Inheritance Plan" ? (
+              <InheritancePlanTable plans={inheritancePlans} />
+            ) : activeTab === "Platform Transaction" ? (
+              <PlatformTransactionTable transactions={platformTransactions} />
+            ) : (
+              <RecentActivities activities={filteredActivities} />
+            )}
+          </div>
         </div>
       </div>
-      <div className="flex flex-col gap-2">
-        <div className="w-[200px] rounded-[8px] py-[32px] px-[20px] bg-[#182024] h-[132px] flex flex-col gap-2 items-center justify-center">
-          <span className="text-[36px] font-semibold text-[#FCFFFF]">0</span>
-          <span className="text-[#92A5A8] text-[12px] font-normal">
+      <div className="flex flex-row lg:flex-col gap-2 w-full lg:w-auto justify-between lg:justify-start">
+        <div className="flex-1 lg:w-[200px] rounded-[8px] py-[24px] sm:py-[32px] px-[10px] sm:px-[20px] bg-[#182024] h-[100px] sm:h-[132px] flex flex-col gap-2 items-center justify-center min-w-[110px]">
+          <span className="text-[28px] sm:text-[36px] font-semibold text-[#FCFFFF]">
+            0
+          </span>
+          <span className="text-[#92A5A8] text-[11px] sm:text-[12px] font-normal text-center">
             Total Verified User
           </span>
         </div>
-        <div className="w-[200px] rounded-[8px] py-[32px] px-[20px] bg-[#182024] h-[132px] flex flex-col gap-2 items-center justify-center">
-          <span className="text-[36px] font-semibold text-[#FCFFFF]">0</span>
-          <span className="text-[#92A5A8] text-[12px] font-normal">
+        <div className="flex-1 lg:w-[200px] rounded-[8px] py-[24px] sm:py-[32px] px-[10px] sm:px-[20px] bg-[#182024] h-[100px] sm:h-[132px] flex flex-col gap-2 items-center justify-center min-w-[110px]">
+          <span className="text-[28px] sm:text-[36px] font-semibold text-[#FCFFFF]">
+            0
+          </span>
+          <span className="text-[#92A5A8] text-[11px] sm:text-[12px] font-normal text-center">
             Total Inheritance Span
           </span>
         </div>
-        <div className="w-[200px] rounded-[8px] py-[32px] px-[20px] bg-[#182024] h-[132px] flex flex-col gap-2 items-center justify-center">
-          <span className="text-[36px] font-semibold text-[#FCFFFF]">0</span>
-          <span className="text-[#92A5A8] text-[12px] font-normal">
+        <div className="flex-1 lg:w-[200px] rounded-[8px] py-[24px] sm:py-[32px] px-[10px] sm:px-[20px] bg-[#182024] h-[100px] sm:h-[132px] flex flex-col gap-2 items-center justify-center min-w-[110px]">
+          <span className="text-[28px] sm:text-[36px] font-semibold text-[#FCFFFF]">
+            0
+          </span>
+          <span className="text-[#92A5A8] text-[11px] sm:text-[12px] font-normal text-center">
             Open Disputes
           </span>
         </div>
