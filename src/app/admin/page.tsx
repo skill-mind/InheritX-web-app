@@ -86,6 +86,8 @@ export default function AdminDashboardPage() {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [selectedUser, setSelectedUser] =
     useState<UserVerificationModalProfile | null>(null);
+  // Set the first button (Approve KYC) as active by default
+  const [activeAction, setActiveAction] = useState("Approve KYC");
 
   const activities = [
     { id: 1, title: "User Verification", newCount: 2 },
@@ -279,6 +281,32 @@ export default function AdminDashboardPage() {
         <p className="text-[#92A5A8] text-[13px] sm:text-[14px] font-normal mb-6">
           Monitor, protect, and manage the platform.
         </p>
+
+        <div className="flex items-center space-x-4 mb-[4rem]">
+          {[
+            { label: "Approve KYC", icon: "/assets/icons/arrowdown.svg", activeIcon: "/assets/icons/arrowup.svg" },
+            { label: "Create Ticket", icon: "/assets/icons/arrowdown.svg", activeIcon: "/assets/icons/arrowup.svg" },
+            { label: "Assign Dispute", icon: "/assets/icons/arrowdown.svg", activeIcon: "/assets/icons/arrowup.svg" },
+          ].map((btn) => (
+            <button
+              key={btn.label}
+              type="button"
+              className={`flex items-center justify-center gap-2 w-[208px] h-[60px] rounded-[24px] border border-[#33C5E03D] py-[14px] px-[24px] font-medium text-[14px] transition-all duration-200
+                ${activeAction === btn.label ? "bg-[#33C5E0] text-[#161E22]" : "bg-[#33C5E014] text-[#33C5E0] hover:bg-[#33C5E0] hover:text-[#161E22] focus:bg-[#33C5E0] focus:text-[#161E22] active:bg-[#33C5E0] active:text-[#161E22]"}
+              `}
+              onClick={() => setActiveAction(btn.label)}
+            >
+              <Image
+                src={activeAction === btn.label ? btn.activeIcon : btn.icon}
+                alt="action icon"
+                width={13.5}
+                height={13.5}
+                className={`inline-block mr-2 ${activeAction === btn.label ? "rotate-0" : "rotate-[270deg]"}`}
+              />
+              <span>{btn.label}</span>
+            </button>
+          ))}
+        </div>
 
         {/* Recent Activities */}
         <div>
