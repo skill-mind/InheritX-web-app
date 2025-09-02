@@ -119,6 +119,87 @@ export default function AdminDashboardPage() {
       ],
       notes: "No suspicious activity detected in last 30 days.",
     },
+    {
+      fullName: "John Doe",
+      username: "John Doe",
+      email: "john.doe@email.com",
+      dateSubmitted: "10 Aug 2025, 1:15 PM",
+      verificationType: "Document",
+      status: "APPROVED",
+      documents: [
+        { src: "/assets/images/doc.svg", label: "Passport" },
+        { src: "/assets/images/doc.svg", label: "Utility Bill" },
+      ],
+      activityHistory: [
+        { text: "User submitted verification request.", date: "10 Aug 2025" },
+        { text: "Admin approved verification.", date: "11 Aug 2025" },
+      ],
+      notes: "Verified successfully.",
+    },
+    {
+      fullName: "Jane Smith",
+      username: "Jane Smith",
+      email: "jane.smith@email.com",
+      dateSubmitted: "09 Aug 2025, 11:00 AM",
+      verificationType: "Biometric",
+      status: "REJECTED",
+      documents: [
+        { src: "/assets/images/doc.svg", label: "ID - Front PNG" },
+        { src: "/assets/images/doc.svg", label: "ID - Back PNG" },
+      ],
+      activityHistory: [
+        { text: "User submitted verification request.", date: "09 Aug 2025" },
+        { text: "Admin rejected verification.", date: "10 Aug 2025" },
+      ],
+      notes: "Document mismatch detected.",
+    },
+    {
+      fullName: "Alice Johnson",
+      username: "Alice Johnson",
+      email: "alice.j@email.com",
+      dateSubmitted: "08 Aug 2025, 9:30 AM",
+      verificationType: "Document",
+      status: "PENDING",
+      documents: [
+        { src: "/assets/images/doc.svg", label: "Driver's License" },
+      ],
+      activityHistory: [
+        { text: "User submitted verification request.", date: "08 Aug 2025" },
+      ],
+      notes: "Awaiting review.",
+    },
+    {
+      fullName: "Michael Brown",
+      username: "Michael Brown",
+      email: "michael.b@email.com",
+      dateSubmitted: "07 Aug 2025, 2:00 PM",
+      verificationType: "Biometric",
+      status: "APPROVED",
+      documents: [
+        { src: "/assets/images/doc.svg", label: "ID Card" },
+      ],
+      activityHistory: [
+        { text: "User submitted verification request.", date: "07 Aug 2025" },
+        { text: "Admin approved verification.", date: "08 Aug 2025" },
+      ],
+      notes: "Verified successfully.",
+    },
+    {
+      fullName: "Sarah Lee",
+      username: "Sarah Lee",
+      email: "sarah.lee@email.com",
+      dateSubmitted: "06 Aug 2025, 4:45 PM",
+      verificationType: "Document",
+      status: "REJECTED",
+      documents: [
+        { src: "/assets/images/doc.svg", label: "Passport" },
+      ],
+      activityHistory: [
+        { text: "User submitted verification request.", date: "06 Aug 2025" },
+        { text: "Admin rejected verification.", date: "07 Aug 2025" },
+      ],
+      notes: "Blurry document image.",
+    },
     // ...add more profiles as needed...
   ];
   // Table rows for UserVerificationTable
@@ -240,6 +321,61 @@ export default function AdminDashboardPage() {
       docIcon: "/assets/icons/file.svg",
       timestamp: "2024-01-03",
     },
+    {
+      id: 4,
+      ticketId: "C-405",
+      issue: "Account Locked",
+      plan: "Crypto Wallet",
+      user: "Jane Smith",
+      priority: "HIGH",
+      status: "CLOSED",
+      docIcon: "/assets/icons/file.svg",
+      timestamp: "2024-01-04",
+    },
+    {
+      id: 5,
+      ticketId: "C-406",
+      issue: "Missing Payment",
+      plan: "Life Insurance",
+      user: "Alice Johnson",
+      priority: "MEDIUM",
+      status: "OPEN",
+      docIcon: "/assets/icons/file.svg",
+      timestamp: "2024-01-05",
+    },
+    {
+      id: 6,
+      ticketId: "C-407",
+      issue: "Incorrect Beneficiary",
+      plan: "Estate Plan",
+      user: "Michael Brown",
+      priority: "LOW",
+      status: "PENDING",
+      docIcon: "/assets/icons/file.svg",
+      timestamp: "2024-01-06",
+    },
+    {
+      id: 7,
+      ticketId: "C-408",
+      issue: "Delayed Claim Approval",
+      plan: "Retirement Fund",
+      user: "Sarah Lee",
+      priority: "HIGH",
+      status: "RESOLVED",
+      docIcon: "/assets/icons/file.svg",
+      timestamp: "2024-01-07",
+    },
+    {
+      id: 8,
+      ticketId: "C-409",
+      issue: "Unrecognized Transaction",
+      plan: "Crypto Wallet",
+      user: "Ahmed King",
+      priority: "MEDIUM",
+      status: "CLOSED",
+      docIcon: "/assets/icons/file.svg",
+      timestamp: "2024-01-08",
+    },
   ];
 
   // Filter activities based on activeTab
@@ -282,29 +418,98 @@ export default function AdminDashboardPage() {
           Monitor, protect, and manage the platform.
         </p>
 
+        {/* Stat Cards: show above action buttons on mobile only */}
+        <div className="block lg:hidden mb-4 w-full">
+          <div className="grid grid-cols-2 mb-[4rem] gap-2 w-full justify-between">
+            <div className="flex-1 rounded-[8px] py-[24px] sm:py-[32px] px-[10px] sm:px-[20px] bg-[#182024] h-[100px] sm:h-[132px] flex flex-col gap-2 items-center justify-center min-w-[110px]">
+              <span className="text-[28px] sm:text-[36px] font-semibold text-[#FCFFFF]">
+                0
+              </span>
+              <span className="text-[#92A5A8] text-[11px] sm:text-[12px] font-normal text-center">
+                Total Verified User
+              </span>
+            </div>
+            <div className="flex-1 rounded-[8px] py-[24px] sm:py-[32px] px-[10px] sm:px-[20px] bg-[#182024] h-[100px] sm:h-[132px] flex flex-col gap-2 items-center justify-center min-w-[110px]">
+              <span className="text-[28px] sm:text-[36px] font-semibold text-[#FCFFFF]">
+                0
+              </span>
+              <span className="text-[#92A5A8] text-[11px] sm:text-[12px] font-normal text-center">
+                Total Inheritance Span
+              </span>
+            </div>
+            <div className="flex-1 rounded-[8px] py-[24px] sm:py-[32px] px-[10px] sm:px-[20px] bg-[#182024] h-[100px] sm:h-[132px] flex flex-col gap-2 items-center justify-center min-w-[110px]">
+              <span className="text-[28px] sm:text-[36px] font-semibold text-[#FCFFFF]">
+                0
+              </span>
+              <span className="text-[#92A5A8] text-[11px] sm:text-[12px] font-normal text-center">
+                Open Disputes
+              </span>
+            </div>
+          </div>
+        </div>
+
         <div className="flex items-center space-x-4 mb-[4rem]">
           {[
-            { label: "Approve KYC", icon: "/assets/icons/arrowdown.svg", activeIcon: "/assets/icons/arrowup.svg" },
-            { label: "Create Ticket", icon: "/assets/icons/arrowdown.svg", activeIcon: "/assets/icons/arrowup.svg" },
-            { label: "Assign Dispute", icon: "/assets/icons/arrowdown.svg", activeIcon: "/assets/icons/arrowup.svg" },
+            {
+              label: "Approve KYC",
+              icon: "/assets/icons/arrowdown.svg",
+              activeIcon: "/assets/icons/arrowup.svg",
+              mobileIcon: "/assets/icons/shield.svg",
+            },
+            {
+              label: "Create Ticket",
+              icon: "/assets/icons/arrowdown.svg",
+              activeIcon: "/assets/icons/arrowup.svg",
+              mobileIcon: "/assets/icons/ticket.svg",
+            },
+            {
+              label: "Assign Dispute",
+              icon: "/assets/icons/arrowdown.svg",
+              activeIcon: "/assets/icons/arrowup.svg",
+              mobileIcon: "/assets/icons/user.svg",
+            },
           ].map((btn) => (
-            <button
-              key={btn.label}
-              type="button"
-              className={`flex items-center justify-center gap-2 w-[208px] h-[60px] rounded-[24px] border border-[#33C5E03D] py-[14px] px-[24px] font-medium text-[14px] transition-all duration-200
-                ${activeAction === btn.label ? "bg-[#33C5E0] text-[#161E22]" : "bg-[#33C5E014] text-[#33C5E0] hover:bg-[#33C5E0] hover:text-[#161E22] focus:bg-[#33C5E0] focus:text-[#161E22] active:bg-[#33C5E0] active:text-[#161E22]"}
-              `}
-              onClick={() => setActiveAction(btn.label)}
-            >
-              <Image
-                src={activeAction === btn.label ? btn.activeIcon : btn.icon}
-                alt="action icon"
-                width={13.5}
-                height={13.5}
-                className={`inline-block mr-2 ${activeAction === btn.label ? "rotate-0" : "rotate-[270deg]"}`}
-              />
-              <span>{btn.label}</span>
-            </button>
+            <div key={btn.label} className="flex flex-col items-center">
+              <button
+                type="button"
+                className={`flex items-center justify-center gap-2 w-[114px] h-[60px] sm:w-[208px] sm:h-[60px] rounded-[24px] border border-[#33C5E03D] py-[14px] px-[14px] sm:px-[24px] font-medium text-[14px] transition-all duration-200
+                  ${
+                    activeAction === btn.label
+                      ? "bg-[#33C5E0] text-[#161E22]"
+                      : "bg-[#33C5E014] text-[#33C5E0] hover:bg-[#33C5E0] hover:text-[#161E22] focus:bg-[#33C5E0] focus:text-[#161E22] active:bg-[#33C5E0] active:text-[#161E22]"
+                  }
+                `}
+                onClick={() => setActiveAction(btn.label)}
+              >
+                {/* Mobile: show only icon, Desktop: show arrow + text */}
+                <span className="sm:hidden flex items-center justify-center w-full">
+                  <Image
+                    src={btn.mobileIcon}
+                    alt={btn.label + " icon"}
+                    width={20}
+                    height={20}
+                  />
+                </span>
+                <>
+                  <Image
+                    src={activeAction === btn.label ? btn.activeIcon : btn.icon}
+                    alt="action icon"
+                    width={13.5}
+                    height={13.5}
+                    className={`hidden sm:inline-block mr-2 ${
+                      activeAction === btn.label
+                        ? "rotate-0"
+                        : "rotate-[270deg]"
+                    }`}
+                  />
+                  <span className="hidden sm:inline-block">{btn.label}</span>
+                </>
+              </button>
+              {/* Mobile: text below button */}
+              <span className="text-[13px] sm:hidden font-medium text-center text-[#33C5E0] mt-1">
+                {btn.label}
+              </span>
+            </div>
           ))}
         </div>
 
@@ -375,7 +580,7 @@ export default function AdminDashboardPage() {
           </div>
         </div>
       </div>
-      <div className="flex flex-row lg:flex-col gap-2 w-full lg:w-auto justify-between lg:justify-start">
+      <div className="hidden lg:flex flex-row lg:flex-col gap-2 w-full lg:w-auto justify-between lg:justify-start">
         <div className="flex-1 lg:w-[200px] rounded-[8px] py-[24px] sm:py-[32px] px-[10px] sm:px-[20px] bg-[#182024] h-[100px] sm:h-[132px] flex flex-col gap-2 items-center justify-center min-w-[110px]">
           <span className="text-[28px] sm:text-[36px] font-semibold text-[#FCFFFF]">
             0

@@ -19,9 +19,35 @@ interface Props {
 
 const SupportTicketTable: React.FC<Props> = ({ tickets }) => {
   const [actionOpenIdx, setActionOpenIdx] = useState<number | null>(null);
+  const [activeTab, setActiveTab] = useState<'Open' | 'Pending' | 'Resolved' | 'Closed'>('Open');
+
+  // Filter tickets by status for the selected tab
+  const filteredTickets = tickets.filter(ticket => {
+    if (activeTab === 'Open') return ticket.status.toLowerCase() === 'open';
+    if (activeTab === 'Pending') return ticket.status.toLowerCase() === 'pending';
+    if (activeTab === 'Resolved') return ticket.status.toLowerCase() === 'resolved';
+    if (activeTab === 'Closed') return ticket.status.toLowerCase() === 'closed';
+    return true;
+  });
 
   return (
     <div className="bg-[#182024] mt-[2rem] w-full min-h-[376px] rounded-[24px] py-[24px] px-[8px] sm:px-[16px] md:px-[24px] overflow-x-auto">
+      {/* Tabs */}
+      <div className="flex gap-4 mb-6 border-b border-[#1C252A]">
+        {['Open', 'Pending', 'Resolved', 'Closed'].map(tab => (
+          <button
+            key={tab}
+            className={`px-4 py-2 text-[15px] font-medium focus:outline-none transition-all duration-150 rounded-t-[12px] -mb-px ${
+              activeTab === tab
+                ? 'text-[#33C5E0] bg-[#161E22] border-b-2 border-[#33C5E0]'
+                : 'text-[#BFC6C8] bg-transparent'
+            }`}
+            onClick={() => setActiveTab(tab as 'Open' | 'Pending' | 'Resolved' | 'Closed')}
+          >
+            {tab}
+          </button>
+        ))}
+      </div>
       {/* Desktop Table */}
       <table className="w-full text-left hidden md:table">
         <thead>
@@ -44,7 +70,7 @@ const SupportTicketTable: React.FC<Props> = ({ tickets }) => {
           </tr>
         </thead>
         <tbody>
-          {tickets.map((ticket, idx) => (
+          {filteredTickets.map((ticket, idx) => (
             <tr
               key={ticket.id}
               className="border-b border-[#1C252A] text-[#FCFFFF] text-[15px]"
@@ -88,7 +114,19 @@ const SupportTicketTable: React.FC<Props> = ({ tickets }) => {
                 </span>
               </td>
               <td className="py-4 px-2">
-                <span className="bg-[#2A3338] text-[#92A5A8] text-[12px] font-semibold px-4 py-1 rounded-[16px]">
+                <span
+                  className={
+                    ticket.status.toLowerCase() === "pending"
+                      ? "bg-[#1C2518] border border-[#2E3513] text-[#B9B604] text-[12px] font-semibold px-4 py-1 rounded-[16px]"
+                      : ticket.status.toLowerCase() === "resolved"
+                      ? "bg-[#1B311C] border border-[#1E3F1F] text-[#0DA314] text-[12px] font-semibold px-4 py-1 rounded-[16px]"
+                      : ticket.status.toLowerCase() === "closed"
+                      ? "bg-[#2A3338] border border-[#39494F] text-[#92A5A8] text-[12px] font-semibold px-4 py-1 rounded-[16px]"
+                      : ticket.status.toLowerCase() === "open"
+                      ? "bg-[#232B2F] border border-[#425558] text-[#33C5E0] text-[12px] font-semibold px-4 py-1 rounded-[16px]"
+                      : "text-[12px] font-semibold px-4 py-1 rounded-[16px]"
+                  }
+                >
                   {ticket.status}
                 </span>
               </td>
@@ -118,7 +156,7 @@ const SupportTicketTable: React.FC<Props> = ({ tickets }) => {
       </table>
       {/* Mobile Table */}
       <div className="md:hidden flex flex-col gap-3">
-        {tickets.map((ticket, idx) => (
+        {filteredTickets.map((ticket, idx) => (
           <div
             key={ticket.id}
             className="bg-[#1C252A] rounded-[16px] px-3 py-3 flex flex-col gap-2 text-[13px] text-[#FCFFFF] shadow-sm border border-[#232B2F]"
@@ -169,7 +207,19 @@ const SupportTicketTable: React.FC<Props> = ({ tickets }) => {
             </div>
             <div className="flex items-center justify-between">
               <span className="text-[#92A5A8]">Status:</span>
-              <span className="bg-[#2A3338] text-[#92A5A8] text-[12px] font-semibold px-3 py-1 rounded-[16px]">
+              <span
+                className={
+                  ticket.status.toLowerCase() === "pending"
+                    ? "bg-[#1C2518] border border-[#2E3513] text-[#B9B604] text-[12px] font-semibold px-3 py-1 rounded-[16px]"
+                    : ticket.status.toLowerCase() === "resolved"
+                    ? "bg-[#1B311C] border border-[#1E3F1F] text-[#0DA314] text-[12px] font-semibold px-3 py-1 rounded-[16px]"
+                    : ticket.status.toLowerCase() === "closed"
+                    ? "bg-[#2A3338] border border-[#39494F] text-[#92A5A8] text-[12px] font-semibold px-3 py-1 rounded-[16px]"
+                    : ticket.status.toLowerCase() === "open"
+                    ? "bg-[#232B2F] border border-[#425558] text-[#33C5E0] text-[12px] font-semibold px-3 py-1 rounded-[16px]"
+                    : "text-[12px] font-semibold px-3 py-1 rounded-[16px]"
+                }
+              >
                 {ticket.status}
               </span>
             </div>
