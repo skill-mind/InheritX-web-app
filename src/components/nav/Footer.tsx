@@ -36,7 +36,7 @@ const Footer: React.FC<FooterProps> = ({ logo, socialIcons = [] }) => {
           height={24}
         />
       ),
-      href: "https://github.com/",
+      href: "https://github.com/skill-mind/InheritX-web-app",
       label: "GitHub",
     },
     {
@@ -48,20 +48,20 @@ const Footer: React.FC<FooterProps> = ({ logo, socialIcons = [] }) => {
           height={24}
         />
       ),
-      href: "https://x.com/",
+      href: "https://x.com/projectInheritX",
       label: "X (Twitter)",
     },
     {
       icon: (
         <Image
           src="/assets/icons/send.svg"
-          alt="Email"
+          alt="Telegram"
           width={24}
           height={24}
         />
       ),
-      href: "mailto:support@inheritx.io",
-      label: "Email",
+      href: "https://t.me/+huJYYdL4PW81MThk",
+      label: "Telegram",
     },
   ];
 
@@ -144,7 +144,7 @@ const Footer: React.FC<FooterProps> = ({ logo, socialIcons = [] }) => {
 
         {/* Copyright Section */}
         <div className="mt-12 pt-8 border-t border-gray-700">
-          <ul className="flex item-center justify-center space-x-4 text-[#92A5A8] text-[12px] mb-[2rem]">
+          <ul className="flex items-center justify-center space-x-4 text-[#92A5A8] text-[12px] mb-[2rem]">
             {copyrightLinks.map((link) => (
               <li key={link.href}>
                 <Link
@@ -152,6 +152,9 @@ const Footer: React.FC<FooterProps> = ({ logo, socialIcons = [] }) => {
                   className={`underline transition-colors duration-200 ${
                     pathname === link.href ? "!text-[#FCFFFF]" : ""
                   }`}
+                  prefetch={false}
+                  scroll={false}
+                  passHref
                 >
                   {link.label}
                 </Link>
@@ -159,7 +162,10 @@ const Footer: React.FC<FooterProps> = ({ logo, socialIcons = [] }) => {
             ))}
           </ul>
           <p className="text-gray-400 text-sm text-center">
-            Copyright © InheritX {new Date().getFullYear()}, All Rights Reserved
+            Copyright © InheritX{" "}
+            {typeof window !== "undefined"
+              ? new Date().getFullYear()
+              : "2025"}, All Rights Reserved
           </p>
         </div>
       </div>
