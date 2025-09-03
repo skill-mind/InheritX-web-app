@@ -8,7 +8,7 @@ import { connect } from "starknetkit";
 
 const Navbar = () => {
   const [showWalletModal, setShowWalletModal] = useState(false);
-  const [selectedWallet, setSelectedWallet] = useState<string>("");
+  console.log(showWalletModal);
   const pathname = usePathname();
   const router = useRouter();
 
@@ -31,8 +31,8 @@ const Navbar = () => {
         router.push("/dashboard");
       }
     } catch (err) {
-      // Optionally handle error
       setShowWalletModal(false);
+      console.error("Wallet connection failed", err);
     }
   };
 

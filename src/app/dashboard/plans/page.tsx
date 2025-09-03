@@ -63,6 +63,7 @@ const plans = [
 
 const PlansPage = () => {
 	const [activeTab, setActiveTab] = useState(0);
+	const [activeActionsIdx, setActiveActionsIdx] = useState<number | null>(null); 
 
 	return (
 		<main className="flex flex-col gap-6 p-4 md:p-8 w-full">
@@ -129,170 +130,161 @@ const PlansPage = () => {
 									<tr className="text-left text-[#92A5A8] text-[14px] font-normal">
 										<th className="py-3 px-2">Plan Name/ ID</th>
 										<th className="py-3 px-2">Assets</th>
-										<th className="hidden sm:table-cell py-3 px-2">
-											Beneficiary
-										</th>
-										<th className="hidden sm:table-cell py-3 px-2">
-											Trigger
-										</th>
-										<th className="hidden sm:table-cell py-3 px-2">
-											Status
-										</th>
+										<th className="hidden sm:table-cell py-3 px-2">Beneficiary</th>
+										<th className="hidden sm:table-cell py-3 px-2">Trigger</th>
+										<th className="hidden sm:table-cell py-3 px-2">Status</th>
 										<th className="py-3 px-2">Action</th>
 									</tr>
 								</thead>
 								<tbody>
-									{plans.map((plan, idx) => {
-										const [showActions, setShowActions] = useState(false);
-										return (
-											<tr
-												key={idx}
-												className="border-t border-[#232B36] text-[#FCFFFF] text-[15px]"
-											>
-												<td className="py-4 px-2 min-w-[160px]">
-													<div className="flex flex-col gap-1">
-														<span className="font-semibold flex items-center gap-2">
-															<span className="text-[#425558] text-[14px] w-4 inline-block">
-																{idx + 1}.
-															</span>
-															{plan.name}
+									{plans.map((plan, idx) => (
+										<tr
+											key={idx}
+											className="border-t border-[#232B36] text-[#FCFFFF] text-[15px]"
+										>
+											<td className="py-4 px-2 min-w-[160px]">
+												<div className="flex flex-col gap-1">
+													<span className="font-semibold flex items-center gap-2">
+														<span className="text-[#425558] text-[14px] w-4 inline-block">
+															{idx + 1}.
 														</span>
-														<span className="text-[#92A5A8] text-[12px]">
-															{plan.id}
-														</span>
-													</div>
-												</td>
-												<td className="py-4 px-2 min-w-[120px]">
-													<div className="flex items-center gap-2">
-														<span>{plan.assets.label}</span>
-														{plan.assets.avatars && (
-															<div className="flex -space-x-2">
-																{plan.assets.avatars.map((src, i) => (
-																	<Image
-																		key={i}
-																		src={src}
-																		alt="nft"
-																		width={24}
-																		height={24}
-																		className="rounded-full border-2 border-[#232B36] bg-[#232B36]"
-																	/>
-																))}
-																{plan.assets.extra && (
-																	<span className="ml-2 bg-[#1C252A] text-[#BFC6C8] text-[12px] px-2 py-0.5 rounded-full border border-[#425558]">
-																		{plan.assets.extra}+
-																	</span>
-																)}
-															</div>
-														)}
-													</div>
-												</td>
-												<td className="hidden sm:table-cell py-4 px-2 min-w-[80px]">
-													{plan.beneficiary}
-												</td>
-												{/* Hide on mobile: Trigger and Status */}
-												<td className="hidden sm:table-cell py-4 px-2 min-w-[160px]">
-													<span className="bg-[#232B2F] text-[#BFC6C8] text-[12px] px-3 py-1 rounded-[16px] border border-[#425558]">
-														{plan.trigger}
+														{plan.name}
 													</span>
-												</td>
-												<td className="hidden sm:table-cell py-4 px-2 min-w-[100px]">
-													<span
-														className={
-															plan.status === "ACTIVE"
-																? "bg-[#1C252A] text-[#33C5E0] px-3 py-1 rounded-[16px] text-[12px] font-semibold border border-[#33C5E0]"
-																: plan.status === "COMPLETED"
-																? "bg-[#1C252A] text-[#0DA314] px-3 py-1 rounded-[16px] text-[12px] font-semibold border border-[#0DA314]"
-																: plan.status === "PENDING"
-																? "bg-[#1C252A] text-[#EAB308] px-3 py-1 rounded-[16px] text-[12px] font-semibold border border-[#EAB308]"
-																: "bg-[#232B2F] text-[#92A5A8] px-3 py-1 rounded-[16px] text-[12px] font-semibold border border-[#425558]"
+													<span className="text-[#92A5A8] text-[12px]">
+														{plan.id}
+													</span>
+												</div>
+											</td>
+											<td className="py-4 px-2 min-w-[120px]">
+												<div className="flex items-center gap-2">
+													<span>{plan.assets.label}</span>
+													{plan.assets.avatars && (
+														<div className="flex -space-x-2">
+															{plan.assets.avatars.map((src, i) => (
+																<Image
+																	key={i}
+																	src={src}
+																	alt="nft"
+																	width={24}
+																	height={24}
+																	className="rounded-full border-2 border-[#232B36] bg-[#232B36]"
+																/>
+															))}
+															{plan.assets.extra && (
+																<span className="ml-2 bg-[#1C252A] text-[#BFC6C8] text-[12px] px-2 py-0.5 rounded-full border border-[#425558]">
+																	{plan.assets.extra}+
+																</span>
+															)}
+														</div>
+													)}
+												</div>
+											</td>
+											<td className="hidden sm:table-cell py-4 px-2 min-w-[80px]">
+												{plan.beneficiary}
+											</td>
+											{/* Hide on mobile: Trigger and Status */}
+											<td className="hidden sm:table-cell py-4 px-2 min-w-[160px]">
+												<span className="bg-[#232B2F] text-[#BFC6C8] text-[12px] px-3 py-1 rounded-[16px] border border-[#425558]">
+													{plan.trigger}
+												</span>
+											</td>
+											<td className="hidden sm:table-cell py-4 px-2 min-w-[100px]">
+												<span
+													className={
+														plan.status === "ACTIVE"
+															? "bg-[#1C252A] text-[#33C5E0] px-3 py-1 rounded-[16px] text-[12px] font-semibold border border-[#33C5E0]"
+															: plan.status === "COMPLETED"
+															? "bg-[#1C252A] text-[#0DA314] px-3 py-1 rounded-[16px] text-[12px] font-semibold border border-[#0DA314]"
+															: plan.status === "PENDING"
+															? "bg-[#1C252A] text-[#EAB308] px-3 py-1 rounded-[16px] text-[12px] font-semibold border border-[#EAB308]"
+															: "bg-[#232B2F] text-[#92A5A8] px-3 py-1 rounded-[16px] text-[12px] font-semibold border border-[#425558]"
+													}
+												>
+													{plan.status}
+												</span>
+											</td>
+											<td className="py-4 px-2 min-w-[80px] relative">
+												{/* Mobile: show more icon, on click show actions */}
+												<div className="flex sm:hidden items-center justify-center">
+													<button
+														aria-label="Show actions"
+														onClick={() =>
+															setActiveActionsIdx(activeActionsIdx === idx ? null : idx)
 														}
+														className="p-2 rounded-full hover:bg-[#232B2F] focus:outline-none"
 													>
-														{plan.status}
-													</span>
-												</td>
-												<td className="py-4 px-2 min-w-[80px] relative">
-													{/* Mobile: show more icon, on click show actions */}
-													<div className="flex sm:hidden items-center justify-center">
-														<button
-															aria-label="Show actions"
-															onClick={() =>
-																setShowActions((v) => !v)
-															}
-															className="p-2 rounded-full hover:bg-[#232B2F] focus:outline-none"
+														<svg
+															width="20"
+															height="20"
+															fill="none"
+															viewBox="0 0 24 24"
 														>
-															<svg
-																width="20"
-																height="20"
-																fill="none"
-																viewBox="0 0 24 24"
-															>
-																<circle
-																	cx="12"
-																	cy="5"
-																	r="1.5"
-																	fill="#BFC6C8"
-																/>
-																<circle
-																	cx="12"
-																	cy="12"
-																	r="1.5"
-																	fill="#BFC6C8"
-																/>
-																<circle
-																	cx="12"
-																	cy="19"
-																	r="1.5"
-																	fill="#BFC6C8"
-																/>
-															</svg>
-														</button>
-														{showActions && (
-															<div className="absolute z-10 top-10 right-0 bg-[#232B2F] border border-[#425558] rounded-xl shadow-lg flex flex-col w-32 animate-fade-in">
-																<button className="bg-[#232B2F] border-b border-[#425558] text-[#BFC6C8] px-4 py-2 rounded-t-xl text-[12px] font-medium hover:bg-[#232B2F]/80 w-full text-left">
-																	EDIT
-																</button>
-																<button className="bg-[#33C5E0] text-[#161E22] px-4 py-2 rounded-b-xl text-[12px] font-semibold hover:bg-cyan-400 w-full text-left">
-																	VIEW
-																</button>
-															</div>
-														)}
-													</div>
-													{/* Desktop: show buttons inline */}
-													<div className="hidden sm:flex gap-2 items-center">
-														<button className="bg-[#232B2F] border border-[#425558] text-[#BFC6C8] px-4 py-2 rounded-[16px] text-[12px] font-medium hover:bg-[#232B2F]/80">
-															EDIT
-														</button>
-														<button className="bg-[#33C5E0] text-[#161E22] px-4 py-2 rounded-[16px] text-[12px] font-semibold hover:bg-cyan-400">
-															VIEW
-														</button>
-														<button className="p-2 rounded-full hover:bg-[#232B2F]">
-															<svg
-																width="18"
-																height="18"
-																fill="none"
-																viewBox="0 0 24 24"
-															>
-																<path
-																	d="M6 19C6 20.1046 6.89543 21 8 21H16C17.1046 21 18 20.1046 18 19V7H6V19Z"
-																	stroke="#BFC6C8"
-																	strokeWidth="1.5"
-																	strokeLinecap="round"
-																	strokeLinejoin="round"
-																/>
-																<path
-																	d="M9 7V5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7"
-																	stroke="#BFC6C8"
-																	strokeWidth="1.5"
-																	strokeLinecap="round"
-																	strokeLinejoin="round"
-																/>
-															</svg>
-														</button>
-													</div>
-												</td>
-											</tr>
-										);
-									})}
+															<circle
+																cx="12"
+																cy="5"
+																r="1.5"
+																fill="#BFC6C8"
+															/>
+															<circle
+																cx="12"
+																cy="12"
+																r="1.5"
+																fill="#BFC6C8"
+															/>
+															<circle
+																cx="12"
+																cy="19"
+																r="1.5"
+																fill="#BFC6C8"
+															/>
+														</svg>
+													</button>
+													{activeActionsIdx === idx && (
+														<div className="absolute z-10 top-10 right-0 bg-[#232B2F] border border-[#425558] rounded-xl shadow-lg flex flex-col w-32 animate-fade-in">
+															<button className="bg-[#232B2F] border-b border-[#425558] text-[#BFC6C8] px-4 py-2 rounded-t-xl text-[12px] font-medium hover:bg-[#232B2F]/80 w-full text-left">
+																EDIT
+															</button>
+															<button className="bg-[#33C5E0] text-[#161E22] px-4 py-2 rounded-b-xl text-[12px] font-semibold hover:bg-cyan-400 w-full text-left">
+																VIEW
+															</button>
+														</div>
+													)}
+												</div>
+												{/* Desktop: show buttons inline */}
+												<div className="hidden sm:flex gap-2 items-center">
+													<button className="bg-[#232B2F] border border-[#425558] text-[#BFC6C8] px-4 py-2 rounded-[16px] text-[12px] font-medium hover:bg-[#232B2F]/80">
+														EDIT
+													</button>
+													<button className="bg-[#33C5E0] text-[#161E22] px-4 py-2 rounded-[16px] text-[12px] font-semibold hover:bg-cyan-400">
+														VIEW
+													</button>
+													<button className="p-2 rounded-full hover:bg-[#232B2F]">
+														<svg
+															width="18"
+															height="18"
+															fill="none"
+															viewBox="0 0 24 24"
+														>
+															<path
+																d="M6 19C6 20.1046 6.89543 21 8 21H16C17.1046 21 18 20.1046 18 19V7H6V19Z"
+																stroke="#BFC6C8"
+																strokeWidth="1.5"
+																strokeLinecap="round"
+																strokeLinejoin="round"
+															/>
+															<path
+																d="M9 7V5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7"
+																stroke="#BFC6C8"
+																strokeWidth="1.5"
+																strokeLinecap="round"
+																strokeLinejoin="round"
+															/>
+														</svg>
+													</button>
+												</div>
+											</td>
+										</tr>
+									))}
 								</tbody>
 							</table>
 						</div>

@@ -102,7 +102,9 @@ const UserVerificationTable: React.FC<Props> = ({
                 <div className="flex gap-2">
                   <button
                     className="bg-[#33C5E014] border border-[#33C5E03D] text-[#BFC6C8] px-5 py-2 rounded-[16px] text-[12px] font-medium hover:bg-[#232B2F]/80"
-                    onClick={() => onRejectClick && onRejectClick(user)}
+                    onClick={() => {
+                      if (onRejectClick) onRejectClick(user);
+                    }}
                   >
                     REJECT
                   </button>
@@ -176,7 +178,7 @@ const UserVerificationTable: React.FC<Props> = ({
                     <button
                       className="w-full text-left px-4 py-2 text-[#F87171] hover:bg-[#232B2F] text-[13px]"
                       onClick={() => {
-                        onRejectClick && onRejectClick(user);
+                        if (onRejectClick) onRejectClick(user);
                         setActionOpenIdx(null);
                       }}
                     >

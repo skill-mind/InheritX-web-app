@@ -727,13 +727,13 @@ const GuidelinesPage = () => {
                         PLATFORM LIABILITY LIMITATIONS
                       </h3>
                       <p className="mb-2 text-[#FCFFFF] text-sm">
-                        The Platform's Liability Is Limited In The Following
+                        The Platform&apos;s Liability Is Limited In The Following
                         Circumstances:
                       </p>
                       <ul className="list-disc pl-6 text-[#FCFFFF] text-sm space-y-1">
                         <li>Loss Of Digital Assets Due To Market Volatility</li>
                         <li>
-                          Technical Issues Beyond The Platform's Reasonable
+                          Technical Issues Beyond The Platform&apos;s Reasonable
                           Control
                         </li>
                         <li>Third-Party Service Provider Failures</li>

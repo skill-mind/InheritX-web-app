@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import Image from "next/image";
 import { Line, Doughnut } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -110,7 +109,7 @@ const doughnutOptions = {
   },
 };
 
-const page = () => {
+const Page = () => {
   const [hasData] = useState(true); // Toggle to false to see empty state
   const [activeRange, setActiveRange] = useState("1H");
   const ranges = ["1H", "1D", "1W", "1M", "1Y"];
@@ -125,7 +124,7 @@ const page = () => {
       </p>
       {/* Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        {stats.map((stat, idx) => (
+        {stats.map((stat) => (
           <div
             key={stat.label}
             className="bg-[#182024] w-full rounded-[24px] py-8 px-4 flex flex-col gap-2 items-center justify-center min-h-[140px] shadow-sm"
@@ -232,4 +231,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

@@ -147,9 +147,9 @@ const assetTable = [
 ];
 
 const PortfolioPage = () => {
-  const [hasData] = useState(true); // Toggle to false to see empty state
   const [activeRange, setActiveRange] = useState("1H");
   const ranges = ["1H", "1D", "1W", "1M", "1Y"];
+  const [activeActionsIdx, setActiveActionsIdx] = useState<number | null>(null); // Track which row's actions are open
 
   return (
     <main className="flex w-full flex-col gap-6 p-4 md:p-8 max-w-full overflow-x-hidden">
@@ -163,7 +163,7 @@ const PortfolioPage = () => {
       </section>
       {/* Stat Cards */}
       <section className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 w-full max-w-full">
-        {summaryCards.map((card, idx) => (
+        {summaryCards.map((card) => (
           <div
             key={card.label}
             className="md:min-w-[220px] w-full flex flex-col items-center rounded-xl bg-[#182024] p-6 shadow-md max-w-full"
@@ -292,63 +292,60 @@ const PortfolioPage = () => {
               </tr>
             </thead>
             <tbody>
-              {assetTable.map((row, idx) => {
-                const [showActions, setShowActions] = useState(false);
-                return (
-                  <tr
-                    key={idx}
-                    className="border-b border-[#1C252A] text-[#FCFFFF] text-[13px] sm:text-[14px]"
-                  >
-                    <td className="py-3 sm:py-4 px-1 sm:px-2 font-normal flex items-center gap-2 min-w-[120px]">
-                      <span className="text-[#425558] text-[13px] sm:text-[14px] w-4 inline-block">
-                        {idx + 1}.
-                      </span>
-                      <Image src={row.icon} alt={row.asset} width={24} height={24} />
-                      {row.asset}
-                    </td>
-                    <td className="py-3 sm:py-4 px-1 sm:px-2 min-w-[80px]">{row.balance}</td>
-                    <td className="py-3 sm:py-4 px-1 sm:px-2 min-w-[100px]">{row.value}</td>
-                    {/* Action column: mobile shows more icon, desktop shows buttons */}
-                    <td className="py-3 sm:py-4 px-1 sm:px-2 min-w-[60px] relative">
-                      {/* Mobile: show more icon, on click show actions */}
-                      <div className="flex sm:hidden items-center justify-center">
-                        <button
-                          aria-label="Show actions"
-                          onClick={() => setShowActions((v) => !v)}
-                          className="p-2 rounded-full hover:bg-[#232B2F] focus:outline-none"
-                        >
-                          <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
-                            <circle cx="12" cy="5" r="1.5" fill="#BFC6C8" />
-                            <circle cx="12" cy="12" r="1.5" fill="#BFC6C8" />
-                            <circle cx="12" cy="19" r="1.5" fill="#BFC6C8" />
-                          </svg>
-                        </button>
-                        {showActions && (
-                          <div className="absolute z-10 top-10 right-0 bg-[#232B2F] border border-[#425558] rounded-xl shadow-lg flex flex-col w-36 animate-fade-in">
-                            <button className="bg-[#33C5E0] text-[#161E22] px-4 py-2 rounded-t-xl text-[12px] font-semibold hover:bg-cyan-400 w-full text-left">
-                              SWAP
-                            </button>
-                            <button className="bg-[#232B2F] border-t border-[#425558] text-[#BFC6C8] px-4 py-2 rounded-b-xl text-[12px] font-medium hover:bg-[#232B2F]/80 w-full text-left">
-                              ADD TO PLAN
-                            </button>
-                          </div>
-                        )}
-                      </div>
-                      {/* Desktop: show buttons inline */}
-                      <div className="hidden sm:flex gap-2">
-                        <button className="bg-[#33C5E0] text-[#161E22] px-4 sm:px-5 py-2 rounded-[16px] text-[12px] font-semibold hover:bg-cyan-400 w-full sm:w-auto">
-                          SWAP
-                        </button>
-                        <button className="bg-[#232B2F] border border-[#425558] text-[#BFC6C8] px-4 sm:px-5 py-2 rounded-[16px] text-[12px] font-medium hover:bg-[#232B2F]/80 w-full sm:w-auto">
-                          ADD TO PLAN
-                        </button>
-                      </div>
-                    </td>
-                    {/* Price column: only show on desktop */}
-                    <td className="hidden sm:table-cell py-3 sm:py-4 px-1 sm:px-2 min-w-[100px]">{row.price}</td>
-                  </tr>
-                );
-              })}
+              {assetTable.map((row, idx) => (
+                <tr
+                  key={idx}
+                  className="border-b border-[#1C252A] text-[#FCFFFF] text-[13px] sm:text-[14px]"
+                >
+                  <td className="py-3 sm:py-4 px-1 sm:px-2 font-normal flex items-center gap-2 min-w-[120px]">
+                    <span className="text-[#425558] text-[13px] sm:text-[14px] w-4 inline-block">
+                      {idx + 1}.
+                    </span>
+                    <Image src={row.icon} alt={row.asset} width={24} height={24} />
+                    {row.asset}
+                  </td>
+                  <td className="py-3 sm:py-4 px-1 sm:px-2 min-w-[80px]">{row.balance}</td>
+                  <td className="py-3 sm:py-4 px-1 sm:px-2 min-w-[100px]">{row.value}</td>
+                  {/* Action column: mobile shows more icon, desktop shows buttons */}
+                  <td className="py-3 sm:py-4 px-1 sm:px-2 min-w-[60px] relative">
+                    {/* Mobile: show more icon, on click show actions */}
+                    <div className="flex sm:hidden items-center justify-center">
+                      <button
+                        aria-label="Show actions"
+                        onClick={() => setActiveActionsIdx(activeActionsIdx === idx ? null : idx)}
+                        className="p-2 rounded-full hover:bg-[#232B2F] focus:outline-none"
+                      >
+                        <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+                          <circle cx="12" cy="5" r="1.5" fill="#BFC6C8" />
+                          <circle cx="12" cy="12" r="1.5" fill="#BFC6C8" />
+                          <circle cx="12" cy="19" r="1.5" fill="#BFC6C8" />
+                        </svg>
+                      </button>
+                      {activeActionsIdx === idx && (
+                        <div className="absolute z-10 top-10 right-0 bg-[#232B2F] border border-[#425558] rounded-xl shadow-lg flex flex-col w-36 animate-fade-in">
+                          <button className="bg-[#33C5E0] text-[#161E22] px-4 py-2 rounded-t-xl text-[12px] font-semibold hover:bg-cyan-400 w-full text-left">
+                            SWAP
+                          </button>
+                          <button className="bg-[#232B2F] border-t border-[#425558] text-[#BFC6C8] px-4 py-2 rounded-b-xl text-[12px] font-medium hover:bg-[#232B2F]/80 w-full text-left">
+                            ADD TO PLAN
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                    {/* Desktop: show buttons inline */}
+                    <div className="hidden sm:flex gap-2">
+                      <button className="bg-[#33C5E0] text-[#161E22] px-4 sm:px-5 py-2 rounded-[16px] text-[12px] font-semibold hover:bg-cyan-400 w-full sm:w-auto">
+                        SWAP
+                      </button>
+                      <button className="bg-[#232B2F] border border-[#425558] text-[#BFC6C8] px-4 sm:px-5 py-2 rounded-[16px] text-[12px] font-medium hover:bg-[#232B2F]/80 w-full sm:w-auto">
+                        ADD TO PLAN
+                      </button>
+                    </div>
+                  </td>
+                  {/* Price column: only show on desktop */}
+                  <td className="hidden sm:table-cell py-3 sm:py-4 px-1 sm:px-2 min-w-[100px]">{row.price}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
