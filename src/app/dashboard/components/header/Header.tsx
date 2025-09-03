@@ -1,12 +1,13 @@
 "use client";
+
 import { Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function AdminHeader() {
   return (
-    <section className="sticky top-0 z-50 w-full bg-[#161E22]/80 backdrop-blur-md  flex justify-center border-b border-[#1C252A] h-[92px] md:h-[124px]">
-      <header className="w-full max-w-[110rem] mx-auto my-auto h-[60px] flex items-center justify-between px-6 py-4 bg-transparent border-none">
+    <section className="sticky top-0 left-0 right-0 z-50 w-full bg-[#161E22]/80 backdrop-blur-md  flex justify-center border-b border-[#1C252A] h-[92px] md:h-[124px]">
+      <header className="w-full bg-transparent max-w-[110rem] mx-auto my-auto h-[60px] flex items-center justify-between px-6 py-4 border-none">
         {/* logo */}
         <div>
           <Link href="/" className="flex items-center">

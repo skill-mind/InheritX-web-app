@@ -2,13 +2,15 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
+import { connect } from "starknetkit";
 
 const Navbar = () => {
   const [showWalletModal, setShowWalletModal] = useState(false);
   const [selectedWallet, setSelectedWallet] = useState<string>("");
   const pathname = usePathname();
+  const router = useRouter();
 
   const navItems = [
     { name: "HOME", href: "/", icon: "/assets/icons/home.svg" },
@@ -16,6 +18,23 @@ const Navbar = () => {
     { name: "FAQS", href: "/faqs", icon: "/assets/icons/question.svg" },
     { name: "CONTACT", href: "/contact", icon: "/assets/icons/contact.svg" },
   ];
+
+  const handleConnectWallet = async () => {
+    try {
+      const { wallet } = await connect({
+        modalMode: "alwaysAsk",
+        dappName: "InheritX - Securin...",
+      });
+      if (wallet) {
+        setShowWalletModal(false);
+        // Redirect to asset-owner dashboard
+        router.push("/dashboard");
+      }
+    } catch (err) {
+      // Optionally handle error
+      setShowWalletModal(false);
+    }
+  };
 
   return (
     <>
@@ -65,7 +84,7 @@ const Navbar = () => {
             <div className="flex items-center justify-end space-x-4 z-50 w-full relative">
               <button
                 className="bg-[#161E22] w-fit text-[#33C5E0] flex items-center space-x-[1rem] rounded-l-full rounded-br-3xl hover:bg-slate-700 px-4 pr-0 md:px-6 py-4 text-sm font-medium border-[0.6px] border-[#33C5E03D] hover:border-cyan-400 transition-all duration-200 hover:shadow-lg hover:shadow-cyan-400/20"
-                onClick={() => setShowWalletModal((prev) => !prev)}
+                onClick={handleConnectWallet}
               >
                 <span className="text-[#FCFFFF] md:text-[#33C5E0] font-medium">
                   Connect Wallet
@@ -89,90 +108,7 @@ const Navbar = () => {
                   height={16}
                 />
               </button>
-
               <div className="bg-[#161E22] h-[40px] w-[8px] rounded-[12px] border-[0.6px] border-[#33C5E03D]"></div>
-              {/* Wallet Modal */}
-              {showWalletModal && (
-                <div
-                  className="absolute right-[0%] top-full mt-4 w-[370px] bg-[#161E22] rounded-[24px] border border-[#232B2F] shadow-2xl z-[999] p-8 flex flex-col items-center"
-                  style={{
-                    boxShadow:
-                      "0 8px 32px rgba(17,23,26,0.7), 0 1.5px 12px rgba(27,37,42,0.7)",
-                  }}
-                >
-                  <h2 className="text-[#FCFFFF] text-[24px] font-bold mb-2 text-center">
-                    Connect Wallet
-                  </h2>
-                  <p className="text-[#92A5A8] text-[14px] mb-6 text-center">
-                    Connect your wallet to get started withInheritX
-                  </p>
-                  <div className="flex flex-col gap-4 w-[210px] mb-6">
-                    <button
-                      className={`flex items-center gap-3 px-4 py-3 rounded-lg w-full transition-all duration-200 ${
-                        selectedWallet === "BRAAVOS"
-                          ? "bg-slate-800 border-cyan-400 border"
-                          : "bg-transparent border border-[#232B2F]"
-                      }`}
-                      onClick={() => setSelectedWallet("BRAAVOS")}
-                    >
-                      <span className="w-4 h-4 rounded-full border-2 border-white flex items-center justify-center mr-2">
-                        {selectedWallet === "BRAAVOS" && (
-                          <span className="w-2 h-2 bg-cyan-400 rounded-full block"></span>
-                        )}
-                      </span>
-                      <span className="text-[#92A5A8] text-[12px]">
-                        BRAAVOS
-                      </span>
-                    </button>
-                    <button
-                      className={`flex items-center gap-3 px-4 py-3 rounded-lg w-full transition-all duration-200 ${
-                        selectedWallet === "ARGENT_WEB"
-                          ? "bg-slate-800 border-cyan-400 border"
-                          : "bg-transparent border border-[#232B2F]"
-                      }`}
-                      onClick={() => setSelectedWallet("ARGENT_WEB")}
-                    >
-                      <span className="w-4 h-4 rounded-full border-2 border-white flex items-center justify-center mr-2">
-                        {selectedWallet === "ARGENT_WEB" && (
-                          <span className="w-2 h-2 bg-cyan-400 rounded-full block"></span>
-                        )}
-                      </span>
-                      <span className="text-[#92A5A8] text-[12px]">
-                        ARGENT (WEB)
-                      </span>
-                    </button>
-                    <button
-                      className={`flex items-center gap-3 px-4 py-3 rounded-lg w-full transition-all duration-200 ${
-                        selectedWallet === "ARGENT_MOBILE"
-                          ? "bg-slate-800 border-cyan-400 border"
-                          : "bg-transparent border border-[#232B2F]"
-                      }`}
-                      onClick={() => setSelectedWallet("ARGENT_MOBILE")}
-                    >
-                      <span className="w-4 h-4 rounded-full border-2 border-white flex items-center justify-center mr-2">
-                        {selectedWallet === "ARGENT_MOBILE" && (
-                          <span className="w-2 h-2 bg-cyan-400 rounded-full block"></span>
-                        )}
-                      </span>
-                      <span className="text-[#92A5A8] text-[12px]">
-                        ARGENT (MOBILE)
-                      </span>
-                    </button>
-                  </div>
-                  <button
-                    className="w-full bg-[#33C5E0] hover:bg-cyan-400 text-[#161E22] px-4 py-3 rounded-lg text-[14px] font-semibold flex items-center justify-center gap-2 transition-all duration-200"
-                    onClick={() => setShowWalletModal(false)}
-                  >
-                    <Image
-                      src="/assets/icons/UserCircleCheck.svg"
-                      alt="connect icon"
-                      width={20}
-                      height={20}
-                    />
-                    Connect Wallet
-                  </button>
-                </div>
-              )}
             </div>
           </div>
         </div>
