@@ -2,6 +2,10 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import TwoFAModal from "./TwoFAModal";
+import TwoFASuccessModal from "./TwoFASuccessModal";
+import FingerprintModal from "./FingerprintModal";
+import FaceIDModal from "./FaceIDModal";
 
 type ToggleProps = {
   checked: boolean;
@@ -29,9 +33,76 @@ function Toggle({ checked, onChange }: ToggleProps) {
 
 const SecurityPage = () => {
   const [twoFA, setTwoFA] = useState(false);
+  const [show2FAModal, setShow2FAModal] = useState(false);
+  const [show2FASuccess, setShow2FASuccess] = useState(false);
   const [fingerprint, setFingerprint] = useState(false);
   const [faceID, setFaceID] = useState(false);
   const [emailAlert, setEmailAlert] = useState(false);
+  const [showFingerprintModal, setShowFingerprintModal] = useState(false);
+  const [showFaceIDModal, setShowFaceIDModal] = useState(false);
+
+  // Example QR code and manual key (replace with real values from backend)
+  const qrCodeUrl = "/assets/images/qr_placeholder.svg"; // Place a real QR code image here
+  const manualKey = "123456789098";
+
+  const handle2FAToggle = (checked: boolean) => {
+    if (checked) {
+      setShow2FAModal(true);
+    } else {
+      setTwoFA(false);
+    }
+  };
+
+  const handle2FAContinue = (code: string) => {
+    setShow2FAModal(false);
+    setShow2FASuccess(true);
+  };
+
+  const handle2FAModalClose = () => {
+    setShow2FAModal(false);
+    setTwoFA(false);
+  };
+
+  const handle2FASuccessClose = () => {
+    setShow2FASuccess(false);
+    setTwoFA(true);
+  };
+
+  const handleFingerprintToggle = (checked: boolean) => {
+    if (checked) {
+      setShowFingerprintModal(true);
+    } else {
+      setFingerprint(false);
+    }
+  };
+
+  const handleFingerprintContinue = () => {
+    setShowFingerprintModal(false);
+    setFingerprint(true);
+  };
+
+  const handleFingerprintModalClose = () => {
+    setShowFingerprintModal(false);
+    setFingerprint(false);
+  };
+
+  const handleFaceIDToggle = (checked: boolean) => {
+    if (checked) {
+      setShowFaceIDModal(true);
+    } else {
+      setFaceID(false);
+    }
+  };
+
+  const handleFaceIDContinue = () => {
+    setShowFaceIDModal(false);
+    setFaceID(true);
+  };
+
+  const handleFaceIDModalClose = () => {
+    setShowFaceIDModal(false);
+    setFaceID(false);
+  };
 
   return (
     <main className="flex flex-col gap-6 p-4 md:p-8 w-full max-w-3xl">
@@ -69,7 +140,7 @@ const SecurityPage = () => {
             <span className="text-[#BFC6C8] font-normal text-[14px] ml-[1rem]">
               Enable Two-Factor Authentication
             </span>
-            <Toggle checked={twoFA} onChange={setTwoFA} />
+            <Toggle checked={twoFA} onChange={handle2FAToggle} />
           </div>
         </div>
         <div className="mb-4">
@@ -112,13 +183,13 @@ const SecurityPage = () => {
             <span className="text-[#BFC6C8] text-[14px] border border-[#1C252A]">
               Enable Fingerprint
             </span>
-            <Toggle checked={fingerprint} onChange={setFingerprint} />
+            <Toggle checked={fingerprint} onChange={handleFingerprintToggle} />
           </div>
           <div className="flex items-center justify-between mt-[2rem]">
             <span className="text-[#BFC6C8] text-[14px] border border-[#1C252A]">
               Enable Face ID
             </span>
-            <Toggle checked={faceID} onChange={setFaceID} />
+            <Toggle checked={faceID} onChange={handleFaceIDToggle} />
           </div>
         </div>
         <div className="mb-4">
@@ -149,6 +220,27 @@ const SecurityPage = () => {
           <div className="bg-[#1C252A] w-[80px] h-[8px] rounded-[12px]"></div>
         </div>
       </div>
+      <TwoFAModal
+        open={show2FAModal}
+        onClose={handle2FAModalClose}
+        qrCodeUrl={qrCodeUrl}
+        manualKey={manualKey}
+        onContinue={handle2FAContinue}
+      />
+      <TwoFASuccessModal
+        open={show2FASuccess}
+        onClose={handle2FASuccessClose}
+      />
+      <FingerprintModal
+        open={showFingerprintModal}
+        onClose={handleFingerprintModalClose}
+        onContinue={handleFingerprintContinue}
+      />
+      <FaceIDModal
+        open={showFaceIDModal}
+        onClose={handleFaceIDModalClose}
+        onContinue={handleFaceIDContinue}
+      />
     </main>
   );
 };
