@@ -1,0 +1,5 @@
+.guidelines-box {
+  box-shadow: 
+    inset 4px 4px 10px rgba(17, 23, 26, 0.9),
+    inset -4px -4px 8px rgba(27, 37, 42, 0.9);
+}

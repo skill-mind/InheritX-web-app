@@ -84,7 +84,10 @@ export default function AdminDashboardPage() {
   const [showUserVerificationModal, setShowUserVerificationModal] =
     useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [selectedUser, setSelectedUser] = useState<UserVerificationModalProfile | null>(null);
+  const [selectedUser, setSelectedUser] =
+    useState<UserVerificationModalProfile | null>(null);
+  // Set the first button (Approve KYC) as active by default
+  const [activeAction, setActiveAction] = useState("Approve KYC");
 
   const activities = [
     { id: 1, title: "User Verification", newCount: 2 },
@@ -116,16 +119,98 @@ export default function AdminDashboardPage() {
       ],
       notes: "No suspicious activity detected in last 30 days.",
     },
+    {
+      fullName: "John Doe",
+      username: "John Doe",
+      email: "john.doe@email.com",
+      dateSubmitted: "10 Aug 2025, 1:15 PM",
+      verificationType: "Document",
+      status: "APPROVED",
+      documents: [
+        { src: "/assets/images/doc.svg", label: "Passport" },
+        { src: "/assets/images/doc.svg", label: "Utility Bill" },
+      ],
+      activityHistory: [
+        { text: "User submitted verification request.", date: "10 Aug 2025" },
+        { text: "Admin approved verification.", date: "11 Aug 2025" },
+      ],
+      notes: "Verified successfully.",
+    },
+    {
+      fullName: "Jane Smith",
+      username: "Jane Smith",
+      email: "jane.smith@email.com",
+      dateSubmitted: "09 Aug 2025, 11:00 AM",
+      verificationType: "Biometric",
+      status: "REJECTED",
+      documents: [
+        { src: "/assets/images/doc.svg", label: "ID - Front PNG" },
+        { src: "/assets/images/doc.svg", label: "ID - Back PNG" },
+      ],
+      activityHistory: [
+        { text: "User submitted verification request.", date: "09 Aug 2025" },
+        { text: "Admin rejected verification.", date: "10 Aug 2025" },
+      ],
+      notes: "Document mismatch detected.",
+    },
+    {
+      fullName: "Alice Johnson",
+      username: "Alice Johnson",
+      email: "alice.j@email.com",
+      dateSubmitted: "08 Aug 2025, 9:30 AM",
+      verificationType: "Document",
+      status: "PENDING",
+      documents: [
+        { src: "/assets/images/doc.svg", label: "Driver's License" },
+      ],
+      activityHistory: [
+        { text: "User submitted verification request.", date: "08 Aug 2025" },
+      ],
+      notes: "Awaiting review.",
+    },
+    {
+      fullName: "Michael Brown",
+      username: "Michael Brown",
+      email: "michael.b@email.com",
+      dateSubmitted: "07 Aug 2025, 2:00 PM",
+      verificationType: "Biometric",
+      status: "APPROVED",
+      documents: [
+        { src: "/assets/images/doc.svg", label: "ID Card" },
+      ],
+      activityHistory: [
+        { text: "User submitted verification request.", date: "07 Aug 2025" },
+        { text: "Admin approved verification.", date: "08 Aug 2025" },
+      ],
+      notes: "Verified successfully.",
+    },
+    {
+      fullName: "Sarah Lee",
+      username: "Sarah Lee",
+      email: "sarah.lee@email.com",
+      dateSubmitted: "06 Aug 2025, 4:45 PM",
+      verificationType: "Document",
+      status: "REJECTED",
+      documents: [
+        { src: "/assets/images/doc.svg", label: "Passport" },
+      ],
+      activityHistory: [
+        { text: "User submitted verification request.", date: "06 Aug 2025" },
+        { text: "Admin rejected verification.", date: "07 Aug 2025" },
+      ],
+      notes: "Blurry document image.",
+    },
     // ...add more profiles as needed...
   ];
   // Table rows for UserVerificationTable
-  const userVerifications: UserVerificationTableRow[] = userVerificationProfiles.map((u, idx) => ({
-    id: idx + 1,
-    username: u.username,
-    type: u.verificationType,
-    status: u.status,
-    timestamp: u.dateSubmitted,
-  }));
+  const userVerifications: UserVerificationTableRow[] =
+    userVerificationProfiles.map((u, idx) => ({
+      id: idx + 1,
+      username: u.username,
+      type: u.verificationType,
+      status: u.status,
+      timestamp: u.dateSubmitted,
+    }));
 
   // Inheritance plan mock data (detailed table)
   const inheritancePlans: InheritancePlan[] = [
@@ -236,6 +321,61 @@ export default function AdminDashboardPage() {
       docIcon: "/assets/icons/file.svg",
       timestamp: "2024-01-03",
     },
+    {
+      id: 4,
+      ticketId: "C-405",
+      issue: "Account Locked",
+      plan: "Crypto Wallet",
+      user: "Jane Smith",
+      priority: "HIGH",
+      status: "CLOSED",
+      docIcon: "/assets/icons/file.svg",
+      timestamp: "2024-01-04",
+    },
+    {
+      id: 5,
+      ticketId: "C-406",
+      issue: "Missing Payment",
+      plan: "Life Insurance",
+      user: "Alice Johnson",
+      priority: "MEDIUM",
+      status: "OPEN",
+      docIcon: "/assets/icons/file.svg",
+      timestamp: "2024-01-05",
+    },
+    {
+      id: 6,
+      ticketId: "C-407",
+      issue: "Incorrect Beneficiary",
+      plan: "Estate Plan",
+      user: "Michael Brown",
+      priority: "LOW",
+      status: "PENDING",
+      docIcon: "/assets/icons/file.svg",
+      timestamp: "2024-01-06",
+    },
+    {
+      id: 7,
+      ticketId: "C-408",
+      issue: "Delayed Claim Approval",
+      plan: "Retirement Fund",
+      user: "Sarah Lee",
+      priority: "HIGH",
+      status: "RESOLVED",
+      docIcon: "/assets/icons/file.svg",
+      timestamp: "2024-01-07",
+    },
+    {
+      id: 8,
+      ticketId: "C-409",
+      issue: "Unrecognized Transaction",
+      plan: "Crypto Wallet",
+      user: "Ahmed King",
+      priority: "MEDIUM",
+      status: "CLOSED",
+      docIcon: "/assets/icons/file.svg",
+      timestamp: "2024-01-08",
+    },
   ];
 
   // Filter activities based on activeTab
@@ -247,7 +387,7 @@ export default function AdminDashboardPage() {
         );
 
   return (
-    <section className="flex items-start gap-4 justify-between">
+    <section className="flex flex-col lg:flex-row items-start gap-4 justify-between w-full px-2 sm:px-4 md:px-8 lg:px-0 mb-[10rem]">
       {/* User Verification Success Modal */}
       <UserVerificationSuccessModal
         isOpen={showSuccessModal}
@@ -270,16 +410,113 @@ export default function AdminDashboardPage() {
         user={selectedUser || userVerificationProfiles[0]}
       />
 
-      <div className="w-[80%]">
-        <h1 className="text-[24px] font-medium mb-2">Good morning, EBUBE</h1>
-        <p className="text-[#92A5A8] text-[14px] font-normal mb-6">
+      <div className="w-full lg:w-[80%] mb-6 lg:mb-0">
+        <h1 className="text-[20px] sm:text-[24px] font-medium mb-2">
+          Good morning, EBUBE
+        </h1>
+        <p className="text-[#92A5A8] text-[13px] sm:text-[14px] font-normal mb-6">
           Monitor, protect, and manage the platform.
         </p>
 
+        {/* Stat Cards: show above action buttons on mobile only */}
+        <div className="block lg:hidden mb-4 w-full">
+          <div className="grid grid-cols-2 mb-[4rem] gap-2 w-full justify-between">
+            <div className="flex-1 rounded-[8px] py-[24px] sm:py-[32px] px-[10px] sm:px-[20px] bg-[#182024] h-[100px] sm:h-[132px] flex flex-col gap-2 items-center justify-center min-w-[110px]">
+              <span className="text-[28px] sm:text-[36px] font-semibold text-[#FCFFFF]">
+                0
+              </span>
+              <span className="text-[#92A5A8] text-[11px] sm:text-[12px] font-normal text-center">
+                Total Verified User
+              </span>
+            </div>
+            <div className="flex-1 rounded-[8px] py-[24px] sm:py-[32px] px-[10px] sm:px-[20px] bg-[#182024] h-[100px] sm:h-[132px] flex flex-col gap-2 items-center justify-center min-w-[110px]">
+              <span className="text-[28px] sm:text-[36px] font-semibold text-[#FCFFFF]">
+                0
+              </span>
+              <span className="text-[#92A5A8] text-[11px] sm:text-[12px] font-normal text-center">
+                Total Inheritance Span
+              </span>
+            </div>
+            <div className="flex-1 rounded-[8px] py-[24px] sm:py-[32px] px-[10px] sm:px-[20px] bg-[#182024] h-[100px] sm:h-[132px] flex flex-col gap-2 items-center justify-center min-w-[110px]">
+              <span className="text-[28px] sm:text-[36px] font-semibold text-[#FCFFFF]">
+                0
+              </span>
+              <span className="text-[#92A5A8] text-[11px] sm:text-[12px] font-normal text-center">
+                Open Disputes
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center space-x-4 mb-[4rem]">
+          {[
+            {
+              label: "Approve KYC",
+              icon: "/assets/icons/arrowdown.svg",
+              activeIcon: "/assets/icons/arrowup.svg",
+              mobileIcon: "/assets/icons/shield.svg",
+            },
+            {
+              label: "Create Ticket",
+              icon: "/assets/icons/arrowdown.svg",
+              activeIcon: "/assets/icons/arrowup.svg",
+              mobileIcon: "/assets/icons/ticket.svg",
+            },
+            {
+              label: "Assign Dispute",
+              icon: "/assets/icons/arrowdown.svg",
+              activeIcon: "/assets/icons/arrowup.svg",
+              mobileIcon: "/assets/icons/user.svg",
+            },
+          ].map((btn) => (
+            <div key={btn.label} className="flex flex-col items-center">
+              <button
+                type="button"
+                className={`flex items-center justify-center gap-2 w-[114px] h-[60px] sm:w-[208px] sm:h-[60px] rounded-[24px] border border-[#33C5E03D] py-[14px] px-[14px] sm:px-[24px] font-medium text-[14px] transition-all duration-200
+                  ${
+                    activeAction === btn.label
+                      ? "bg-[#33C5E0] text-[#161E22]"
+                      : "bg-[#33C5E014] text-[#33C5E0] hover:bg-[#33C5E0] hover:text-[#161E22] focus:bg-[#33C5E0] focus:text-[#161E22] active:bg-[#33C5E0] active:text-[#161E22]"
+                  }
+                `}
+                onClick={() => setActiveAction(btn.label)}
+              >
+                {/* Mobile: show only icon, Desktop: show arrow + text */}
+                <span className="sm:hidden flex items-center justify-center w-full">
+                  <Image
+                    src={btn.mobileIcon}
+                    alt={btn.label + " icon"}
+                    width={20}
+                    height={20}
+                  />
+                </span>
+                <>
+                  <Image
+                    src={activeAction === btn.label ? btn.activeIcon : btn.icon}
+                    alt="action icon"
+                    width={13.5}
+                    height={13.5}
+                    className={`hidden sm:inline-block mr-2 ${
+                      activeAction === btn.label
+                        ? "rotate-0"
+                        : "rotate-[270deg]"
+                    }`}
+                  />
+                  <span className="hidden sm:inline-block">{btn.label}</span>
+                </>
+              </button>
+              {/* Mobile: text below button */}
+              <span className="text-[13px] sm:hidden font-medium text-center text-[#33C5E0] mt-1">
+                {btn.label}
+              </span>
+            </div>
+          ))}
+        </div>
+
         {/* Recent Activities */}
         <div>
-          <div className="flex items-center justify-between">
-            <h2 className="text-[14px] text-[#BFC6C8] font-medium">
+          <div className="flex flex-row items-center justify-between gap-2 sm:gap-0">
+            <h2 className="text-[13px] sm:text-[14px] text-[#BFC6C8] font-medium">
               RECENT ACTIVITIES
             </h2>
             <h3>
@@ -296,7 +533,7 @@ export default function AdminDashboardPage() {
             </h3>
           </div>
           {/* Tabs */}
-          <ul className="flex items-center space-x-6 border-t border-[#1C252A] mt-[.7rem] text-[#BFC6C8] text-[14px] px-6">
+          <ul className="flex flex-wrap items-center border-t border-[#1C252A] mt-[.7rem] text-[#BFC6C8] text-[13px] sm:text-[14px] px-2 sm:px-6 overflow-x-auto scrollbar-thin scrollbar-thumb-[#222] gap-x-2 sm:gap-x-6">
             {[
               "All",
               "User Verification",
@@ -307,7 +544,7 @@ export default function AdminDashboardPage() {
               <li
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`cursor-pointer h-[48px] rounded-b-[20px] flex items-center justify-center py-[12px] px-[16px] ${
+                className={`cursor-pointer h-[40px] sm:h-[48px] rounded-b-[16px] sm:rounded-b-[20px] flex items-center justify-center py-[8px] sm:py-[12px] px-[10px] sm:px-[16px] whitespace-nowrap transition-all duration-150 ${
                   activeTab === tab
                     ? "text-[#33C5E0] bg-[#1C252A] border border-[#1C252A] font-semibold"
                     : ""
@@ -318,45 +555,53 @@ export default function AdminDashboardPage() {
             ))}
           </ul>
           {/* Tab Content */}
-          {activeTab === "User Verification" ? (
-            <UserVerificationTable
-              users={userVerifications}
-              onApproveClick={(user) => {
-                const profile = userVerificationProfiles.find(
-                  (u) => u.username === user.username
-                );
-                setSelectedUser(profile || userVerificationProfiles[0]);
-                setShowUserVerificationModal(true);
-              }}
-              onRejectClick={() => {}}
-            />
-          ) : activeTab === "Support Ticket" ? (
-            <SupportTicketTable tickets={supportTickets} />
-          ) : activeTab === "Inheritance Plan" ? (
-            <InheritancePlanTable plans={inheritancePlans} />
-          ) : activeTab === "Platform Transaction" ? (
-            <PlatformTransactionTable transactions={platformTransactions} />
-          ) : (
-            <RecentActivities activities={filteredActivities} />
-          )}
+          <div className="w-full overflow-x-auto mt-2">
+            {activeTab === "User Verification" ? (
+              <UserVerificationTable
+                users={userVerifications}
+                onApproveClick={(user) => {
+                  const profile = userVerificationProfiles.find(
+                    (u) => u.username === user.username
+                  );
+                  setSelectedUser(profile || userVerificationProfiles[0]);
+                  setShowUserVerificationModal(true);
+                }}
+                onRejectClick={() => {}}
+              />
+            ) : activeTab === "Support Ticket" ? (
+              <SupportTicketTable tickets={supportTickets} />
+            ) : activeTab === "Inheritance Plan" ? (
+              <InheritancePlanTable plans={inheritancePlans} />
+            ) : activeTab === "Platform Transaction" ? (
+              <PlatformTransactionTable transactions={platformTransactions} />
+            ) : (
+              <RecentActivities activities={filteredActivities} />
+            )}
+          </div>
         </div>
       </div>
-      <div className="flex flex-col gap-2">
-        <div className="w-[200px] rounded-[8px] py-[32px] px-[20px] bg-[#182024] h-[132px] flex flex-col gap-2 items-center justify-center">
-          <span className="text-[36px] font-semibold text-[#FCFFFF]">0</span>
-          <span className="text-[#92A5A8] text-[12px] font-normal">
+      <div className="hidden lg:flex flex-row lg:flex-col gap-2 w-full lg:w-auto justify-between lg:justify-start">
+        <div className="flex-1 lg:w-[200px] rounded-[8px] py-[24px] sm:py-[32px] px-[10px] sm:px-[20px] bg-[#182024] h-[100px] sm:h-[132px] flex flex-col gap-2 items-center justify-center min-w-[110px]">
+          <span className="text-[28px] sm:text-[36px] font-semibold text-[#FCFFFF]">
+            0
+          </span>
+          <span className="text-[#92A5A8] text-[11px] sm:text-[12px] font-normal text-center">
             Total Verified User
           </span>
         </div>
-        <div className="w-[200px] rounded-[8px] py-[32px] px-[20px] bg-[#182024] h-[132px] flex flex-col gap-2 items-center justify-center">
-          <span className="text-[36px] font-semibold text-[#FCFFFF]">0</span>
-          <span className="text-[#92A5A8] text-[12px] font-normal">
+        <div className="flex-1 lg:w-[200px] rounded-[8px] py-[24px] sm:py-[32px] px-[10px] sm:px-[20px] bg-[#182024] h-[100px] sm:h-[132px] flex flex-col gap-2 items-center justify-center min-w-[110px]">
+          <span className="text-[28px] sm:text-[36px] font-semibold text-[#FCFFFF]">
+            0
+          </span>
+          <span className="text-[#92A5A8] text-[11px] sm:text-[12px] font-normal text-center">
             Total Inheritance Span
           </span>
         </div>
-        <div className="w-[200px] rounded-[8px] py-[32px] px-[20px] bg-[#182024] h-[132px] flex flex-col gap-2 items-center justify-center">
-          <span className="text-[36px] font-semibold text-[#FCFFFF]">0</span>
-          <span className="text-[#92A5A8] text-[12px] font-normal">
+        <div className="flex-1 lg:w-[200px] rounded-[8px] py-[24px] sm:py-[32px] px-[10px] sm:px-[20px] bg-[#182024] h-[100px] sm:h-[132px] flex flex-col gap-2 items-center justify-center min-w-[110px]">
+          <span className="text-[28px] sm:text-[36px] font-semibold text-[#FCFFFF]">
+            0
+          </span>
+          <span className="text-[#92A5A8] text-[11px] sm:text-[12px] font-normal text-center">
             Open Disputes
           </span>
         </div>

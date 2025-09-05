@@ -70,9 +70,16 @@ const FAQItemComponent: React.FC<FAQItemProps> = ({
             isExpanded ? "pb-6" : "max-h-0"
           }`}
         >
-          <p className="text-[#92A5A8] text-[12px] md:text-[14px] leading-relaxed">
-            {faq.answer}
-          </p>
+          {faq.id === 7 ? (
+            <div
+              className="text-[#92A5A8] text-[12px] md:text-[14px] leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: faq.answer as string }}
+            />
+          ) : (
+            <p className="text-[#92A5A8] text-[12px] md:text-[14px] leading-relaxed">
+              {faq.answer}
+            </p>
+          )}
         </div>
       )}
     </div>
@@ -83,7 +90,7 @@ const FAQItemComponent: React.FC<FAQItemProps> = ({
 const faqData: FAQItem[] = [
   {
     id: 1,
-    question: "1. What is Inherit X?",
+    question: "1. What is InheritX?",
     answer:
       "Inherit X Is A Secure Online Platform That Helps You Plan And Share Your Assets With Your Chosen Beneficiaries — Simply And Stress-Free.",
     isExpandable: true,
@@ -97,30 +104,38 @@ const faqData: FAQItem[] = [
   },
   {
     id: 3,
-    question: "3. IS MY INFORMATION SAFE?",
+    question: "3. Is my Information safe?",
     answer:
       "Yes. We use bank-level encryption and strict privacy controls so only you and your chosen beneficiaries can access your details.",
     isExpandable: true,
   },
   {
     id: 4,
-    question: "4. CAN I CHANGE MY PLAN LATER?",
+    question: "4. Can I change my Plan later?",
     answer:
       "Absolutely. You can update your assets, beneficiaries, or rules anytime from your account.",
     isExpandable: true,
   },
   {
     id: 5,
-    question: "5. DO I NEED A LAWYER TO USE INHERIT X?",
+    question: "5. Do I need a Lawyer to use InheritX?",
     answer:
       "Not necessarily. Our platform is designed so you can do it yourself — but you can involve a lawyer if you prefer.",
     isExpandable: true,
   },
   {
     id: 6,
-    question: "6. HOW DO BENEFICIARIES GET NOTIFIED?",
+    question: "6. How do Beneficiaries get notified?",
     answer:
       "Once your plan is triggered, we securely inform each beneficiary and guide them through receiving what’s theirs.",
+    isExpandable: true,
+  },
+  {
+    id: 7,
+    question: "7. What types of Inheritance Plans can I create?",
+    answer: (
+      `<span>You Can Choose Between Two Types Of Inheritance Plans:</span><ul class='list-disc pl-6 mt-2'><li><b>Standard Plan</b> – You Set Up A One-Time Transfer Of Assets To Your Chosen Beneficiaries. Once Triggered, All Designated Assets Are Released At Once.</li><li><b>Monthly Disbursement Plan</b> – Instead Of A One-Time Release, You Can Schedule Periodic (E.G., Monthly) Transfers To Your Beneficiaries. This Ensures Steady, Ongoing Support Rather Than A Single Payout.</li></ul>`
+    ),
     isExpandable: true,
   },
 ];
