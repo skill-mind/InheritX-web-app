@@ -53,7 +53,7 @@ const SecurityPage = () => {
     }
   };
 
-  const handle2FAContinue = (code: string) => {
+  const handle2FAContinue = () => {
     setShow2FAModal(false);
     setShow2FASuccess(true);
   };
