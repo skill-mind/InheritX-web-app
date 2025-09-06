@@ -33,10 +33,14 @@ const InactivityPage = () => {
       // Simulate API call (replace with real API logic)
       await new Promise((resolve, reject) => setTimeout(() => {
         // Simulate error 50% of the time for demo
-        Math.random() < 0.5 ? resolve(true) : reject(new Error("Save failed"));
+        if (Math.random() < 0.5) {
+          resolve(true);
+        } else {
+          reject(new Error("Save failed"));
+        }
       }, 1000));
       setShowSuccess(true);
-    } catch (error) {
+    } catch {
       setShowError(true);
     } finally {
       setIsSaving(false);

@@ -3,8 +3,11 @@
 import { Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function AdminHeader() {
+  const router = useRouter();
+
   return (
     <section className="sticky top-0 left-0 right-0 z-50 w-full bg-[#161E22]/80 backdrop-blur-md  flex justify-center border-b border-[#1C252A] h-[92px] md:h-[124px]">
       <header className="w-full bg-transparent max-w-[110rem] mx-auto my-auto h-[60px] flex items-center justify-between px-6 py-4 border-none">
@@ -32,7 +35,14 @@ export default function AdminHeader() {
           </div>
 
           {/* KYC Verification */}
-          <div className="md:flex items-center hidden space-x-4 bg-[#33C5E014] w-[183px] h-[60px] rounded-[24px] px-[20px] py-[8px] border-none transition-colors duration-200 hover:bg-[#33C5E033] cursor-pointer group">
+          <div
+            className="md:flex items-center hidden space-x-4 bg-[#33C5E014] w-[183px] h-[60px] rounded-[24px] px-[20px] py-[8px] border-none transition-colors duration-200 hover:bg-[#33C5E033] cursor-pointer group"
+            onClick={() => router.push("/dashboard/kyc")}
+            tabIndex={0}
+            role="button"
+            aria-label="Go to KYC Verification"
+            onKeyDown={e => { if (e.key === "Enter" || e.key === " ") router.push("/dashboard/kyc"); }}
+          >
             <Image
               src="/assets/icons/kyc.svg"
               alt="KYC badge"
@@ -42,7 +52,7 @@ export default function AdminHeader() {
             />
             <p className="flex flex-col">
               <span className="text-[12px] font-medium group-hover:text-[#33C5E0] transition-colors duration-200">
-                KYC Verified
+                KYC Verification
               </span>
               <span className="text-[10px] text-[#33C5E0] group-hover:underline transition-all duration-200">
                 Action Required
