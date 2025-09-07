@@ -2,8 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import BeneficiarySuccessModal from "./BeneficiarySuccessModal";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface Beneficiary {
   id: number;
@@ -17,6 +16,7 @@ interface Beneficiary {
 
 const CreatePlanPage = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [planName, setPlanName] = useState("");
   const [description, setDescription] = useState("");
   const [selectedBeneficiaries, setSelectedBeneficiaries] = useState<number[]>([
@@ -52,11 +52,32 @@ const CreatePlanPage = () => {
     }
   };
 
+  React.useEffect(() => {
+    const name = searchParams.get("name");
+    const relationship = searchParams.get("relationship");
+    const email = searchParams.get("email");
+    if (name && relationship && email) {
+      setBeneficiaries((prev) => {
+        // Prevent duplicate add if already present
+        if (prev.some(b => b.name === name && b.email === email)) return prev;
+        return [
+          ...prev,
+          {
+            id: prev.length > 0 ? prev[prev.length - 1].id + 1 : 1,
+            name,
+            relationship,
+            email,
+          },
+        ];
+      });
+    }
+  }, [searchParams]);
+
   return (
     <main className="flex flex-col gap-6 p-4 md:p-8 w-full">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4 mb-2">
-          <button className="text-[#BFC6C8] text-[15px] flex items-center gap-2">
+          <button className="text-[#BFC6C8] cursor-pointer text-[15px] flex items-center gap-2" onClick={() => router.push("/dashboard/plans")}> 
             <Image
               src="/assets/icons/back.svg"
               alt="back"
@@ -236,7 +257,7 @@ const CreatePlanPage = () => {
                 <button
                   type="button"
                   className="flex flex-col items-center justify-center"
-                  onClick={() => setShowAddForm(true)}
+                  onClick={() => router.push("/dashboard/plans/create/beneficiary")}
                 >
                   <Image
                     src="/assets/icons/plus.svg"
@@ -284,61 +305,6 @@ const CreatePlanPage = () => {
           )}
         </form>
       </div>
-
-      {/* Add Beneficiary Form Modal */}
-      {showAddForm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#161E22]/80">
-          <div className="bg-[#161E22] rounded-[32px] shadow-lg p-8 w-[90vw] max-w-[480px] flex flex-col items-center justify-center">
-            <h3 className="text-[#FCFFFF] text-[18px] md:text-[22px] font-medium mb-8 text-center">
-              Add Beneficiary
-            </h3>
-            <form className="flex flex-col gap-6 w-full">
-              <input
-                type="text"
-                placeholder="Full Name"
-                value={form.name}
-                onChange={e => setForm({ ...form, name: e.target.value })}
-                className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[15px] outline-none"
-              />
-              <select
-                value={form.relationship}
-                onChange={e => setForm({ ...form, relationship: e.target.value })}
-                className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[15px] outline-none"
-              >
-                <option value="">Select Relationship</option>
-                <option value="Child">Child</option>
-                <option value="Spouse">Spouse</option>
-                <option value="Parent">Parent</option>
-                <option value="Other">Other</option>
-              </select>
-              <input
-                type="email"
-                placeholder="Email"
-                value={form.email}
-                onChange={e => setForm({ ...form, email: e.target.value })}
-                className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[15px] outline-none"
-              />
-              <div className="flex gap-4 mt-6">
-                <button
-                  type="button"
-                  className="bg-[#1C252A] text-[#FCFFFF] px-8 py-3 rounded-[24px] font-medium text-[15px] w-full"
-                  onClick={() => setShowAddForm(false)}
-                >
-                  Save As Draft
-                </button>
-                <button
-                  type="button"
-                  className="bg-[#33C5E0] text-[#161E22] px-8 py-3 rounded-[24px] font-medium text-[15px] w-full"
-                  onClick={handleAddBeneficiary}
-                >
-                  Add Beneficiary
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-      <BeneficiarySuccessModal open={showSuccess} name={successName} onClose={() => setShowSuccess(false)} onNext={() => setShowSuccess(false)} />
     </main>
   );
 };

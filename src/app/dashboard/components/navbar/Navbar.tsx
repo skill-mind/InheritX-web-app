@@ -33,13 +33,15 @@ export default function DashboardSidebar() {
                   : "text-[#92A5A8] hover:text-cyan-400"
               }`}
             >
-              <Home className="w-[16px] h-[16px] mr-3" /> Home
+              <Home className="w-[16px] h-[16px] mr-3" /> HOME
             </Link>
           </div>
           <div className="flex items-center space-x-2 w-full">
             <div
               className={`bg-transparent w-[6px] h-[32px] rounded-[12px] ${
-                pathname.startsWith("/dashboard/plans") ? "bg-[#33C5E0]" : "bg-transparent"
+                pathname.startsWith("/dashboard/plans")
+                  ? "bg-[#33C5E0]"
+                  : "bg-transparent"
               }`}
             ></div>
             <Link
@@ -50,13 +52,15 @@ export default function DashboardSidebar() {
                   : "text-[#92A5A8] hover:text-cyan-400"
               }`}
             >
-              <FileText className="w-[16px] h-[16px] mr-3" /> Plans
+              <FileText className="w-[16px] h-[16px] mr-3" /> PLANS
             </Link>
           </div>
           <div className="flex items-center space-x-2 w-full">
             <div
               className={`bg-transparent w-[6px] h-[32px] rounded-[12px] ${
-                pathname.startsWith("/dashboard/claim") ? "bg-[#33C5E0]" : "bg-transparent"
+                pathname.startsWith("/dashboard/claim")
+                  ? "bg-[#33C5E0]"
+                  : "bg-transparent"
               }`}
             ></div>
             <Link
@@ -67,13 +71,15 @@ export default function DashboardSidebar() {
                   : "text-[#92A5A8] hover:text-cyan-400"
               }`}
             >
-              <ShieldCheck className="w-[16px] h-[16px] mr-3" /> Claim Plan
+              <ShieldCheck className="w-[16px] h-[16px] mr-3" /> CLAIM
             </Link>
           </div>
           <div className="flex items-center space-x-2 w-full">
             <div
               className={`bg-transparent w-[6px] h-[32px] rounded-[12px] ${
-                pathname.startsWith("/dashboard/swap") ? "bg-[#33C5E0]" : "bg-transparent"
+                pathname.startsWith("/dashboard/swap")
+                  ? "bg-[#33C5E0]"
+                  : "bg-transparent"
               }`}
             ></div>
             <Link
@@ -84,13 +90,15 @@ export default function DashboardSidebar() {
                   : "text-[#92A5A8] hover:text-cyan-400"
               }`}
             >
-              <Repeat className="w-[16px] h-[16px] mr-3" /> Swap
+              <Repeat className="w-[16px] h-[16px] mr-3" /> SWAP
             </Link>
           </div>
           <div className="flex items-center space-x-2 w-full">
             <div
               className={`bg-transparent w-[6px] h-[32px] rounded-[12px] ${
-                pathname.startsWith("/dashboard/portfolio") ? "bg-[#33C5E0]" : "bg-transparent"
+                pathname.startsWith("/dashboard/portfolio")
+                  ? "bg-[#33C5E0]"
+                  : "bg-transparent"
               }`}
             ></div>
             <Link
@@ -101,13 +109,15 @@ export default function DashboardSidebar() {
                   : "text-[#92A5A8] hover:text-cyan-400"
               }`}
             >
-              <BarChart2 className="w-[16px] h-[16px] mr-3" /> Portfolio
+              <BarChart2 className="w-[16px] h-[16px] mr-3" /> PORTFOLIO
             </Link>
           </div>
           <div className="flex items-center space-x-2 w-full">
             <div
               className={`bg-transparent w-[6px] h-[32px] rounded-[12px] ${
-                pathname.startsWith("/dashboard/inactivity") ? "bg-[#33C5E0]" : "bg-transparent"
+                pathname.startsWith("/dashboard/inactivity")
+                  ? "bg-[#33C5E0]"
+                  : "bg-transparent"
               }`}
             ></div>
             <Link
@@ -118,13 +128,15 @@ export default function DashboardSidebar() {
                   : "text-[#92A5A8] hover:text-cyan-400"
               }`}
             >
-              <Activity className="w-[16px] h-[16px] mr-3" /> Inactivity
+              <Activity className="w-[16px] h-[16px] mr-3" /> INACTIVITY
             </Link>
           </div>
           <div className="flex items-center space-x-2 w-full">
             <div
               className={`bg-transparent w-[6px] h-[32px] rounded-[12px] ${
-                pathname.startsWith("/dashboard/security") ? "bg-[#33C5E0]" : "bg-transparent"
+                pathname.startsWith("/dashboard/security")
+                  ? "bg-[#33C5E0]"
+                  : "bg-transparent"
               }`}
             ></div>
             <Link
@@ -135,7 +147,7 @@ export default function DashboardSidebar() {
                   : "text-[#92A5A8] hover:text-cyan-400"
               }`}
             >
-              <Lock className="w-[16px] h-[16px] mr-3" /> Security
+              <Lock className="w-[16px] h-[16px] mr-3" /> SECURITY
             </Link>
           </div>
         </nav>
@@ -150,16 +162,12 @@ export default function DashboardSidebar() {
         >
           <Home
             className={`w-[15px] h-[15px] mb-2 ${
-              pathname === "/dashboard"
-                ? "text-cyan-400"
-                : "text-[#BFC6C8]"
+              pathname === "/dashboard" ? "text-cyan-400" : "text-[#BFC6C8]"
             }`}
           />
           <span
             className={`text-xs font-semibold ${
-              pathname === "/dashboard"
-                ? "text-cyan-400"
-                : "text-[#BFC6C8]"
+              pathname === "/dashboard" ? "text-cyan-400" : "text-[#BFC6C8]"
             }`}
           >
             HOME
