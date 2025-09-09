@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, Suspense } from "react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -14,7 +14,7 @@ interface Beneficiary {
   address?: string;
 }
 
-const CreatePlanPage = () => {
+function CreatePlanPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [planName, setPlanName] = useState("");
@@ -264,6 +264,12 @@ const CreatePlanPage = () => {
       </div>
     </main>
   );
-};
+}
+
+const CreatePlanPage = () => (
+  <Suspense>
+    <CreatePlanPageContent />
+  </Suspense>
+);
 
 export default CreatePlanPage;
