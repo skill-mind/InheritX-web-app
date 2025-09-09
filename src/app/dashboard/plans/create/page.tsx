@@ -22,35 +22,12 @@ const CreatePlanPage = () => {
   const [selectedBeneficiaries, setSelectedBeneficiaries] = useState<number[]>([
     1, 2,
   ]);
-  
-  const [showAddForm, setShowAddForm] = useState(false);
   const [beneficiaries, setBeneficiaries] = useState<Beneficiary[]>([]);
-  const [form, setForm] = useState({ name: "", relationship: "", email: "" });
-  const [showSuccess, setShowSuccess] = useState(false);
-  const [successName, setSuccessName] = useState("");
 
   // Validation
   const isPlanNameValid = planName.trim().length > 0;
   const isDescriptionValid = description.trim().length > 0;
   const isFormValid = isPlanNameValid && isDescriptionValid && selectedBeneficiaries.length > 0;
-
-  const handleAddBeneficiary = () => {
-    if (form.name && form.relationship && form.email) {
-      setBeneficiaries([
-        ...beneficiaries,
-        {
-          ...form,
-          id: beneficiaries.length > 0
-            ? beneficiaries[beneficiaries.length - 1].id + 1
-            : 1,
-        },
-      ]);
-      setForm({ name: "", relationship: "", email: "" });
-      setShowSuccess(true);
-      setSuccessName(form.name);
-      setShowAddForm(false);
-    }
-  };
 
   React.useEffect(() => {
     const name = searchParams.get("name");
@@ -77,7 +54,7 @@ const CreatePlanPage = () => {
     <main className="flex flex-col gap-6 p-4 md:p-8 w-full">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4 mb-2">
-          <button className="text-[#BFC6C8] cursor-pointer text-[15px] flex items-center gap-2" onClick={() => router.push("/dashboard/plans")}> 
+          <button className="text-[#BFC6C8] cursor-pointer text-[15px] flex items-center gap-2" onClick={() => router.back()}>
             <Image
               src="/assets/icons/back.svg"
               alt="back"
@@ -183,11 +160,11 @@ const CreatePlanPage = () => {
               {beneficiaries.map((b, idx) => (
                 <div
                   key={idx}
-                  className={`relative flex flex-col items-center bg-[#182024] border border-[#2A3338] rounded-[24px] h-[298px] p-0 min-w-[240px] max-w-[260px] w-full transition-all ${
-                    selectedBeneficiaries.includes(b.id)
-                      ? "ring-2 ring-[#2A3338]"
-                      : ""
-                  }`}
+                  className={`relative flex flex-col items-center bg-[#182024] border border-[#2A3338] rounded-[24px] h-[298px] p-0 min-w-[240px] max-w-[260px] w-full transition-all
+                    ${selectedBeneficiaries.includes(b.id)
+                      ? "ring-2 ring-[#2A3338] bg-[#33C5E014]"
+                      : ""}
+                  `}
                   onClick={() => {
                     setSelectedBeneficiaries((prev) =>
                       prev.includes(b.id)
@@ -198,7 +175,7 @@ const CreatePlanPage = () => {
                   style={{ cursor: "pointer" }}
                 >
                   <Image
-                    src={b.avatar ?? "/assets/icons/default-avatar.svg"}
+                    src={"/assets/images/beneficiary1.svg"}
                     alt={b.name}
                     width={70}
                     height={70}
@@ -208,40 +185,20 @@ const CreatePlanPage = () => {
                     <span className="text-[#FCFFFF] font-medium text-[14px] mb-1">
                       {b.name}
                     </span>
-                    <span className="text-[#BFC6C8] text-[10px] mb-1">
-                      <Image
-                        src="/assets/icons/phone.svg"
-                        alt="phone"
-                        width={15.62}
-                        height={15.62}
-                        className="inline-block mr-2"
-                      />
-                      <span>{b.phone}</span>
+                    <span className="text-[#BFC6C8] text-[12px] mb-1">
+                      {b.relationship}
                     </span>
-                    <span className="text-[#33C5E0] text-[10px] underline mb-1 cursor-pointer">
-                      <Image
-                        src="/assets/icons/at.svg"
-                        alt="email"
-                        width={15.62}
-                        height={15.62}
-                        className="inline-block mr-2"
-                      />
-                      <span>{b.email}</span>
-                    </span>
-                    <span className="text-[#BFC6C8] text-[10px] mb-1">
-                      <Image
-                        src="/assets/icons/wallet.svg"
-                        alt="location"
-                        width={15.62}
-                        height={15.62}
-                        className="inline-block mr-2"
-                      />
-                      <span>{b.address}</span>
+                    <span className="text-[#33C5E0] text-[12px] underline mb-1">
+                      {b.email}
                     </span>
                     <button
                       type="button"
-                      className="absolute bottom-2 right-2 p-1"
+                      className="absolute bottom-2 right-2 p-1 cursor-pointer"
                       aria-label="Edit Beneficiary"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        router.push(`/dashboard/plans/create/beneficiary?name=${encodeURIComponent(b.name)}&relationship=${encodeURIComponent(b.relationship)}&email=${encodeURIComponent(b.email)}&edit=true&id=${b.id}`);
+                      }}
                     >
                       <Image
                         src="/assets/icons/edit.svg"
@@ -276,7 +233,7 @@ const CreatePlanPage = () => {
             <button
               type="button"
               disabled={!isFormValid}
-              className={`bg-[#33C5E0] text-[#161E22] px-8 py-3 font-medium rounded-[16px] h-[56px] rounded-t-[8px] rounded-b-[24px] flex items-center gap-2 border border-[#232B36] transition-colors hover:bg-[#33C5E0]/90 disabled:bg-[#1C252A] disabled:text-[#FCFFFF] disabled:cursor-not-allowed`}
+              className={`bg-[#33C5E0] w-[243px] cursor-pointer text-center justify-center text-[#161E22] px-8 py-3 font-medium rounded-[16px] h-[56px] rounded-t-[8px] rounded-b-[24px] flex items-center gap-2 border border-[#232B36] transition-colors hover:bg-[#33C5E0]/90 disabled:bg-[#1C252A] disabled:text-[#FCFFFF] disabled:cursor-not-allowed`}
               onClick={() => {
                 if (isFormValid) router.push("/dashboard/plans/create/asset-allocation");
               }}

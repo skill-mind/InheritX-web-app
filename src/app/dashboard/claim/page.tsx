@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import ClaimPlanModal from "./ClaimPlanModal";
 
 const tabs = ["Claims", "Activities"];
 
@@ -24,8 +26,37 @@ const activities = [
   },
 ];
 
+const summaryCards = [
+  {
+    label: "Tokens",
+    value: 0,
+    action: "Withraw Token",
+    actionLink: "#",
+  },
+  {
+    label: "NFT",
+    value: 0,
+    action: "Withraw NFT",
+    actionLink: "#",
+  },
+  {
+    label: "Assets",
+    value: 0,
+    action: "Withraw Asset",
+    actionLink: "#",
+  },
+  {
+    label: "Pending Inheritance",
+    value: 0,
+    action: "View Claims",
+    actionLink: "#",
+  },
+];
+
 const ClaimPage = () => {
   const [activeTab, setActiveTab] = useState(0);
+  const router = useRouter();
+  const [showClaimModal, setShowClaimModal] = useState(false);
 
   return (
     <main className="flex flex-col gap-6 p-2 md:p-8 w-full">
@@ -37,6 +68,50 @@ const ClaimPage = () => {
           Claim your inheritance plan
         </p>
       </section>
+      {/* Summary Cards Section */}
+      <section className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        {summaryCards.map((card) => (
+          <div
+            key={card.label}
+            className="bg-[#182024] w-full h-[212px] rounded-xl py-[32px] px-[20px] flex flex-col items-center shadow-md"
+          >
+            <span className="text-3xl md:text-4xl font-semibold text-[#FCFFFF] mb-2">
+              {card.value}
+            </span>
+            <span className="text-[12px] text-[#92A5A8] mb-4 text-center">
+              {card.label}
+            </span>
+            <button
+              className="w-fit text-[14px] p-[14px] cursor-pointer font-medium rounded-[24px] border border-[#33C5E03D] bg-[#33C5E014] text-[#33C5E0] transition-all duration-200 hover:bg-[#33C5E0] hover:text-[#161E22] hover:scale-105 focus:outline-none"
+              onClick={() => {
+                if (card.action === "Set Guardian") {
+                  router.push("/dashboard/guardian");
+                } else if (
+                  card.action === "Create Plan" ||
+                  card.action === "Total Plans"
+                ) {
+                  router.push("/dashboard/plans");
+                } else if (
+                  card.action === "Withraw Asset" ||
+                  card.action === "View Claims"
+                ) {
+                  router.push("/dashboard/claim");
+                }
+              }}
+            >
+              <Image
+                src="/assets/icons/arrowdown.svg"
+                alt="arrowdown icon"
+                width={11.5}
+                height={11.5}
+                className="inline-block mr-4 rotate-[270deg]"
+              />
+              {card.action}
+            </button>
+          </div>
+        ))}
+      </section>
+
       <section className="bg-transparent p-0 md:p-2 flex flex-col gap-4">
         <div className="flex flex-row md:items-center justify-between gap-2 mb-2 border-t border-t-[#1C252A]">
           <div className="flex gap-2 w-full md:w-auto">
@@ -104,7 +179,10 @@ const ClaimPage = () => {
                       </span>
                     </td>
                     <td className="py-4 px-2">
-                      <button className="w-full text-[12px] md:w-[160px] py-2 rounded-full bg-[#33C5E0] text-[#161E22] font-semibold hover:bg-cyan-400 transition-colors">
+                      <button
+                        className="w-full cursor-pointer text-[12px] md:w-[160px] py-2 rounded-full bg-[#33C5E0] text-[#161E22] font-semibold hover:bg-cyan-400 transition-colors"
+                        onClick={() => setShowClaimModal(true)}
+                      >
                         CLAIM PLAN
                       </button>
                     </td>
@@ -125,11 +203,18 @@ const ClaimPage = () => {
                 </thead>
                 <tbody>
                   {activities.map((item, idx) => (
-                    <tr key={idx} className="border-none text-[#FCFFFF] text-[12px] md:text-[14px]">
+                    <tr
+                      key={idx}
+                      className="border-none text-[#FCFFFF] text-[12px] md:text-[14px]"
+                    >
                       <td className="py-4 px-2">
-                        <span className="text-[12px] md:text-[14px]">{idx + 1}. {item.activity}</span>
+                        <span className="text-[12px] md:text-[14px]">
+                          {idx + 1}. {item.activity}
+                        </span>
                       </td>
-                      <td className="py-4 px-2 text-[#92A5A8] text-[11px] md:text-[13px]">{item.timestamp}</td>
+                      <td className="py-4 px-2 text-[#92A5A8] text-[11px] md:text-[13px]">
+                        {item.timestamp}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -138,6 +223,7 @@ const ClaimPage = () => {
           </div>
         )}
       </section>
+      <ClaimPlanModal open={showClaimModal} onClose={() => setShowClaimModal(false)} />
     </main>
   );
 };

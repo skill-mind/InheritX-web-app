@@ -40,7 +40,10 @@ const VerificationPage = () => {
     <main className="flex flex-col gap-6 p-4 md:p-8 w-full">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4 mb-2">
-          <button className="text-[#BFC6C8] text-[15px] flex items-center gap-2">
+          <button
+            className="text-[#BFC6C8] cursor-pointer text-[15px] flex items-center gap-2"
+            onClick={() => router.back()}
+          >
             <Image
               src="/assets/icons/back.svg"
               alt="back"

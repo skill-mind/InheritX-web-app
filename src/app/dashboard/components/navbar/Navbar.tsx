@@ -153,95 +153,166 @@ export default function DashboardSidebar() {
         </nav>
       </aside>
       {/* Mobile Bottom Navbar */}
-      <nav className="fixed md:hidden p-[16px] bottom-0 left-0 right-0 z-50 bg-[#161E22] border-t border-[#33C5E014] text-[12px] flex justify-around items-center">
-        <Link
-          href="/dashboard"
-          className={`flex flex-col items-center flex-1 py-2 rounded-t-[16px] rounded-b-[4px] transition-all duration-200 ${
-            pathname === "/dashboard" ? "bg-[#1C252A]" : ""
-          }`}
-        >
-          <Home
-            className={`w-[15px] h-[15px] mb-2 ${
-              pathname === "/dashboard" ? "text-cyan-400" : "text-[#BFC6C8]"
-            }`}
-          />
-          <span
-            className={`text-xs font-semibold ${
-              pathname === "/dashboard" ? "text-cyan-400" : "text-[#BFC6C8]"
+      <nav className="fixed md:hidden p-[16px] bottom-0 left-0 right-0 z-50 bg-[#161E22] border-t border-[#33C5E014] text-[12px] flex overflow-x-auto scrollbar-hide justify-start items-center">
+        <div className="flex min-w-max w-full">
+          <Link
+            href="/dashboard"
+            className={`flex flex-col items-center flex-1 py-2 rounded-t-[16px] rounded-b-[4px] transition-all duration-200 min-w-[80px] ${
+              pathname === "/dashboard" ? "bg-[#1C252A]" : ""
             }`}
           >
-            HOME
-          </span>
-        </Link>
-        <Link
-          href="/dashboard/plans"
-          className={`flex flex-col items-center flex-1 py-2 rounded-t-[16px] rounded-b-[4px] transition-all duration-200 ${
-            pathname.startsWith("/dashboard/plans") ? "bg-[#1C252A]" : ""
-          }`}
-        >
-          <ShieldCheck
-            className={`w-[15px] h-[15px] mb-2 ${
-              pathname.startsWith("/dashboard/plans")
-                ? "text-cyan-400"
-                : "text-[#BFC6C8]"
-            }`}
-          />
-          <span
-            className={`text-xs font-semibold ${
-              pathname.startsWith("/dashboard/plans")
-                ? "text-cyan-400"
-                : "text-[#BFC6C8]"
+            <Home
+              className={`w-[15px] h-[15px] mb-2 ${
+                pathname === "/dashboard" ? "text-cyan-400" : "text-[#BFC6C8]"
+              }`}
+            />
+            <span
+              className={`text-xs font-semibold ${
+                pathname === "/dashboard" ? "text-cyan-400" : "text-[#BFC6C8]"
+              }`}
+            >
+              HOME
+            </span>
+          </Link>
+          <Link
+            href="/dashboard/plans"
+            className={`flex flex-col items-center flex-1 py-2 rounded-t-[16px] rounded-b-[4px] transition-all duration-200 min-w-[80px] ${
+              pathname.startsWith("/dashboard/plans") ? "bg-[#1C252A]" : ""
             }`}
           >
-            PLANS
-          </span>
-        </Link>
-        <Link
-          href="/dashboard/swap"
-          className={`flex flex-col items-center flex-1 py-2 rounded-t-[16px] rounded-b-[4px] transition-all duration-200 ${
-            pathname.startsWith("/dashboard/swap") ? "bg-[#1C252A]" : ""
-          }`}
-        >
-          <Repeat
-            className={`w-[15px] h-[15px] mb-2 ${
-              pathname.startsWith("/dashboard/swap")
-                ? "text-cyan-400"
-                : "text-[#BFC6C8]"
-            }`}
-          />
-          <span
-            className={`text-xs font-semibold ${
-              pathname.startsWith("/dashboard/swap")
-                ? "text-cyan-400"
-                : "text-[#BFC6C8]"
-            }`}
-          >
-            SWAP
-          </span>
-        </Link>
-        <Link
-          href="/dashboard/security"
-          className={`flex flex-col items-center flex-1 py-2 rounded-t-[16px] rounded-b-[4px] transition-all duration-200 ${
-            pathname.startsWith("/dashboard/security") ? "bg-[#1C252A]" : ""
-          }`}
-        >
-          <Activity
-            className={`w-[15px] h-[15px] mb-2 ${
-              pathname.startsWith("/dashboard/security")
-                ? "text-cyan-400"
-                : "text-[#BFC6C8]"
-            }`}
-          />
-          <span
-            className={`text-xs font-semibold ${
-              pathname.startsWith("/dashboard/security")
-                ? "text-cyan-400"
-                : "text-[#BFC6C8]"
+            <ShieldCheck
+              className={`w-[15px] h-[15px] mb-2 ${
+                pathname.startsWith("/dashboard/plans")
+                  ? "text-cyan-400"
+                  : "text-[#BFC6C8]"
+              }`}
+            />
+            <span
+              className={`text-xs font-semibold ${
+                pathname.startsWith("/dashboard/plans")
+                  ? "text-cyan-400"
+                  : "text-[#BFC6C8]"
+              }`}
+            >
+              PLANS
+            </span>
+          </Link>
+          <Link
+            href="/dashboard/claim"
+            className={`flex flex-col items-center flex-1 py-2 rounded-t-[16px] rounded-b-[4px] transition-all duration-200 min-w-[80px] ${
+              pathname.startsWith("/dashboard/claim") ? "bg-[#1C252A]" : ""
             }`}
           >
-            SECURITY
-          </span>
-        </Link>
+            <ShieldCheck
+              className={`w-[15px] h-[15px] mb-2 ${
+                pathname.startsWith("/dashboard/claim")
+                  ? "text-cyan-400"
+                  : "text-[#BFC6C8]"
+              }`}
+            />
+            <span
+              className={`text-xs font-semibold ${
+                pathname.startsWith("/dashboard/claim")
+                  ? "text-cyan-400"
+                  : "text-[#BFC6C8]"
+              }`}
+            >
+              CLAIM
+            </span>
+          </Link>
+          <Link
+            href="/dashboard/swap"
+            className={`flex flex-col items-center flex-1 py-2 rounded-t-[16px] rounded-b-[4px] transition-all duration-200 min-w-[80px] ${
+              pathname.startsWith("/dashboard/swap") ? "bg-[#1C252A]" : ""
+            }`}
+          >
+            <Repeat
+              className={`w-[15px] h-[15px] mb-2 ${
+                pathname.startsWith("/dashboard/swap")
+                  ? "text-cyan-400"
+                  : "text-[#BFC6C8]"
+              }`}
+            />
+            <span
+              className={`text-xs font-semibold ${
+                pathname.startsWith("/dashboard/swap")
+                  ? "text-cyan-400"
+                  : "text-[#BFC6C8]"
+              }`}
+            >
+              SWAP
+            </span>
+          </Link>
+          <Link
+            href="/dashboard/portfolio"
+            className={`flex flex-col items-center flex-1 py-2 rounded-t-[16px] rounded-b-[4px] transition-all duration-200 min-w-[80px] ${
+              pathname.startsWith("/dashboard/portfolio") ? "bg-[#1C252A]" : ""
+            }`}
+          >
+            <BarChart2
+              className={`w-[15px] h-[15px] mb-2 ${
+                pathname.startsWith("/dashboard/portfolio")
+                  ? "text-cyan-400"
+                  : "text-[#BFC6C8]"
+              }`}
+            />
+            <span
+              className={`text-xs font-semibold ${
+                pathname.startsWith("/dashboard/portfolio")
+                  ? "text-cyan-400"
+                  : "text-[#BFC6C8]"
+              }`}
+            >
+              PORTFOLIO
+            </span>
+          </Link>
+          <Link
+            href="/dashboard/inactivity"
+            className={`flex flex-col items-center flex-1 py-2 rounded-t-[16px] rounded-b-[4px] transition-all duration-200 min-w-[80px] ${
+              pathname.startsWith("/dashboard/inactivity") ? "bg-[#1C252A]" : ""
+            }`}
+          >
+            <Activity
+              className={`w-[15px] h-[15px] mb-2 ${
+                pathname.startsWith("/dashboard/inactivity")
+                  ? "text-cyan-400"
+                  : "text-[#BFC6C8]"
+              }`}
+            />
+            <span
+              className={`text-xs font-semibold ${
+                pathname.startsWith("/dashboard/inactivity")
+                  ? "text-cyan-400"
+                  : "text-[#BFC6C8]"
+              }`}
+            >
+              INACTIVITY
+            </span>
+          </Link>
+          <Link
+            href="/dashboard/security"
+            className={`flex flex-col items-center flex-1 py-2 rounded-t-[16px] rounded-b-[4px] transition-all duration-200 min-w-[80px] ${
+              pathname.startsWith("/dashboard/security") ? "bg-[#1C252A]" : ""
+            }`}
+          >
+            <Lock
+              className={`w-[15px] h-[15px] mb-2 ${
+                pathname.startsWith("/dashboard/security")
+                  ? "text-cyan-400"
+                  : "text-[#BFC6C8]"
+              }`}
+            />
+            <span
+              className={`text-xs font-semibold ${
+                pathname.startsWith("/dashboard/security")
+                  ? "text-cyan-400"
+                  : "text-[#BFC6C8]"
+              }`}
+            >
+              SECURITY
+            </span>
+          </Link>
+        </div>
       </nav>
     </>
   );

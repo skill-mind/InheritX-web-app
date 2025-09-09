@@ -8,7 +8,7 @@ import BeneficiaryErrorModal from "./BeneficiaryErrorModal";
 
 const BeneficiaryPage = () => {
   const router = useRouter();
-  const [step, setStep] = useState(1);
+  const [step] = useState(1);
   const [form, setForm] = useState({ name: "", relationship: "", email: "" });
   const [touched, setTouched] = useState({
     name: false,
@@ -32,7 +32,7 @@ const BeneficiaryPage = () => {
       <div className="flex items-center justify-between w-full mb-2">
         <div className="flex items-center gap-4">
           <button
-            className="text-[#BFC6C8] text-[15px] flex items-center gap-2"
+            className="text-[#BFC6C8] cursor-pointer text-[15px] flex items-center gap-2"
             onClick={() => router.back()}
           >
             <Image

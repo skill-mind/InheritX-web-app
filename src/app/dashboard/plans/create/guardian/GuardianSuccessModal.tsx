@@ -3,14 +3,14 @@
 import React from "react";
 import Image from "next/image";
 
-interface BeneficiarySuccessModalProps {
+interface GuardianSuccessModalProps {
   open: boolean;
   name: string;
   onHome: () => void;
   onNext: () => void;
 }
 
-const BeneficiarySuccessModal: React.FC<BeneficiarySuccessModalProps> = ({ open, name, onHome, onNext }) => {
+const GuardianSuccessModal: React.FC<GuardianSuccessModalProps> = ({ open, name, onHome, onNext }) => {
   if (!open) return null;
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#161E22]/80">
@@ -47,4 +47,4 @@ const BeneficiarySuccessModal: React.FC<BeneficiarySuccessModalProps> = ({ open,
   );
 };
 
-export default BeneficiarySuccessModal;
+export default GuardianSuccessModal;

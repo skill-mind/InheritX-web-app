@@ -7,9 +7,9 @@ import SuccessModal from "./SuccessModal";
 
 const TOKENS = [
   { symbol: "ETH", name: "Ethereum", icon: "/assets/icons/eth.svg" },
-  { symbol: "STRK", name: "Starknet", icon: "/assets/icons/kyc.svg" },
+  { symbol: "STRK", name: "Starknet", icon: "/assets/icons/strk.svg" },
   { symbol: "USDC", name: "USD Coin", icon: "/assets/icons/usdc.svg" },
-  { symbol: "USDT", name: "Tether", icon: "/assets/icons/swap_cyan.svg" },
+  { symbol: "USDT", name: "Tether", icon: "/assets/icons/usdt.png" },
 ];
 
 const SwapPage = () => {
