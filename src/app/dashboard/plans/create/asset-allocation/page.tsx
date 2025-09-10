@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 
 // Type for asset
 interface Asset {
@@ -13,11 +14,13 @@ interface Asset {
 
 const assetOptions: Omit<Asset, "amount">[] = [
   { label: "ETH", icon: "/assets/icons/eth.svg" },
-  { label: "BTC", icon: "/assets/icons/bitcoin.png" },
-  { label: "USDT", icon: "/assets/icons/usdt.png" },
-  { label: "USDC", icon: "/assets/icons/usdc.png" },
   { label: "NFT", icon: "/assets/icons/nft1.svg" },
+  { label: "STRK", icon: "/assets/icons/strk.svg" },
+  { label: "USDC", icon: "/assets/icons/usdc.png" },
+  { label: "USDT", icon: "/assets/icons/usdt.png" },
 ];
+
+const PieChart = dynamic(() => import("react-minimal-pie-chart").then(mod => mod.PieChart), { ssr: false });
 
 const AssetAllocationPage = () => {
   const router = useRouter();
@@ -36,7 +39,8 @@ const AssetAllocationPage = () => {
       !selectedAsset ||
       !amount ||
       isNaN(Number(amount)) ||
-      Number(amount) <= 0
+      Number(amount) <= 0 ||
+      assets.some(a => a.label === selectedAsset.label)
     )
       return;
     setAssets([...assets, { ...selectedAsset, amount: Number(amount) }]);
@@ -51,7 +55,7 @@ const AssetAllocationPage = () => {
     <main className="flex flex-col gap-6 p-4 md:p-8 w-full">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4 mb-2">
-          <button className="text-[#BFC6C8] text-[15px] flex items-center gap-2">
+          <button className="text-[#BFC6C8] cursor-pointer text-[15px] flex items-center gap-2" onClick={() => router.back()}>
             <Image
               src="/assets/icons/back.svg"
               alt="back"
@@ -123,6 +127,7 @@ const AssetAllocationPage = () => {
         <div className="flex flex-col md:flex-row gap-8 w-full">
           {/* Asset Form */}
           <div className="flex-1 bg-[#161E22] border border-[#232B36] rounded-[24px] p-6 flex flex-col gap-6 min-w-[280px]">
+            {/* Asset input row */}
             <div className="flex flex-row items-center gap-4 mb-4">
               <div className="flex flex-col gap-2 w-1/2">
                 <label className="text-[#BFC6C8] text-xs mb-1">Asset</label>
@@ -225,10 +230,10 @@ const AssetAllocationPage = () => {
             <button
               type="button"
               className={`flex items-center justify-end self-end gap-2 w-full md:w-fit text-[15px] px-8 py-3 font-medium p-[14px] h-[56px] rounded-[24px] float-end border border-[#33C5E03D] transition-colors bg-[#1C252A] text-[#33C5E0] hover:text-[#1C252A] hover:bg-[#33C5E0]/90 ${
-                !isFormValid ? "opacity-50 cursor-not-allowed" : ""
+                !isFormValid || assets.some(a => a.label === selectedAsset.label) ? "opacity-50 cursor-not-allowed" : ""
               }`}
               onClick={handleAddAsset}
-              disabled={!isFormValid}
+              disabled={!isFormValid || assets.some(a => a.label === selectedAsset.label)}
             >
               <Image
                 src="/assets/icons/plus.svg"
@@ -238,32 +243,104 @@ const AssetAllocationPage = () => {
               />
               Add Assets
             </button>
+            {/* List of added assets */}
+            {assets.length > 0 && (
+              <div className="mt-6 flex flex-col gap-4">
+                {assets.map((a, idx) => (
+                  <div key={idx} className="flex flex-row items-center gap-4 bg-[#182024] border border-[#232B36] rounded-[16px] px-4 py-3">
+                    <div className="flex items-center gap-2 w-1/3">
+                      <Image src={a.icon} alt={a.label} width={24} height={24} />
+                      <span className="text-[#FCFFFF] text-[15px] font-medium">{a.label}</span>
+                    </div>
+                    <div className="w-1/3 text-[#FCFFFF] text-[15px] font-medium">{a.amount}</div>
+                    <div className="w-1/3 text-[#33C5E0] text-[15px] font-medium">
+                      {totalAmount > 0 ? ((a.amount / totalAmount) * 100).toFixed(0) : 0}%
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
-          {/* Asset Summary */}
+          {/* Asset Summary & Chart */}
           <div className="flex-1 flex items-center justify-center">
-            <div className="bg-[#161E22] border border-[#232B36] rounded-full w-[220px] h-[220px] flex items-center justify-center">
+            <div className="bg-[#161E22] border border-[#232B36] rounded-[24px] p-6 flex flex-col items-center justify-center shadow-[inset_4px_4px_10px_rgba(21,28,31,0.9),inset_-4px_-4px_8px_rgba(27,36,41,0.9)] w-full max-w-[320px] min-h-[220px]">
+              <span className="text-[#FCFFFF] text-[16px] font-medium mb-2">
+                Total asset pool value
+              </span>
+              <span className="text-[#BFC6C8] text-xs mb-4">
+                Sum Of All Asset Values
+              </span>
               {assets.length === 0 ? (
-                <span className="text-[#BFC6C8] text-[16px]">
-                  No Assets Yet
-                </span>
+                <span className="text-[#BFC6C8] text-[16px]">No Assets Yet</span>
               ) : (
-                <ul className="text-[#FCFFFF] text-[15px]">
+                <PieChart
+                  data={assets.map((a) => ({
+                    title: a.label,
+                    value: a.amount,
+                    color:
+                      a.label === "ETH"
+                        ? "#33C5E0"
+                        : a.label === "NFT"
+                        ? "#B97AFF"
+                        : a.label === "Real World Asset"
+                        ? "#FF9F43"
+                        : a.label === "BTC"
+                        ? "#F7931A"
+                        : a.label === "USDT"
+                        ? "#26A17B"
+                        : a.label === "USDC"
+                        ? "#2775CA"
+                        : "#BFC6C8",
+                  }))}
+                  lineWidth={30}
+                  paddingAngle={3}
+                  rounded
+                  animate
+                  label={({ dataEntry }) =>
+                    `${String(dataEntry.title ?? "")} ${((Number(dataEntry.value) / (totalAmount || 1)) * 100).toFixed(0)}%`
+                  }
+                  labelStyle={{
+                    fontSize: "6px",
+                    fontWeight: "bold",
+                    fill: "#FCFFFF",
+                  }}
+                  style={{ height: 180 }}
+                />
+              )}
+              {assets.length > 0 && (
+                <div className="flex flex-row flex-wrap gap-2 mt-4 justify-center items-center">
                   {assets.map((a, idx) => (
-                    <li key={idx} className="mb-2 flex items-center gap-2">
-                      <Image
-                        src={a.icon}
-                        alt={a.label}
-                        width={20}
-                        height={20}
-                      />
-                      {a.label}: {a.amount} (
+                    <div
+                      key={idx}
+                      className="flex items-center gap-1 text-xs text-[#FCFFFF]"
+                    >
+                      <span
+                        className="inline-block w-3 h-3 rounded-full mr-1"
+                        style={{
+                          backgroundColor:
+                            a.label === "ETH"
+                              ? "#33C5E0"
+                              : a.label === "NFT"
+                              ? "#B97AFF"
+                              : a.label === "Real World Asset"
+                              ? "#FF9F43"
+                              : a.label === "BTC"
+                              ? "#F7931A"
+                              : a.label === "USDT"
+                              ? "#26A17B"
+                              : a.label === "USDC"
+                              ? "#2775CA"
+                              : "#BFC6C8",
+                        }}
+                      ></span>
+                      {a.label}{" "}
                       {totalAmount > 0
                         ? ((a.amount / totalAmount) * 100).toFixed(0)
                         : 0}
-                      %)
-                    </li>
+                      %
+                    </div>
                   ))}
-                </ul>
+                </div>
               )}
             </div>
           </div>
@@ -271,10 +348,11 @@ const AssetAllocationPage = () => {
         <div className="flex justify-start mt-8">
           <button
             type="button"
-            className={`bg-[#33C5E0] w-[243px] text-[#161E22] text-center px-8 py-3 font-medium rounded-[16px] h-[56px] rounded-t-[8px] rounded-b-[24px] flex items-center gap-2 border border-[#232B36] text-[14px] transition-colors hover:bg-[#33C5E0]/90 disabled:bg-[#1C252A] disabled:text-[#425558] disabled:cursor-not-allowed`}
+            className={`bg-[#33C5E0] w-[243px] text-[#161E22] text-center px-8 py-3 font-medium rounded-[16px] h-[56px] rounded-t-[8px] rounded-b-[24px] flex items-center justify-center gap-2 border border-[#232B36] text-[14px] transition-colors hover:bg-[#33C5E0]/90 disabled:bg-[#1C252A] disabled:text-[#425558] disabled:cursor-not-allowed`}
             disabled={assets.length === 0}
             onClick={() => {
-              if (assets.length > 0) router.push("/dashboard/plans/create/rules");
+              if (assets.length > 0)
+                router.push("/dashboard/plans/create/rules");
             }}
           >
             NEXT

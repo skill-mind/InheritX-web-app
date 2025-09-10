@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import DeletePlanModal from "./DeletePlanModal";
+import FilterModal from "./FilterModal";
 
 const tabs = ["Plans", "Activities"];
 
@@ -65,7 +67,44 @@ const plans = [
 const PlansPage = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [activeActionsIdx, setActiveActionsIdx] = useState<number | null>(null);
+  const [plansData, setPlansData] = useState(plans);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteIdx, setDeleteIdx] = useState<number | null>(null);
+  const [showFilterModal, setShowFilterModal] = useState(false);
+  const [filter, setFilter] = useState("All");
   const router = useRouter();
+
+  const handleEdit = (idx: number) => {
+    // Navigate to edit page with plan id
+    router.push(`/dashboard/plans/create?id=${plansData[idx].id}&edit=true`);
+  };
+
+  const handleView = (idx: number) => {
+    router.push(`/dashboard/plans/create/preview?id=${plansData[idx].id}`);
+  };
+
+  const handleDelete = (idx: number) => {
+    setDeleteIdx(idx);
+    setShowDeleteModal(true);
+  };
+
+  const confirmDelete = () => {
+    if (deleteIdx !== null) {
+      setPlansData(plansData.filter((_, i) => i !== deleteIdx));
+      setShowDeleteModal(false);
+      setDeleteIdx(null);
+    }
+  };
+
+  const closeDeleteModal = () => {
+    setShowDeleteModal(false);
+    setDeleteIdx(null);
+  };
+
+  const handleApplyFilter = (selected: string) => {
+    setFilter(selected);
+    setShowFilterModal(false);
+  };
 
   return (
     <main className="flex flex-col gap-6 p-4 md:p-8 w-full">
@@ -111,7 +150,10 @@ const PlansPage = () => {
               </button>
             ))}
           </div>
-          <button className="flex items-center text-[12px] font-normal gap-1 text-[#92A5A8] hover:underline">
+          <button
+            className="flex cursor-pointer items-center text-[12px] font-normal gap-1 text-[#92A5A8] hover:underline"
+            onClick={() => setShowFilterModal(true)}
+          >
             <Image
               src="/assets/icons/filter.svg"
               alt="filter icon"
@@ -123,7 +165,7 @@ const PlansPage = () => {
           </button>
         </div>
         {activeTab === 0 ? (
-          plans.length === 0 ? (
+          plansData.length === 0 ? (
             <div className="flex flex-col bg-[#182024] rounded-[24px] py-[64px] px-[24px] min-h-[320px] items-center justify-center flex-1">
               <span className="text-[#FCFFFF] mb-2 text-center text-[16px] md:text-[18px] font-normal">
                 You haven’t created any inheritance plans yet.
@@ -158,141 +200,166 @@ const PlansPage = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {plans.map((plan, idx) => (
-                    <tr
-                      key={idx}
-                      className="border-t border-[#232B36] text-[#FCFFFF] text-[15px]"
-                    >
-                      <td className="py-4 px-2 min-w-[160px]">
-                        <div className="flex flex-col gap-1">
-                          <span className="font-semibold flex items-center gap-2">
-                            <span className="text-[#425558] text-[14px] w-4 inline-block">
-                              {idx + 1}.
+                  {plansData
+                    .filter(plan =>
+                      filter === "All" ? true : plan.status === filter
+                    )
+                    .map((plan, idx) => (
+                      <tr
+                        key={idx}
+                        className="border-t border-[#232B36] text-[#FCFFFF] text-[15px]"
+                      >
+                        <td className="py-4 px-2 min-w-[160px]">
+                          <div className="flex flex-col gap-1">
+                            <span className="font-semibold flex items-center gap-2">
+                              <span className="text-[#425558] text-[14px] w-4 inline-block">
+                                {idx + 1}.
+                              </span>
+                              {plan.name}
                             </span>
-                            {plan.name}
+                            <span className="text-[#92A5A8] text-[12px]">
+                              {plan.id}
+                            </span>
+                          </div>
+                        </td>
+                        <td className="py-4 px-2 min-w-[120px]">
+                          <div className="flex items-center gap-2">
+                            <span>{plan.assets.label}</span>
+                            {plan.assets.avatars && (
+                              <div className="flex -space-x-2">
+                                {plan.assets.avatars.map((src, i) => (
+                                  <Image
+                                    key={i}
+                                    src={src}
+                                    alt="nft"
+                                    width={24}
+                                    height={24}
+                                    className="rounded-full border-2 border-[#232B36] bg-[#232B36]"
+                                  />
+                                ))}
+                                {plan.assets.extra && (
+                                  <span className="ml-2 bg-[#1C252A] text-[#BFC6C8] text-[12px] px-2 py-0.5 rounded-full border border-[#425558]">
+                                    {plan.assets.extra}+
+                                  </span>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        </td>
+                        <td className="hidden sm:table-cell py-4 px-2 min-w-[80px]">
+                          {plan.beneficiary}
+                        </td>
+                        {/* Hide on mobile: Trigger and Status */}
+                        <td className="hidden sm:table-cell py-4 px-2 min-w-[160px]">
+                          <span className="bg-[#232B2F] text-[#BFC6C8] text-[12px] px-3 py-1 rounded-[16px] border border-[#425558]">
+                            {plan.trigger}
                           </span>
-                          <span className="text-[#92A5A8] text-[12px]">
-                            {plan.id}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="py-4 px-2 min-w-[120px]">
-                        <div className="flex items-center gap-2">
-                          <span>{plan.assets.label}</span>
-                          {plan.assets.avatars && (
-                            <div className="flex -space-x-2">
-                              {plan.assets.avatars.map((src, i) => (
-                                <Image
-                                  key={i}
-                                  src={src}
-                                  alt="nft"
-                                  width={24}
-                                  height={24}
-                                  className="rounded-full border-2 border-[#232B36] bg-[#232B36]"
-                                />
-                              ))}
-                              {plan.assets.extra && (
-                                <span className="ml-2 bg-[#1C252A] text-[#BFC6C8] text-[12px] px-2 py-0.5 rounded-full border border-[#425558]">
-                                  {plan.assets.extra}+
-                                </span>
-                              )}
-                            </div>
-                          )}
-                        </div>
-                      </td>
-                      <td className="hidden sm:table-cell py-4 px-2 min-w-[80px]">
-                        {plan.beneficiary}
-                      </td>
-                      {/* Hide on mobile: Trigger and Status */}
-                      <td className="hidden sm:table-cell py-4 px-2 min-w-[160px]">
-                        <span className="bg-[#232B2F] text-[#BFC6C8] text-[12px] px-3 py-1 rounded-[16px] border border-[#425558]">
-                          {plan.trigger}
-                        </span>
-                      </td>
-                      <td className="hidden sm:table-cell py-4 px-2 min-w-[100px]">
-                        <span
-                          className={
-                            plan.status === "ACTIVE"
-                              ? "bg-[#1C252A] text-[#33C5E0] px-3 py-1 rounded-[16px] text-[12px] font-semibold border border-[#33C5E0]"
-                              : plan.status === "COMPLETED"
-                              ? "bg-[#1C252A] text-[#0DA314] px-3 py-1 rounded-[16px] text-[12px] font-semibold border border-[#0DA314]"
-                              : plan.status === "PENDING"
-                              ? "bg-[#1C252A] text-[#EAB308] px-3 py-1 rounded-[16px] text-[12px] font-semibold border border-[#EAB308]"
-                              : "bg-[#232B2F] text-[#92A5A8] px-3 py-1 rounded-[16px] text-[12px] font-semibold border border-[#425558]"
-                          }
-                        >
-                          {plan.status}
-                        </span>
-                      </td>
-                      <td className="py-4 px-2 min-w-[80px] relative">
-                        {/* Mobile: show more icon, on click show actions */}
-                        <div className="flex sm:hidden items-center justify-center">
-                          <button
-                            aria-label="Show actions"
-                            onClick={() =>
-                              setActiveActionsIdx(
-                                activeActionsIdx === idx ? null : idx
-                              )
+                        </td>
+                        <td className="hidden sm:table-cell py-4 px-2 min-w-[100px]">
+                          <span
+                            className={
+                              plan.status === "ACTIVE"
+                                ? "bg-[#1C252A] text-[#33C5E0] px-3 py-1 rounded-[16px] text-[12px] font-semibold border border-[#33C5E0]"
+                                : plan.status === "COMPLETED"
+                                ? "bg-[#1C252A] text-[#0DA314] px-3 py-1 rounded-[16px] text-[12px] font-semibold border border-[#0DA314]"
+                                : plan.status === "PENDING"
+                                ? "bg-[#1C252A] text-[#EAB308] px-3 py-1 rounded-[16px] text-[12px] font-semibold border border-[#EAB308]"
+                                : "bg-[#232B2F] text-[#92A5A8] px-3 py-1 rounded-[16px] text-[12px] font-semibold border border-[#425558]"
                             }
-                            className="p-2 rounded-full hover:bg-[#232B2F] focus:outline-none"
                           >
-                            <svg
-                              width="20"
-                              height="20"
-                              fill="none"
-                              viewBox="0 0 24 24"
+                            {plan.status}
+                          </span>
+                        </td>
+                        <td className="py-4 px-2 min-w-[80px] relative">
+                          {/* Mobile: show more icon, on click show actions */}
+                          <div className="flex sm:hidden items-center justify-center">
+                            <button
+                              aria-label="Show actions"
+                              onClick={() =>
+                                setActiveActionsIdx(
+                                  activeActionsIdx === idx ? null : idx
+                                )
+                              }
+                              className="p-2 rounded-full hover:bg-[#232B2F] focus:outline-none"
                             >
-                              <circle cx="12" cy="5" r="1.5" fill="#BFC6C8" />
-                              <circle cx="12" cy="12" r="1.5" fill="#BFC6C8" />
-                              <circle cx="12" cy="19" r="1.5" fill="#BFC6C8" />
-                            </svg>
-                          </button>
-                          {activeActionsIdx === idx && (
-                            <div className="absolute z-10 top-10 right-0 bg-[#232B2F] border border-[#425558] rounded-xl shadow-lg flex flex-col w-32 animate-fade-in">
-                              <button className="bg-[#232B2F] border-b border-[#425558] text-[#BFC6C8] px-4 py-2 rounded-t-xl text-[12px] font-medium hover:bg-[#232B2F]/80 w-full text-left">
-                                EDIT
-                              </button>
-                              <button className="bg-[#33C5E0] text-[#161E22] px-4 py-2 rounded-b-xl text-[12px] font-semibold hover:bg-cyan-400 w-full text-left">
-                                VIEW
-                              </button>
-                            </div>
-                          )}
-                        </div>
-                        {/* Desktop: show buttons inline */}
-                        <div className="hidden sm:flex gap-2 items-center">
-                          <button className="bg-[#232B2F] border border-[#425558] text-[#BFC6C8] px-4 py-2 rounded-[16px] text-[12px] font-medium hover:bg-[#232B2F]/80">
-                            EDIT
-                          </button>
-                          <button className="bg-[#33C5E0] text-[#161E22] px-4 py-2 rounded-[16px] text-[12px] font-semibold hover:bg-cyan-400">
-                            VIEW
-                          </button>
-                          <button className="p-2 rounded-full hover:bg-[#232B2F]">
-                            <svg
-                              width="18"
-                              height="18"
-                              fill="none"
-                              viewBox="0 0 24 24"
+                              <svg
+                                width="20"
+                                height="20"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                              >
+                                <circle cx="12" cy="5" r="1.5" fill="#BFC6C8" />
+                                <circle cx="12" cy="12" r="1.5" fill="#BFC6C8" />
+                                <circle cx="12" cy="19" r="1.5" fill="#BFC6C8" />
+                              </svg>
+                            </button>
+                            {activeActionsIdx === idx && (
+                              <div className="absolute z-10 top-10 right-0 bg-[#232B2F] border border-[#425558] rounded-xl shadow-lg flex flex-col w-32 animate-fade-in">
+                                <button
+                                  className="bg-[#232B2F] border-b cursor-pointer border-[#425558] text-[#BFC6C8] px-4 py-2 rounded-t-xl text-[12px] font-medium hover:bg-[#232B2F]/80 w-full text-left"
+                                  onClick={() => handleEdit(idx)}
+                                >
+                                  EDIT
+                                </button>
+                                <button
+                                  className="bg-[#33C5E0] cursor-pointer text-[#161E22] px-4 py-2 text-[12px] font-semibold hover:bg-cyan-400 w-full text-left"
+                                  onClick={() => handleView(idx)}
+                                >
+                                  VIEW
+                                </button>
+                                <button
+                                  className="bg-[#E53E3E] cursor-pointer text-[#FCFFFF] px-4 py-2 rounded-b-xl text-[12px] font-semibold hover:bg-red-700 w-full text-left"
+                                  onClick={() => handleDelete(idx)}
+                                >
+                                  DELETE
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                          {/* Desktop: show buttons inline */}
+                          <div className="hidden sm:flex gap-2 items-center">
+                            <button
+                              className="bg-[#232B2F] cursor-pointer border border-[#425558] text-[#BFC6C8] px-4 py-2 rounded-[16px] text-[12px] font-medium hover:bg-[#232B2F]/80"
+                              onClick={() => handleEdit(idx)}
                             >
-                              <path
-                                d="M6 19C6 20.1046 6.89543 21 8 21H16C17.1046 21 18 20.1046 18 19V7H6V19Z"
-                                stroke="#BFC6C8"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                              <path
-                                d="M9 7V5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7"
-                                stroke="#BFC6C8"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                              EDIT
+                            </button>
+                            <button
+                              className="bg-[#33C5E0] cursor-pointer text-[#161E22] px-4 py-2 rounded-[16px] text-[12px] font-semibold hover:bg-cyan-400"
+                              onClick={() => handleView(idx)}
+                            >
+                              VIEW
+                            </button>
+                            <button
+                              className="p-2 rounded-full hover:bg-[#E53E3E]"
+                              onClick={() => handleDelete(idx)}
+                            >
+                              <svg
+                                width="18"
+                                height="18"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  d="M6 19C6 20.1046 6.89543 21 8 21H16C17.1046 21 18 20.1046 18 19V7H6V19Z"
+                                  stroke="#BFC6C8"
+                                  strokeWidth="1.5"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                                <path
+                                  d="M9 7V5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7"
+                                  stroke="#BFC6C8"
+                                  strokeWidth="1.5"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>
@@ -323,6 +390,18 @@ const PlansPage = () => {
           </div>
         )}
       </section>
+      <DeletePlanModal
+        open={showDeleteModal}
+        onClose={closeDeleteModal}
+        onConfirm={confirmDelete}
+        planName={deleteIdx !== null ? plansData[deleteIdx]?.name : undefined}
+      />
+      <FilterModal
+        open={showFilterModal}
+        onClose={() => setShowFilterModal(false)}
+        onApply={handleApplyFilter}
+        currentFilter={filter}
+      />
     </main>
   );
 };

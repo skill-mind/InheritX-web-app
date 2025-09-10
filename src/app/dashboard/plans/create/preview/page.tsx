@@ -94,8 +94,13 @@ const PreviewPage = () => {
     <main className="flex flex-col gap-6 p-4 md:p-8 w-full">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4 mb-2">
-          <button className="text-[#BFC6C8] text-[15px] flex items-center gap-2">
-            <Image src="/assets/icons/back.svg" alt="back" width={18} height={15} />
+          <button className="text-[#BFC6C8] cursor-pointer text-[15px] flex items-center gap-2" onClick={() => router.back()}>
+            <Image
+              src="/assets/icons/back.svg"
+              alt="back"
+              width={18}
+              height={15}
+            />
           </button>
           <h2 className="text-lg md:text-2xl font-medium text-[#92A5A8]">
             Create New Plan
@@ -234,8 +239,8 @@ const PreviewPage = () => {
           </div>
           {/* Action Buttons */}
           <div className="flex flex-col md:flex-row gap-4 justify-center mt-8">
-            <button className="bg-[#161E22] border border-[#33C5E03D] text-[#33C5E0] px-8 py-3 rounded-[24px] font-medium text-[15px] hover:bg-[#33C5E0] hover:text-[#161E22] transition-colors">SAVE AS DRAFT</button>
-            <button className="bg-[#33C5E0] text-[#161E22] px-8 py-3 rounded-[24px] font-medium text-[15px] hover:bg-[#33C5E0]/90 transition-colors" onClick={() => setShowSuccess(true)}>
+            <button className="bg-[#1C252A] border-none text-[#33C5E0] px-8 py-3 rounded-t-[8px] rounded-b-[24px] font-medium md:w-[243px] text-[14px] hover:bg-[#33C5E0] hover:text-[#161E22] transition-colors">SAVE AS DRAFT</button>
+            <button className="bg-[#33C5E0] text-[#161E22] px-8 py-3 rounded-t-[8px] rounded-b-[24px] font-medium text-[14px] md:min-w-[243px] hover:bg-[#33C5E0]/90 transition-colors" onClick={() => setShowSuccess(true)}>
               SAVE & PUBLISH PLAN <Image src="/assets/icons/grey_arrowdown.svg" alt="arrow icon" width={18} height={18} className="inline-block ml-2" />
             </button>
           </div>

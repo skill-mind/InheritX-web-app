@@ -1,4 +1,7 @@
+"use client";
+
 import React from "react";
+import { useRouter } from "next/navigation";
 
 import Image from "next/image";
 
@@ -10,15 +13,15 @@ const summaryCards = [
     actionLink: "#",
   },
   {
-    label: "Guardians",
+    label: "To Withraw",
     value: 0,
-    action: "Set Guardian",
+    action: "Withraw Asset",
     actionLink: "#",
   },
   {
-    label: "Assigned Beneficiaries",
+    label: "Total Plans Created",
     value: 0,
-    action: "Add Beneficiary",
+    action: "Total Plans",
     actionLink: "#",
   },
   {
@@ -38,6 +41,8 @@ const activityTabs = [
 ];
 
 export default function DashboardHome() {
+  const router = useRouter();
+
   return (
     <main className="flex flex-col gap-6 p-2 md:p-8 w-full mb-[10rem]">
       <section className="mb-4">
@@ -60,7 +65,24 @@ export default function DashboardHome() {
             <span className="text-[12px] text-[#92A5A8] mb-4 text-center">
               {card.label}
             </span>
-            <button className="w-fit text-[14px] p-[14px] font-medium rounded-[24px] border border-[#33C5E03D] bg-[#33C5E014] text-[#33C5E0] hover:bg-cyan-900/30 transition-colors">
+            <button
+              className="w-fit text-[14px] cursor-pointer p-[14px] font-medium rounded-[24px] border border-[#33C5E03D] bg-[#33C5E014] text-[#33C5E0] transition-all duration-200 hover:bg-[#33C5E0] hover:text-[#161E22] hover:scale-105 focus:outline-none"
+              onClick={() => {
+                if (card.action === "Set Guardian") {
+                  router.push("/dashboard/guardian");
+                } else if (
+                  card.action === "Create Plan" ||
+                  card.action === "Total Plans"
+                ) {
+                  router.push("/dashboard/plans");
+                } else if (
+                  card.action === "Withraw Asset" ||
+                  card.action === "View Claims"
+                ) {
+                  router.push("/dashboard/claim");
+                }
+              }}
+            >
               <Image
                 src="/assets/icons/arrowdown.svg"
                 alt="arrowdown icon"
@@ -106,7 +128,10 @@ export default function DashboardHome() {
           <span className="text-[#99A9A2] text-[12px] text-center font-normal mb-[2rem]">
             Add Beneficiaries, Add Guardians or Create Plans to get started
           </span>
-          <button className="w-[171px] h-[52px] rounded-[24px] px-6 py-2 border border-[#33C5E03D] text-cyan-400 hover:bg-cyan-900/30 transition-colors">
+          <button
+            className="w-[171px] h-[52px] rounded-[24px] px-6 py-2 border border-[#33C5E03D] text-cyan-400 hover:bg-cyan-900/30 transition-colors"
+            onClick={() => router.push("/dashboard/plans")}
+          >
             + &nbsp;&nbsp;Create Plan
           </button>
         </div>

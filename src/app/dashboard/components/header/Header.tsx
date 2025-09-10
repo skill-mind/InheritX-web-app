@@ -4,9 +4,12 @@ import { Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import React from "react";
+import NotificationModal from "./NotificationModal";
 
 export default function AdminHeader() {
   const router = useRouter();
+  const [showNotifModal, setShowNotifModal] = React.useState(false);
 
   return (
     <section className="sticky top-0 left-0 right-0 z-50 w-full bg-[#161E22]/80 backdrop-blur-md  flex justify-center border-b border-[#1C252A] h-[92px] md:h-[124px]">
@@ -41,7 +44,10 @@ export default function AdminHeader() {
             tabIndex={0}
             role="button"
             aria-label="Go to KYC Verification"
-            onKeyDown={e => { if (e.key === "Enter" || e.key === " ") router.push("/dashboard/kyc"); }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ")
+                router.push("/dashboard/kyc");
+            }}
           >
             <Image
               src="/assets/icons/kyc.svg"
@@ -75,17 +81,24 @@ export default function AdminHeader() {
           </div>
 
           {/* More */}
-          <div className="bg-[#1C252A] h-[48px] w-[48px] md:h-[60px] md:w-[60px] rounded-[8px] flex items-center justify-center transition-all duration-200 hover:bg-[#232D33] cursor-pointer group">
+          <div
+            className={`bg-[#1C252A] h-[48px] w-[48px] md:h-[60px] md:w-[60px] rounded-[8px] flex items-center justify-center transition-all duration-200 hover:bg-[#232D33] cursor-pointer group border-2 ${showNotifModal ? 'border-[#33C5E0] bg-[#232D33]' : 'border-transparent'}`}
+            onClick={() => setShowNotifModal((v) => !v)}
+          >
             <Image
               src="/assets/icons/more.svg"
               alt="more icon"
               width={2.5}
               height={15}
-              className="rounded-full group-hover:scale-125 group-hover:rotate-90 transition-all duration-200"
+              className={`rounded-full group-hover:scale-125 group-hover:rotate-90 transition-all duration-200 ${showNotifModal ? 'scale-125 rotate-90' : ''}`}
             />
           </div>
         </div>
       </header>
+      <NotificationModal
+        open={showNotifModal}
+        onClose={() => setShowNotifModal(false)}
+      />
     </section>
   );
 }

@@ -14,6 +14,7 @@ import {
   Legend,
   ArcElement,
 } from "chart.js";
+import { useRouter } from "next/navigation";
 
 ChartJS.register(
   CategoryScale,
@@ -150,6 +151,10 @@ const PortfolioPage = () => {
   const [activeRange, setActiveRange] = useState("1H");
   const ranges = ["1H", "1D", "1W", "1M", "1Y"];
   const [activeActionsIdx, setActiveActionsIdx] = useState<number | null>(null); // Track which row's actions are open
+  const swapTimes = ["This Month", "This Year", "This Week", "This Day"];
+  const [selectedSwapTime, setSelectedSwapTime] = useState(swapTimes[0]);
+  const [swapDropdownOpen, setSwapDropdownOpen] = useState(false);
+  const router = useRouter();
 
   return (
     <main className="flex w-full flex-col gap-6 p-4 md:p-8 max-w-full overflow-x-hidden">
@@ -168,47 +173,110 @@ const PortfolioPage = () => {
             key={card.label}
             className="md:min-w-[220px] w-full flex flex-col items-center rounded-xl bg-[#182024] p-6 shadow-md max-w-full"
           >
-            <span className="mb-2 text-3xl font-bold text-white md:text-4xl">
-              {card.value}
-            </span>
-            <span className="mb-4 text-[12px] font-normal text-center text-[#92A5A8]">
-              {card.label}
-            </span>
-            {/* Card content rendering logic */}
-            {card.avatars ? (
-              <div className="flex items-center gap-1 w-full justify-center mb-2">
-                {card.avatars.map((src, i) => (
-                  <Image
-                    key={i}
-                    src={src}
-                    alt="avatar"
-                    width={28}
-                    height={28}
-                    className="rounded-full border-2 border-[#232B36] bg-[#232B36]"
-                  />
-                ))}
-                {card.label === "NFTs Count" && (
-                  <span className="ml-2 text-[#BFC6C8] text-[13px]">-</span>
-                )}
-              </div>
-            ) : null}
-            {card.subRight ? (
-              <div className="flex w-full justify-between items-center mt-2 bg-[#1C252A] h-[60px] rounded-[24px] border border-[#2A3338] py-[14px] px-[20px]">
-                <span className="text-[#0DA314] text-[12px] font-normal flex items-center">
-                  {card.sub} {card.subIcon}
+            {/* NFTs Count card custom layout */}
+            {card.label === "NFTs Count" ? (
+              <>
+                <span className="mb-2 text-3xl font-bold text-white md:text-4xl">
+                  {card.value}
                 </span>
-                <span
-                  className={`text-[#33C5E0] text-[12px] font-semibold ${
-                    card.subRight === "4 Chains" ? "border border-[#33C5E0] rounded-[16px] px-3 py-1 ml-2" : ""
-                  }`}
-                >
-                  {card.subRight}
+                <span className="mb-2 text-[12px] font-normal text-center text-[#92A5A8]">
+                  {card.label}
                 </span>
-              </div>
+                <div className="bg-[#1C252A] mt-[1rem] border border-[#2A3338] rounded-[24px] py-[14px] px-[20px] flex items-center gap-1 w-full justify-center mb-2">
+                  {card.avatars?.map((src, i) => (
+                    <Image
+                      key={i}
+                      src={src}
+                      alt="avatar"
+                      width={28}
+                      height={28}
+                      className="rounded-full border-2 border-[#232B36] bg-[#232B36]"
+                    />
+                  ))}
+                </div>
+              </>
             ) : (
-              <span className="w-full rounded-[24px] py-[14px] px-[20px] border border-[#232B36] bg-[#232B36] text-center text-[12px] text-[#92A5A8]">
-                {card.sub}
-              </span>
+              <>
+                <span className="mb-2 text-3xl font-bold text-white md:text-4xl">
+                  {card.value}
+                </span>
+                <span className="mb-4 text-[12px] font-normal text-center text-[#92A5A8]">
+                  {card.label}
+                </span>
+                {/* Card content rendering logic */}
+                {card.avatars ? (
+                  <div className="flex items-center gap-1 w-full justify-center mb-2">
+                    {card.avatars.map((src, i) => (
+                      <Image
+                        key={i}
+                        src={src}
+                        alt="avatar"
+                        width={28}
+                        height={28}
+                        className="rounded-full border-2 border-[#232B36] bg-[#232B36]"
+                      />
+                    ))}
+                    {card.label === "NFTs Count" && (
+                      <span className="ml-2 text-[#BFC6C8] text-[13px]">-</span>
+                    )}
+                  </div>
+                ) : null}
+                {card.label === "Recent Swaps" ? (
+                  <div className="relative w-full mt-2">
+                    <div
+                      className="flex w-full justify-between items-center bg-[#1C252A] h-[60px] rounded-[24px] border border-[#2A3338] py-[14px] px-[20px] cursor-pointer"
+                      onClick={() => setSwapDropdownOpen((v) => !v)}
+                    >
+                      <span className="text-[#0DA314] text-[12px] font-normal flex items-center">
+                        {card.sub}
+                      </span>
+                      <span className="text-[#33C5E0] text-[12px] font-semibold flex items-center">
+                        {selectedSwapTime}
+                        <span className="ml-2">⌄</span>
+                      </span>
+                    </div>
+                    {swapDropdownOpen && (
+                      <div className="absolute right-0 top-[110%] bg-[#232B36] border border-[#2A3338] rounded-[16px] shadow-lg z-10 w-[160px] animate-fade-in">
+                        {swapTimes.map((time) => (
+                          <button
+                            key={time}
+                            className={`w-full text-left px-4 py-2 text-[13px] text-[#BFC6C8] hover:bg-[#33C5E014] ${
+                              selectedSwapTime === time
+                                ? "text-[#33C5E0] font-semibold"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              setSelectedSwapTime(time);
+                              setSwapDropdownOpen(false);
+                            }}
+                          >
+                            {time}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ) : card.subRight ? (
+                  <div className="flex w-full justify-between items-center mt-2 bg-[#1C252A] h-[60px] rounded-[24px] border border-[#2A3338] py-[14px] px-[20px]">
+                    <span className="text-[#0DA314] text-[12px] font-normal flex items-center">
+                      {card.sub} {card.subIcon}
+                    </span>
+                    <span
+                      className={`text-[#33C5E0] text-[12px] font-semibold ${
+                        card.subRight === "4 Chains"
+                          ? "border border-[#33C5E0] rounded-[16px] px-3 py-1 ml-2"
+                          : ""
+                      }`}
+                    >
+                      {card.subRight}
+                    </span>
+                  </div>
+                ) : (
+                  <span className="w-full rounded-[24px] py-[14px] px-[20px] border border-[#232B36] bg-[#232B36] text-center text-[12px] text-[#92A5A8]">
+                    {card.sub}
+                  </span>
+                )}
+              </>
             )}
           </div>
         ))}
@@ -269,7 +337,9 @@ const PortfolioPage = () => {
               </div>
               <div className="flex items-center gap-2">
                 <span className="inline-block w-3 h-3 rounded-full bg-[#FDBA74]"></span>
-                <span className="text-[#BFC6C8] text-[12px]">Real World Asset</span>
+                <span className="text-[#BFC6C8] text-[12px]">
+                  Real World Asset
+                </span>
               </div>
             </div>
           </div>
@@ -288,7 +358,9 @@ const PortfolioPage = () => {
                 <th className="py-2 sm:py-3 px-1 sm:px-2">Balance</th>
                 <th className="py-2 sm:py-3 px-1 sm:px-2">Value</th>
                 <th className="py-2 sm:py-3 px-1 sm:px-2">Action</th>
-                <th className="hidden sm:table-cell py-2 sm:py-3 px-1 sm:px-2">Price ($ USD)</th>
+                <th className="hidden sm:table-cell py-2 sm:py-3 px-1 sm:px-2">
+                  Price ($ USD)
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -301,21 +373,39 @@ const PortfolioPage = () => {
                     <span className="text-[#425558] text-[13px] sm:text-[14px] w-4 inline-block">
                       {idx + 1}.
                     </span>
-                    <Image src={row.icon} alt={row.asset} width={24} height={24} />
+                    <Image
+                      src={row.icon}
+                      alt={row.asset}
+                      width={24}
+                      height={24}
+                    />
                     {row.asset}
                   </td>
-                  <td className="py-3 sm:py-4 px-1 sm:px-2 min-w-[80px]">{row.balance}</td>
-                  <td className="py-3 sm:py-4 px-1 sm:px-2 min-w-[100px]">{row.value}</td>
+                  <td className="py-3 sm:py-4 px-1 sm:px-2 min-w-[80px]">
+                    {row.balance}
+                  </td>
+                  <td className="py-3 sm:py-4 px-1 sm:px-2 min-w-[100px]">
+                    {row.value}
+                  </td>
                   {/* Action column: mobile shows more icon, desktop shows buttons */}
                   <td className="py-3 sm:py-4 px-1 sm:px-2 min-w-[60px] relative">
                     {/* Mobile: show more icon, on click show actions */}
                     <div className="flex sm:hidden items-center justify-center">
                       <button
                         aria-label="Show actions"
-                        onClick={() => setActiveActionsIdx(activeActionsIdx === idx ? null : idx)}
+                        onClick={() =>
+                          setActiveActionsIdx(
+                            activeActionsIdx === idx ? null : idx
+                          )
+                        }
                         className="p-2 rounded-full hover:bg-[#232B2F] focus:outline-none"
                       >
-                        <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+                        <svg
+                          width="20"
+                          height="20"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
                           <circle cx="12" cy="5" r="1.5" fill="#BFC6C8" />
                           <circle cx="12" cy="12" r="1.5" fill="#BFC6C8" />
                           <circle cx="12" cy="19" r="1.5" fill="#BFC6C8" />
@@ -323,10 +413,16 @@ const PortfolioPage = () => {
                       </button>
                       {activeActionsIdx === idx && (
                         <div className="absolute z-10 top-10 right-0 bg-[#232B2F] border border-[#425558] rounded-xl shadow-lg flex flex-col w-36 animate-fade-in">
-                          <button className="bg-[#33C5E0] text-[#161E22] px-4 py-2 rounded-t-xl text-[12px] font-semibold hover:bg-cyan-400 w-full text-left">
+                          <button
+                            className="bg-[#33C5E0] cursor-pointer text-[#161E22] px-4 py-2 rounded-t-xl text-[12px] font-semibold hover:bg-cyan-400 w-full text-left"
+                            onClick={() => router.push("/dashboard/swap")}
+                          >
                             SWAP
                           </button>
-                          <button className="bg-[#232B2F] border-t border-[#425558] text-[#BFC6C8] px-4 py-2 rounded-b-xl text-[12px] font-medium hover:bg-[#232B2F]/80 w-full text-left">
+                          <button
+                            className="bg-[#232B2F] cursor-pointer border-t border-[#425558] text-[#BFC6C8] px-4 py-2 rounded-b-xl text-[12px] font-medium hover:bg-[#232B2F]/80 w-full text-left"
+                            onClick={() => router.push("/dashboard/plans")}
+                          >
                             ADD TO PLAN
                           </button>
                         </div>
@@ -334,16 +430,24 @@ const PortfolioPage = () => {
                     </div>
                     {/* Desktop: show buttons inline */}
                     <div className="hidden sm:flex gap-2">
-                      <button className="bg-[#33C5E0] text-[#161E22] px-4 sm:px-5 py-2 rounded-[16px] text-[12px] font-semibold hover:bg-cyan-400 w-full sm:w-auto">
+                      <button
+                        className="bg-[#33C5E0] cursor-pointer text-[#161E22] px-4 sm:px-5 py-2 rounded-[16px] text-[12px] font-semibold hover:bg-cyan-400 w-full sm:w-auto"
+                        onClick={() => router.push("/dashboard/swap")}
+                      >
                         SWAP
                       </button>
-                      <button className="bg-[#232B2F] border border-[#425558] text-[#BFC6C8] px-4 sm:px-5 py-2 rounded-[16px] text-[12px] font-medium hover:bg-[#232B2F]/80 w-full sm:w-auto">
+                      <button
+                        className="bg-[#232B2F] cursor-pointer border border-[#425558] text-[#BFC6C8] px-4 sm:px-5 py-2 rounded-[16px] text-[12px] font-medium hover:bg-[#232B2F]/80 w-full sm:w-auto"
+                        onClick={() => router.push("/dashboard/plans")}
+                      >
                         ADD TO PLAN
                       </button>
                     </div>
                   </td>
                   {/* Price column: only show on desktop */}
-                  <td className="hidden sm:table-cell py-3 sm:py-4 px-1 sm:px-2 min-w-[100px]">{row.price}</td>
+                  <td className="hidden sm:table-cell py-3 sm:py-4 px-1 sm:px-2 min-w-[100px]">
+                    {row.price}
+                  </td>
                 </tr>
               ))}
             </tbody>

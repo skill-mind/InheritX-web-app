@@ -19,17 +19,23 @@ const RulesPage = () => {
   const [disbursementType, setDisbursementType] = useState("");
   const [showLumpDropdown, setShowLumpDropdown] = useState(false);
   const [lumpDate, setLumpDate] = useState("");
+  const [percentages, setPercentages] = useState<{ [key: string]: string }>({});
 
   const isFormValid = claimCode.trim().length > 0 &&
     ((distribution === "lump" && lumpDate.trim().length > 0) ||
-      (distribution === "recurring" && disbursementType));
+      (distribution === "recurring" && disbursementType && percentages[disbursementType] && !isNaN(Number(percentages[disbursementType])) && Number(percentages[disbursementType]) > 0 && Number(percentages[disbursementType]) <= 100));
 
   return (
     <main className="flex flex-col gap-6 p-4 md:p-8 w-full">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4 mb-2">
-          <button className="text-[#BFC6C8] text-[15px] flex items-center gap-2">
-            <Image src="/assets/icons/back.svg" alt="back" width={18} height={15} />
+          <button className="text-[#BFC6C8] cursor-pointer text-[15px] flex items-center gap-2" onClick={() => router.back()}>
+            <Image
+              src="/assets/icons/back.svg"
+              alt="back"
+              width={18}
+              height={15}
+            />
           </button>
           <h2 className="text-lg md:text-2xl font-medium text-[#92A5A8]">
             Create New Plan
@@ -170,6 +176,28 @@ const RulesPage = () => {
                           </li>
                         ))}
                       </ul>
+                    )}
+                    {/* Percentage input for selected disbursement type */}
+                    {disbursementType && (
+                      <div className="mt-4 flex flex-col gap-2">
+                        <label className="text-[#BFC6C8] text-[13px] mb-1">Percentage per {disbursementType.split(' ')[0]}</label>
+                        <input
+                          type="number"
+                          min="1"
+                          max="100"
+                          value={percentages[disbursementType] || ""}
+                          onChange={e => {
+                            const val = e.target.value;
+                            setPercentages(prev => ({ ...prev, [disbursementType]: val }));
+                          }}
+                          placeholder="Enter percentage (1-100%)"
+                          className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] text-[15px] outline-none"
+                        />
+                        <span className="text-[#425558] text-xs">This is the percentage of the total inheritance to be received {disbursementType.split(' ')[0].toLowerCase()}.</span>
+                        {percentages[disbursementType] && (Number(percentages[disbursementType]) < 1 || Number(percentages[disbursementType]) > 100) && (
+                          <span className="text-red-500 text-xs mt-1">Enter a valid percentage (1-100)</span>
+                        )}
+                      </div>
                     )}
                   </div>
                 )}
