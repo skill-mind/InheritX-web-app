@@ -1,0 +1,2 @@
+export const INHERITX_CA_ADDRESS =
+  "0x1d2ca88de32c378336a7d9b6da9246eb5dac9816992eef359c76c0a80c84c42";

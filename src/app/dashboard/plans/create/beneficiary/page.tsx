@@ -138,20 +138,14 @@ const BeneficiaryPage = () => {
           <label className="block text-[#FCFFFF] text-[15px] mb-2">
             Relationship
           </label>
-          <select
+          <input
+            type="text"
             value={form.relationship}
             onChange={(e) => setForm({ ...form, relationship: e.target.value })}
             onBlur={() => setTouched({ ...touched, relationship: true })}
-            className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] text-[16px] outline-none"
-          >
-            <option value="">Select Relationship</option>
-            <option value="Child">Child</option>
-            <option value="Spouse">Spouse</option>
-            <option value="Spouse">Sibling</option>
-            <option value="Spouse">Friend</option>
-            <option value="Parent">Parent</option>
-            <option value="Other">Other</option>
-          </select>
+            placeholder="Child"
+            className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[16px] outline-none"
+          />
           {!isRelationshipValid && touched.relationship && (
             <span className="text-red-500 text-xs mt-1">
               Relationship is required
@@ -175,22 +169,6 @@ const BeneficiaryPage = () => {
           )}
         </div>
         <div className="flex flex-col md:flex-row gap-4 mt-8 w-full">
-          <button
-            type="button"
-            className="bg-[#1C252A] text-[#FCFFFF] px-8 py-3 rounded-t-[8px] rounded-b-[24px] font-medium text-[15px] w-full flex items-center justify-center gap-2 border border-[#232B36]"
-            onClick={() => {}}
-          >
-            SAVE AS DRAFT
-            <svg width="18" height="18" fill="none" viewBox="0 0 24 24">
-              <path
-                d="M5 12h14m-7-7l7 7-7 7"
-                stroke="#33C5E0"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </button>
           <button
             type="button"
             disabled={!isFormValid}

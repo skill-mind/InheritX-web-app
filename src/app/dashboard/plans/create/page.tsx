@@ -3,6 +3,10 @@
 import React, { useState, Suspense } from "react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
+import {
+  CreatePlanProvider,
+  useCreatePlan,
+} from "@/contexts/CreatePlanContext";
 
 interface Beneficiary {
   id: number;
@@ -17,44 +21,43 @@ interface Beneficiary {
 function CreatePlanPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [planName, setPlanName] = useState("");
-  const [description, setDescription] = useState("");
-  const [selectedBeneficiaries, setSelectedBeneficiaries] = useState<number[]>([
-    1, 2,
-  ]);
-  const [beneficiaries, setBeneficiaries] = useState<Beneficiary[]>([]);
+  const { formData, updateFormData, addBeneficiary } = useCreatePlan();
 
   // Validation
-  const isPlanNameValid = planName.trim().length > 0;
-  const isDescriptionValid = description.trim().length > 0;
-  const isFormValid = isPlanNameValid && isDescriptionValid && selectedBeneficiaries.length > 0;
+  const isPlanNameValid = formData.planName.trim().length > 0;
+  const isDescriptionValid = formData.description.trim().length > 0;
+  const isFormValid =
+    isPlanNameValid &&
+    isDescriptionValid &&
+    formData.selectedBeneficiaries.length > 0;
 
   React.useEffect(() => {
     const name = searchParams.get("name");
     const relationship = searchParams.get("relationship");
     const email = searchParams.get("email");
     if (name && relationship && email) {
-      setBeneficiaries((prev) => {
-        // Prevent duplicate add if already present
-        if (prev.some(b => b.name === name && b.email === email)) return prev;
-        return [
-          ...prev,
-          {
-            id: prev.length > 0 ? prev[prev.length - 1].id + 1 : 1,
-            name,
-            relationship,
-            email,
-          },
-        ];
-      });
+      // Check if beneficiary already exists
+      const exists = formData.beneficiaries.some(
+        (b) => b.name === name && b.email === email
+      );
+      if (!exists) {
+        addBeneficiary({
+          name,
+          relationship,
+          email,
+        });
+      }
     }
-  }, [searchParams]);
+  }, [searchParams, formData.beneficiaries, addBeneficiary]);
 
   return (
     <main className="flex flex-col gap-6 p-4 md:p-8 w-full">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4 mb-2">
-          <button className="text-[#BFC6C8] cursor-pointer text-[15px] flex items-center gap-2" onClick={() => router.back()}>
+          <button
+            className="text-[#BFC6C8] cursor-pointer text-[15px] flex items-center gap-2"
+            onClick={() => router.back()}
+          >
             <Image
               src="/assets/icons/back.svg"
               alt="back"
@@ -89,7 +92,7 @@ function CreatePlanPageContent() {
       <div className="w-full flex flex-col gap-8">
         {/* Progress Steps */}
         <div className="flex flex-row items-center justify-between w-full mb-2">
-          {[1, 2, 3, 4, 5].map((step, idx) => (
+          {[1, 2, 3, 4].map((step, idx) => (
             <div key={step} className="flex flex-col items-center flex-1">
               <div
                 className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${
@@ -112,13 +115,9 @@ function CreatePlanPageContent() {
                 }`}
               >
                 {
-                  [
-                    "Basic Information",
-                    "Asset Allocation",
-                    "Rules",
-                    "Verification",
-                    "Preview",
-                  ][idx]
+                  ["Basic Information", "Asset Allocation", "Rules", "Preview"][
+                    idx
+                  ]
                 }
               </span>
             </div>
@@ -135,8 +134,8 @@ function CreatePlanPageContent() {
             </label>
             <input
               type="text"
-              value={planName}
-              onChange={(e) => setPlanName(e.target.value)}
+              value={formData.planName}
+              onChange={(e) => updateFormData({ planName: e.target.value })}
               placeholder="Graduation Inheritance"
               className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[15px] outline-none"
             />
@@ -146,8 +145,8 @@ function CreatePlanPageContent() {
               Description
             </label>
             <textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              value={formData.description}
+              onChange={(e) => updateFormData({ description: e.target.value })}
               placeholder="Text"
               className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[15px] outline-none min-h-[60px]"
             />
@@ -157,28 +156,33 @@ function CreatePlanPageContent() {
               Select Beneficiary
             </label>
             <div className="flex flex-row flex-wrap gap-6 items-stretch">
-              {beneficiaries.map((b, idx) => (
+              {formData.beneficiaries.map((b, idx) => (
                 <div
                   key={idx}
                   className={`relative flex flex-col items-center bg-[#182024] border border-[#2A3338] rounded-[24px] h-[298px] p-0 min-w-[240px] max-w-[260px] w-full transition-all
-                    ${selectedBeneficiaries.includes(b.id)
-                      ? "ring-2 ring-[#2A3338] bg-[#33C5E014]"
-                      : ""}
+                    ${
+                      formData.selectedBeneficiaries.includes(b.id)
+                        ? "ring-2 ring-[#2A3338] bg-[#33C5E014]"
+                        : ""
+                    }
                   `}
                   onClick={() => {
-                    setSelectedBeneficiaries((prev) =>
-                      prev.includes(b.id)
-                        ? prev.filter((id) => id !== b.id)
-                        : [...prev, b.id]
-                    );
+                    updateFormData({
+                      selectedBeneficiaries:
+                        formData.selectedBeneficiaries.includes(b.id)
+                          ? formData.selectedBeneficiaries.filter(
+                              (id) => id !== b.id
+                            )
+                          : [...formData.selectedBeneficiaries, b.id],
+                    });
                   }}
                   style={{ cursor: "pointer" }}
                 >
                   <Image
-                    src={"/assets/images/beneficiary1.svg"}
+                    src={"/assets/images/beneficiary_main.png"}
                     alt={b.name}
                     width={70}
-                    height={70}
+                    height={80}
                     className="h-[50%] w-full mb-2"
                   />
                   <div className="w-full py-[8px] px-[16px] flex flex-col items-start justify-around h-[50%]">
@@ -197,7 +201,15 @@ function CreatePlanPageContent() {
                       aria-label="Edit Beneficiary"
                       onClick={(e) => {
                         e.stopPropagation();
-                        router.push(`/dashboard/plans/create/beneficiary?name=${encodeURIComponent(b.name)}&relationship=${encodeURIComponent(b.relationship)}&email=${encodeURIComponent(b.email)}&edit=true&id=${b.id}`);
+                        router.push(
+                          `/dashboard/plans/create/beneficiary?name=${encodeURIComponent(
+                            b.name
+                          )}&relationship=${encodeURIComponent(
+                            b.relationship
+                          )}&email=${encodeURIComponent(
+                            b.email
+                          )}&edit=true&id=${b.id}`
+                        );
                       }}
                     >
                       <Image
@@ -214,7 +226,9 @@ function CreatePlanPageContent() {
                 <button
                   type="button"
                   className="flex flex-col items-center justify-center"
-                  onClick={() => router.push("/dashboard/plans/create/beneficiary")}
+                  onClick={() =>
+                    router.push("/dashboard/plans/create/beneficiary")
+                  }
                 >
                   <Image
                     src="/assets/icons/plus.svg"
@@ -235,7 +249,8 @@ function CreatePlanPageContent() {
               disabled={!isFormValid}
               className={`bg-[#33C5E0] w-[243px] cursor-pointer text-center justify-center text-[#161E22] px-8 py-3 font-medium rounded-[16px] h-[56px] rounded-t-[8px] rounded-b-[24px] flex items-center gap-2 border border-[#232B36] transition-colors hover:bg-[#33C5E0]/90 disabled:bg-[#1C252A] disabled:text-[#FCFFFF] disabled:cursor-not-allowed`}
               onClick={() => {
-                if (isFormValid) router.push("/dashboard/plans/create/asset-allocation");
+                if (isFormValid)
+                  router.push("/dashboard/plans/create/asset-allocation");
               }}
             >
               NEXT
@@ -252,13 +267,19 @@ function CreatePlanPageContent() {
           </div>
           {/* Validation messages */}
           {!isPlanNameValid && (
-            <span className="text-red-500 text-xs mt-1">Plan name is required</span>
+            <span className="text-red-500 text-xs mt-1">
+              Plan name is required
+            </span>
           )}
           {!isDescriptionValid && (
-            <span className="text-red-500 text-xs mt-1">Description is required</span>
+            <span className="text-red-500 text-xs mt-1">
+              Description is required
+            </span>
           )}
-          {selectedBeneficiaries.length === 0 && (
-            <span className="text-red-500 text-xs mt-1">Select at least one beneficiary</span>
+          {formData.selectedBeneficiaries.length === 0 && (
+            <span className="text-red-500 text-xs mt-1">
+              Select at least one beneficiary
+            </span>
           )}
         </form>
       </div>
@@ -267,9 +288,11 @@ function CreatePlanPageContent() {
 }
 
 const CreatePlanPage = () => (
-  <Suspense>
-    <CreatePlanPageContent />
-  </Suspense>
+  <CreatePlanProvider>
+    <Suspense>
+      <CreatePlanPageContent />
+    </Suspense>
+  </CreatePlanProvider>
 );
 
 export default CreatePlanPage;
