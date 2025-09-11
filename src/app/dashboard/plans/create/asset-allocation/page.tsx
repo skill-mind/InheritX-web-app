@@ -4,6 +4,10 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
+import {
+  CreatePlanProvider,
+  useCreatePlan,
+} from "@/contexts/CreatePlanContext";
 
 // Type for asset
 interface Asset {
@@ -20,19 +24,22 @@ const assetOptions: Omit<Asset, "amount">[] = [
   { label: "USDT", icon: "/assets/icons/usdt.png" },
 ];
 
-const PieChart = dynamic(() => import("react-minimal-pie-chart").then(mod => mod.PieChart), { ssr: false });
+const PieChart = dynamic(
+  () => import("react-minimal-pie-chart").then((mod) => mod.PieChart),
+  { ssr: false }
+);
 
-const AssetAllocationPage = () => {
+const AssetAllocationPageContent = () => {
   const router = useRouter();
+  const { formData, addAsset, removeAsset } = useCreatePlan();
   const [selectedAsset, setSelectedAsset] = useState<Omit<Asset, "amount">>(
     assetOptions[0]
   );
   const [amount, setAmount] = useState<string>("");
-  const [assets, setAssets] = useState<Asset[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   // Calculate total for percentage
-  const totalAmount = assets.reduce((sum, a) => sum + a.amount, 0);
+  const totalAmount = formData.assets.reduce((sum, a) => sum + a.amount, 0);
 
   const handleAddAsset = () => {
     if (
@@ -40,10 +47,10 @@ const AssetAllocationPage = () => {
       !amount ||
       isNaN(Number(amount)) ||
       Number(amount) <= 0 ||
-      assets.some(a => a.label === selectedAsset.label)
+      formData.assets.some((a) => a.label === selectedAsset.label)
     )
       return;
-    setAssets([...assets, { ...selectedAsset, amount: Number(amount) }]);
+    addAsset({ ...selectedAsset, amount: Number(amount) });
     setAmount("");
     setDropdownOpen(false);
   };
@@ -55,7 +62,10 @@ const AssetAllocationPage = () => {
     <main className="flex flex-col gap-6 p-4 md:p-8 w-full">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4 mb-2">
-          <button className="text-[#BFC6C8] cursor-pointer text-[15px] flex items-center gap-2" onClick={() => router.back()}>
+          <button
+            className="text-[#BFC6C8] cursor-pointer text-[15px] flex items-center gap-2"
+            onClick={() => router.back()}
+          >
             <Image
               src="/assets/icons/back.svg"
               alt="back"
@@ -230,10 +240,16 @@ const AssetAllocationPage = () => {
             <button
               type="button"
               className={`flex items-center justify-end self-end gap-2 w-full md:w-fit text-[15px] px-8 py-3 font-medium p-[14px] h-[56px] rounded-[24px] float-end border border-[#33C5E03D] transition-colors bg-[#1C252A] text-[#33C5E0] hover:text-[#1C252A] hover:bg-[#33C5E0]/90 ${
-                !isFormValid || assets.some(a => a.label === selectedAsset.label) ? "opacity-50 cursor-not-allowed" : ""
+                !isFormValid ||
+                formData.assets.some((a) => a.label === selectedAsset.label)
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
               }`}
               onClick={handleAddAsset}
-              disabled={!isFormValid || assets.some(a => a.label === selectedAsset.label)}
+              disabled={
+                !isFormValid ||
+                formData.assets.some((a) => a.label === selectedAsset.label)
+              }
             >
               <Image
                 src="/assets/icons/plus.svg"
@@ -244,18 +260,39 @@ const AssetAllocationPage = () => {
               Add Assets
             </button>
             {/* List of added assets */}
-            {assets.length > 0 && (
+            {formData.assets.length > 0 && (
               <div className="mt-6 flex flex-col gap-4">
-                {assets.map((a, idx) => (
-                  <div key={idx} className="flex flex-row items-center gap-4 bg-[#182024] border border-[#232B36] rounded-[16px] px-4 py-3">
+                {formData.assets.map((a, idx) => (
+                  <div
+                    key={idx}
+                    className="flex flex-row items-center gap-4 bg-[#182024] border border-[#232B36] rounded-[16px] px-4 py-3"
+                  >
                     <div className="flex items-center gap-2 w-1/3">
-                      <Image src={a.icon} alt={a.label} width={24} height={24} />
-                      <span className="text-[#FCFFFF] text-[15px] font-medium">{a.label}</span>
+                      <Image
+                        src={a.icon}
+                        alt={a.label}
+                        width={24}
+                        height={24}
+                      />
+                      <span className="text-[#FCFFFF] text-[15px] font-medium">
+                        {a.label}
+                      </span>
                     </div>
-                    <div className="w-1/3 text-[#FCFFFF] text-[15px] font-medium">{a.amount}</div>
+                    <div className="w-1/3 text-[#FCFFFF] text-[15px] font-medium">
+                      {a.amount}
+                    </div>
                     <div className="w-1/3 text-[#33C5E0] text-[15px] font-medium">
-                      {totalAmount > 0 ? ((a.amount / totalAmount) * 100).toFixed(0) : 0}%
+                      {totalAmount > 0
+                        ? ((a.amount / totalAmount) * 100).toFixed(0)
+                        : 0}
+                      %
                     </div>
+                    <button
+                      onClick={() => removeAsset(idx)}
+                      className="text-red-500 hover:text-red-400 ml-auto"
+                    >
+                      ×
+                    </button>
                   </div>
                 ))}
               </div>
@@ -270,11 +307,13 @@ const AssetAllocationPage = () => {
               <span className="text-[#BFC6C8] text-xs mb-4">
                 Sum Of All Asset Values
               </span>
-              {assets.length === 0 ? (
-                <span className="text-[#BFC6C8] text-[16px]">No Assets Yet</span>
+              {formData.assets.length === 0 ? (
+                <span className="text-[#BFC6C8] text-[16px]">
+                  No Assets Yet
+                </span>
               ) : (
                 <PieChart
-                  data={assets.map((a) => ({
+                  data={formData.assets.map((a) => ({
                     title: a.label,
                     value: a.amount,
                     color:
@@ -297,7 +336,10 @@ const AssetAllocationPage = () => {
                   rounded
                   animate
                   label={({ dataEntry }) =>
-                    `${String(dataEntry.title ?? "")} ${((Number(dataEntry.value) / (totalAmount || 1)) * 100).toFixed(0)}%`
+                    `${String(dataEntry.title ?? "")} ${(
+                      (Number(dataEntry.value) / (totalAmount || 1)) *
+                      100
+                    ).toFixed(0)}%`
                   }
                   labelStyle={{
                     fontSize: "6px",
@@ -307,9 +349,9 @@ const AssetAllocationPage = () => {
                   style={{ height: 180 }}
                 />
               )}
-              {assets.length > 0 && (
+              {formData.assets.length > 0 && (
                 <div className="flex flex-row flex-wrap gap-2 mt-4 justify-center items-center">
-                  {assets.map((a, idx) => (
+                  {formData.assets.map((a, idx) => (
                     <div
                       key={idx}
                       className="flex items-center gap-1 text-xs text-[#FCFFFF]"
@@ -349,9 +391,9 @@ const AssetAllocationPage = () => {
           <button
             type="button"
             className={`bg-[#33C5E0] w-[243px] text-[#161E22] text-center px-8 py-3 font-medium rounded-[16px] h-[56px] rounded-t-[8px] rounded-b-[24px] flex items-center justify-center gap-2 border border-[#232B36] text-[14px] transition-colors hover:bg-[#33C5E0]/90 disabled:bg-[#1C252A] disabled:text-[#425558] disabled:cursor-not-allowed`}
-            disabled={assets.length === 0}
+            disabled={formData.assets.length === 0}
             onClick={() => {
-              if (assets.length > 0)
+              if (formData.assets.length > 0)
                 router.push("/dashboard/plans/create/rules");
             }}
           >
@@ -369,5 +411,11 @@ const AssetAllocationPage = () => {
     </main>
   );
 };
+
+const AssetAllocationPage = () => (
+  <CreatePlanProvider>
+    <AssetAllocationPageContent />
+  </CreatePlanProvider>
+);
 
 export default AssetAllocationPage;
