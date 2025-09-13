@@ -6,19 +6,19 @@ import { useRouter } from "next/navigation";
 import { useCreatePlan } from "@/contexts/CreatePlanContext";
 import { truncateAddress } from "@/lib/utils";
 
-interface Beneficiary {
-  id: number;
-  name: string;
-  relationship: string;
-  email: string;
-  phone?: string;
-  avatar?: string;
-  address?: string;
-}
+// interface Beneficiary {
+//   id: number;
+//   name: string;
+//   relationship: string;
+//   email: string;
+//   phone?: string;
+//   avatar?: string;
+//   address?: string;
+// }
 
 function CreatePlanPageContent() {
   const router = useRouter();
-  const { formData, updateFormData, addBeneficiary } = useCreatePlan();
+  const { formData, updateFormData } = useCreatePlan();
 
   // Validation
   const isPlanNameValid = formData.planName.trim().length > 0;

@@ -25,40 +25,26 @@ const PreviewPageContent = () => {
   const handleEditRules = () => router.push("/dashboard/plans/create/rules");
   // const handleEditLegal = () =>
   //   router.push("/dashboard/plans/create/rules-verification");
-  const handleEditNotes = () => router.push("/dashboard/plans/create/rules");
 
   // Get selected beneficiaries
   const selectedBeneficiaries = formData.beneficiaries.filter((b) =>
     formData.selectedBeneficiaries.includes(b.id)
   );
 
-  // Debug logging - This will show every time the component renders
-  // console.log("=== PREVIEW PAGE DEBUG ===");
-  // console.log("Form Data:", formData);
-  // console.log("Selected Beneficiaries:", selectedBeneficiaries);
-  // console.log("Assets:", formData.assets);
-  // console.log("Plan Name:", formData.planName);
-  // console.log("Plan Description:", formData.planDescription);
-  // console.log("Claim Code:", formData.claimCode);
-  // console.log("Distribution Method:", formData.distributionMethod);
-  // console.log("Asset Type:", formData.assetType);
-  // console.log("Asset Amount:", formData.assetAmount);
-  // console.log("=== END DEBUG ===");
-
   // Calculate asset percentages
-  const totalAssetAmount = formData.assets.reduce(
-    (sum, asset) => sum + asset.amount,
-    0
-  );
-  const assetsWithPercentages = formData.assets.map((asset) => ({
-    type: "Token",
-    label: asset.label,
-    amount: asset.amount,
-    percent:
-      totalAssetAmount > 0
-        ? Math.round((asset.amount / totalAssetAmount) * 100)
-        : 0,
-  }));
+  // const totalAssetAmount = formData.assets.reduce(
+  //   (sum, asset) => sum + asset.amount,
+  //   0
+  // );
+  // const assetsWithPercentages = formData.assets.map((asset) => ({
+  //   type: "Token",
+  //   label: asset.label,
+  //   amount: asset.amount,
+  //   percent:
+  //     totalAssetAmount > 0
+  //       ? Math.round((asset.amount / totalAssetAmount) * 100)
+  //       : 0,
+  // }));
 
   const handleCreatePlan = async () => {
     if (!account) {

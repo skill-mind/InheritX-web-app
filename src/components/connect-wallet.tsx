@@ -2,6 +2,7 @@
 import { Connector, useConnect } from "@starknet-react/core";
 import React, { useState } from "react";
 import { X, Loader2 } from "lucide-react";
+import Image from "next/image";
 
 interface ConnectModalProps {
   isOpen: boolean;
@@ -76,7 +77,7 @@ function ConnectWalletModal({ isOpen, onClose }: ConnectModalProps) {
                 {connecting === connector.id ? (
                   <Loader2 className="w-7 h-7 animate-spin" />
                 ) : connector.icon ? (
-                  <img
+                  <Image
                     src={connector.icon as string}
                     className="w-7 h-7"
                     alt={connector.name}

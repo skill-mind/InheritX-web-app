@@ -1,15 +1,13 @@
 "use client";
 
-import { Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 import NotificationModal from "./NotificationModal";
-import { useAccount, useConnect, useDisconnect } from "@starknet-react/core";
+import { useAccount, useDisconnect } from "@starknet-react/core";
 import { truncateAddress } from "@/lib/utils";
-import { connect } from "starknetkit";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ConnectWalletModal from "@/components/connect-wallet";
 
 export default function AdminHeader() {

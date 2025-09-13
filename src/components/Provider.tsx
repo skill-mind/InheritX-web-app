@@ -4,7 +4,6 @@ import React, { useCallback } from "react";
 import { sepolia, Chain } from "@starknet-react/chains";
 import {
   StarknetConfig,
-  publicProvider,
   argent,
   braavos,
   useInjectedConnectors,
