@@ -4,24 +4,21 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
-import {
-  CreatePlanProvider,
-  useCreatePlan,
-} from "@/contexts/CreatePlanContext";
+import { useCreatePlan } from "@/contexts/CreatePlanContext";
 
 // Type for asset
 interface Asset {
+  type: number;
   label: string;
   icon: string;
   amount: number;
 }
 
 const assetOptions: Omit<Asset, "amount">[] = [
-  { label: "ETH", icon: "/assets/icons/eth.svg" },
-  { label: "NFT", icon: "/assets/icons/nft1.svg" },
-  { label: "STRK", icon: "/assets/icons/strk.svg" },
-  { label: "USDC", icon: "/assets/icons/usdc.png" },
-  { label: "USDT", icon: "/assets/icons/usdt.png" },
+  { type: 0, label: "STRK", icon: "/assets/icons/strk.svg" },
+  { type: 1, label: "USDT", icon: "/assets/icons/usdt.png" },
+  { type: 2, label: "USDC", icon: "/assets/icons/usdc.png" },
+  { type: 3, label: "NFT", icon: "/assets/icons/nft1.svg" },
 ];
 
 const PieChart = dynamic(
@@ -31,7 +28,8 @@ const PieChart = dynamic(
 
 const AssetAllocationPageContent = () => {
   const router = useRouter();
-  const { formData, addAsset, removeAsset } = useCreatePlan();
+  const { formData, updateFormData, getAssetTypeFromString, removeAsset } =
+    useCreatePlan();
   const [selectedAsset, setSelectedAsset] = useState<Omit<Asset, "amount">>(
     assetOptions[0]
   );
@@ -46,11 +44,28 @@ const AssetAllocationPageContent = () => {
       !selectedAsset ||
       !amount ||
       isNaN(Number(amount)) ||
-      Number(amount) <= 0 ||
-      formData.assets.some((a) => a.label === selectedAsset.label)
+      Number(amount) <= 0
     )
       return;
-    addAsset({ ...selectedAsset, amount: Number(amount) });
+
+    // Update contract fields
+    updateFormData({
+      assetType: getAssetTypeFromString(selectedAsset.label),
+      assetAmount: Number(amount),
+    });
+
+    // Also add to UI assets for display
+    const newAsset: Asset = {
+      type: selectedAsset.type,
+      amount: Number(amount),
+      label: selectedAsset.label,
+      icon: selectedAsset.icon,
+    };
+
+    updateFormData({
+      assets: [...formData.assets, newAsset],
+    });
+
     setAmount("");
     setDropdownOpen(false);
   };
@@ -270,7 +285,7 @@ const AssetAllocationPageContent = () => {
                     <div className="flex items-center gap-2 w-1/3">
                       <Image
                         src={a.icon}
-                        alt={a.label}
+                        alt={a.label.toString()}
                         width={24}
                         height={24}
                       />
@@ -391,9 +406,9 @@ const AssetAllocationPageContent = () => {
           <button
             type="button"
             className={`bg-[#33C5E0] w-[243px] text-[#161E22] text-center px-8 py-3 font-medium rounded-[16px] h-[56px] rounded-t-[8px] rounded-b-[24px] flex items-center justify-center gap-2 border border-[#232B36] text-[14px] transition-colors hover:bg-[#33C5E0]/90 disabled:bg-[#1C252A] disabled:text-[#425558] disabled:cursor-not-allowed`}
-            disabled={formData.assets.length === 0}
+            disabled={formData.assetAmount === 0}
             onClick={() => {
-              if (formData.assets.length > 0)
+              if (formData.assetAmount > 0)
                 router.push("/dashboard/plans/create/rules");
             }}
           >
@@ -412,10 +427,4 @@ const AssetAllocationPageContent = () => {
   );
 };
 
-const AssetAllocationPage = () => (
-  <CreatePlanProvider>
-    <AssetAllocationPageContent />
-  </CreatePlanProvider>
-);
-
-export default AssetAllocationPage;
+export default AssetAllocationPageContent;

@@ -2,27 +2,13 @@ import { Abi } from "starknet";
 
 export const InheritXAbi: Abi = [
   {
-    name: "InheritXPlans",
     type: "impl",
+    name: "InheritXPlans",
     interface_name: "inheritx_contracts::interfaces::iplans::IInheritXPlans",
   },
   {
-    name: "core::integer::u256",
     type: "struct",
-    members: [
-      {
-        name: "low",
-        type: "core::integer::u128",
-      },
-      {
-        name: "high",
-        type: "core::integer::u128",
-      },
-    ],
-  },
-  {
     name: "core::byte_array::ByteArray",
-    type: "struct",
     members: [
       {
         name: "data",
@@ -39,8 +25,48 @@ export const InheritXAbi: Abi = [
     ],
   },
   {
-    name: "core::bool",
+    type: "struct",
+    name: "core::integer::u256",
+    members: [
+      {
+        name: "low",
+        type: "core::integer::u128",
+      },
+      {
+        name: "high",
+        type: "core::integer::u128",
+      },
+    ],
+  },
+  {
+    type: "struct",
+    name: "inheritx_contracts::base::types::BeneficiaryData",
+    members: [
+      {
+        name: "address",
+        type: "core::starknet::contract_address::ContractAddress",
+      },
+      {
+        name: "percentage",
+        type: "core::integer::u8",
+      },
+      {
+        name: "email_hash",
+        type: "core::byte_array::ByteArray",
+      },
+      {
+        name: "age",
+        type: "core::integer::u8",
+      },
+      {
+        name: "relationship",
+        type: "core::byte_array::ByteArray",
+      },
+    ],
+  },
+  {
     type: "enum",
+    name: "core::bool",
     variants: [
       {
         name: "False",
@@ -53,68 +79,28 @@ export const InheritXAbi: Abi = [
     ],
   },
   {
-    name: "inheritx_contracts::base::types::BeneficiaryData",
     type: "struct",
+    name: "inheritx_contracts::base::types::Beneficiary",
     members: [
       {
         name: "address",
         type: "core::starknet::contract_address::ContractAddress",
       },
       {
-        name: "percentage",
-        type: "core::integer::u8",
-      },
-      {
-        name: "email_hash",
+        name: "name",
         type: "core::byte_array::ByteArray",
       },
       {
-        name: "age",
-        type: "core::integer::u8",
+        name: "email",
+        type: "core::byte_array::ByteArray",
       },
       {
         name: "relationship",
         type: "core::byte_array::ByteArray",
       },
-    ],
-  },
-  {
-    name: "inheritx_contracts::base::types::KYCStatus",
-    type: "enum",
-    variants: [
       {
-        name: "Pending",
-        type: "()",
-      },
-      {
-        name: "Approved",
-        type: "()",
-      },
-      {
-        name: "Rejected",
-        type: "()",
-      },
-      {
-        name: "Unknown",
-        type: "()",
-      },
-    ],
-  },
-  {
-    name: "inheritx_contracts::base::types::Beneficiary",
-    type: "struct",
-    members: [
-      {
-        name: "address",
-        type: "core::starknet::contract_address::ContractAddress",
-      },
-      {
-        name: "email_hash",
+        name: "claim_code_hash",
         type: "core::byte_array::ByteArray",
-      },
-      {
-        name: "percentage",
-        type: "core::integer::u8",
       },
       {
         name: "has_claimed",
@@ -124,35 +110,11 @@ export const InheritXAbi: Abi = [
         name: "claimed_amount",
         type: "core::integer::u256",
       },
-      {
-        name: "claim_code_hash",
-        type: "core::byte_array::ByteArray",
-      },
-      {
-        name: "added_at",
-        type: "core::integer::u64",
-      },
-      {
-        name: "kyc_status",
-        type: "inheritx_contracts::base::types::KYCStatus",
-      },
-      {
-        name: "relationship",
-        type: "core::byte_array::ByteArray",
-      },
-      {
-        name: "age",
-        type: "core::integer::u8",
-      },
-      {
-        name: "is_minor",
-        type: "core::bool",
-      },
     ],
   },
   {
-    name: "inheritx_contracts::base::types::AssetType",
     type: "enum",
+    name: "inheritx_contracts::base::types::AssetType",
     variants: [
       {
         name: "STRK",
@@ -173,8 +135,8 @@ export const InheritXAbi: Abi = [
     ],
   },
   {
-    name: "inheritx_contracts::base::types::PlanStatus",
     type: "enum",
+    name: "inheritx_contracts::base::types::PlanStatus",
     variants: [
       {
         name: "Active",
@@ -211,8 +173,8 @@ export const InheritXAbi: Abi = [
     ],
   },
   {
-    name: "inheritx_contracts::base::types::InheritancePlan",
     type: "struct",
+    name: "inheritx_contracts::base::types::InheritancePlan",
     members: [
       {
         name: "id",
@@ -305,8 +267,130 @@ export const InheritXAbi: Abi = [
     ],
   },
   {
-    name: "inheritx_contracts::base::types::EscrowAccount",
+    type: "enum",
+    name: "inheritx_contracts::base::types::DistributionMethod",
+    variants: [
+      {
+        name: "LumpSum",
+        type: "()",
+      },
+      {
+        name: "Quarterly",
+        type: "()",
+      },
+      {
+        name: "Yearly",
+        type: "()",
+      },
+      {
+        name: "Monthly",
+        type: "()",
+      },
+    ],
+  },
+  {
+    type: "enum",
+    name: "inheritx_contracts::base::types::DisbursementStatus",
+    variants: [
+      {
+        name: "Pending",
+        type: "()",
+      },
+      {
+        name: "Active",
+        type: "()",
+      },
+      {
+        name: "Paused",
+        type: "()",
+      },
+      {
+        name: "Completed",
+        type: "()",
+      },
+      {
+        name: "Cancelled",
+        type: "()",
+      },
+    ],
+  },
+  {
     type: "struct",
+    name: "inheritx_contracts::base::types::DistributionPlan",
+    members: [
+      {
+        name: "plan_id",
+        type: "core::integer::u256",
+      },
+      {
+        name: "owner",
+        type: "core::starknet::contract_address::ContractAddress",
+      },
+      {
+        name: "total_amount",
+        type: "core::integer::u256",
+      },
+      {
+        name: "distribution_method",
+        type: "inheritx_contracts::base::types::DistributionMethod",
+      },
+      {
+        name: "period_amount",
+        type: "core::integer::u256",
+      },
+      {
+        name: "start_date",
+        type: "core::integer::u64",
+      },
+      {
+        name: "end_date",
+        type: "core::integer::u64",
+      },
+      {
+        name: "total_periods",
+        type: "core::integer::u8",
+      },
+      {
+        name: "completed_periods",
+        type: "core::integer::u8",
+      },
+      {
+        name: "next_disbursement_date",
+        type: "core::integer::u64",
+      },
+      {
+        name: "is_active",
+        type: "core::bool",
+      },
+      {
+        name: "beneficiaries_count",
+        type: "core::integer::u8",
+      },
+      {
+        name: "disbursement_status",
+        type: "inheritx_contracts::base::types::DisbursementStatus",
+      },
+      {
+        name: "created_at",
+        type: "core::integer::u64",
+      },
+      {
+        name: "last_activity",
+        type: "core::integer::u64",
+      },
+      {
+        name: "paused_at",
+        type: "core::integer::u64",
+      },
+      {
+        name: "resumed_at",
+        type: "core::integer::u64",
+      },
+    ],
+  },
+  {
+    type: "struct",
+    name: "inheritx_contracts::base::types::EscrowAccount",
     members: [
       {
         name: "id",
@@ -367,8 +451,38 @@ export const InheritXAbi: Abi = [
     ],
   },
   {
-    name: "inheritx_contracts::base::types::InactivityMonitor",
     type: "struct",
+    name: "inheritx_contracts::base::types::PlanDetails",
+    members: [
+      {
+        name: "plan",
+        type: "inheritx_contracts::base::types::InheritancePlan",
+      },
+      {
+        name: "plan_name",
+        type: "core::byte_array::ByteArray",
+      },
+      {
+        name: "plan_description",
+        type: "core::byte_array::ByteArray",
+      },
+      {
+        name: "beneficiaries",
+        type: "core::array::Array::<inheritx_contracts::base::types::Beneficiary>",
+      },
+      {
+        name: "distribution_plan",
+        type: "inheritx_contracts::base::types::DistributionPlan",
+      },
+      {
+        name: "escrow_account",
+        type: "inheritx_contracts::base::types::EscrowAccount",
+      },
+    ],
+  },
+  {
+    type: "struct",
+    name: "inheritx_contracts::base::types::InactivityMonitor",
     members: [
       {
         name: "wallet_address",
@@ -409,8 +523,8 @@ export const InheritXAbi: Abi = [
     ],
   },
   {
-    name: "inheritx_contracts::base::types::BasicDistributionSchedule",
     type: "struct",
+    name: "inheritx_contracts::base::types::BasicDistributionSchedule",
     members: [
       {
         name: "phase",
@@ -439,8 +553,8 @@ export const InheritXAbi: Abi = [
     ],
   },
   {
-    name: "inheritx_contracts::base::types::AssetAllocation",
     type: "struct",
+    name: "inheritx_contracts::base::types::AssetAllocation",
     members: [
       {
         name: "beneficiary_address",
@@ -481,8 +595,8 @@ export const InheritXAbi: Abi = [
     ],
   },
   {
-    name: "inheritx_contracts::base::types::DisbursementBeneficiary",
     type: "struct",
+    name: "inheritx_contracts::base::types::DisbursementBeneficiary",
     members: [
       {
         name: "beneficiary_id",
@@ -519,96 +633,8 @@ export const InheritXAbi: Abi = [
     ],
   },
   {
-    name: "inheritx_contracts::base::types::DisbursementStatus",
-    type: "enum",
-    variants: [
-      {
-        name: "Pending",
-        type: "()",
-      },
-      {
-        name: "Active",
-        type: "()",
-      },
-      {
-        name: "Paused",
-        type: "()",
-      },
-      {
-        name: "Completed",
-        type: "()",
-      },
-      {
-        name: "Cancelled",
-        type: "()",
-      },
-    ],
-  },
-  {
-    name: "inheritx_contracts::base::types::MonthlyDisbursementPlan",
     type: "struct",
-    members: [
-      {
-        name: "plan_id",
-        type: "core::integer::u256",
-      },
-      {
-        name: "owner",
-        type: "core::starknet::contract_address::ContractAddress",
-      },
-      {
-        name: "total_amount",
-        type: "core::integer::u256",
-      },
-      {
-        name: "monthly_amount",
-        type: "core::integer::u256",
-      },
-      {
-        name: "start_month",
-        type: "core::integer::u64",
-      },
-      {
-        name: "end_month",
-        type: "core::integer::u64",
-      },
-      {
-        name: "total_months",
-        type: "core::integer::u32",
-      },
-      {
-        name: "completed_months",
-        type: "core::integer::u32",
-      },
-      {
-        name: "next_disbursement_date",
-        type: "core::integer::u64",
-      },
-      {
-        name: "is_active",
-        type: "core::bool",
-      },
-      {
-        name: "beneficiaries_count",
-        type: "core::integer::u8",
-      },
-      {
-        name: "disbursement_status",
-        type: "inheritx_contracts::base::types::DisbursementStatus",
-      },
-      {
-        name: "created_at",
-        type: "core::integer::u64",
-      },
-      {
-        name: "last_activity",
-        type: "core::integer::u64",
-      },
-    ],
-  },
-  {
     name: "inheritx_contracts::base::types::SecuritySettings",
-    type: "struct",
     members: [
       {
         name: "max_beneficiaries",
@@ -649,16 +675,36 @@ export const InheritXAbi: Abi = [
     ],
   },
   {
-    name: "inheritx_contracts::interfaces::iplans::IInheritXPlans",
     type: "interface",
+    name: "inheritx_contracts::interfaces::iplans::IInheritXPlans",
     items: [
       {
+        type: "function",
         name: "create_inheritance_plan",
-        type: "function",
         inputs: [
           {
-            name: "beneficiaries",
-            type: "core::array::Array::<core::starknet::contract_address::ContractAddress>",
+            name: "plan_name",
+            type: "core::byte_array::ByteArray",
+          },
+          {
+            name: "plan_description",
+            type: "core::byte_array::ByteArray",
+          },
+          {
+            name: "beneficiary_name",
+            type: "core::byte_array::ByteArray",
+          },
+          {
+            name: "beneficiary_relationship",
+            type: "core::byte_array::ByteArray",
+          },
+          {
+            name: "beneficiary_email",
+            type: "core::byte_array::ByteArray",
+          },
+          {
+            name: "beneficiary_address",
+            type: "core::starknet::contract_address::ContractAddress",
           },
           {
             name: "asset_type",
@@ -669,36 +715,12 @@ export const InheritXAbi: Abi = [
             type: "core::integer::u256",
           },
           {
-            name: "nft_token_id",
-            type: "core::integer::u256",
-          },
-          {
-            name: "nft_contract",
-            type: "core::starknet::contract_address::ContractAddress",
-          },
-          {
-            name: "timeframe",
-            type: "core::integer::u64",
-          },
-          {
-            name: "guardian",
-            type: "core::starknet::contract_address::ContractAddress",
-          },
-          {
-            name: "encrypted_details",
-            type: "core::byte_array::ByteArray",
-          },
-          {
-            name: "security_level",
+            name: "distribution_method",
             type: "core::integer::u8",
           },
           {
-            name: "auto_execute",
-            type: "core::bool",
-          },
-          {
-            name: "emergency_contacts",
-            type: "core::array::Array::<core::starknet::contract_address::ContractAddress>",
+            name: "claim_code",
+            type: "core::byte_array::ByteArray",
           },
         ],
         outputs: [
@@ -709,64 +731,8 @@ export const InheritXAbi: Abi = [
         state_mutability: "external",
       },
       {
-        name: "create_inheritance_plan_with_percentages",
         type: "function",
-        inputs: [
-          {
-            name: "beneficiary_data",
-            type: "core::array::Array::<inheritx_contracts::base::types::BeneficiaryData>",
-          },
-          {
-            name: "asset_type",
-            type: "core::integer::u8",
-          },
-          {
-            name: "asset_amount",
-            type: "core::integer::u256",
-          },
-          {
-            name: "nft_token_id",
-            type: "core::integer::u256",
-          },
-          {
-            name: "nft_contract",
-            type: "core::starknet::contract_address::ContractAddress",
-          },
-          {
-            name: "timeframe",
-            type: "core::integer::u64",
-          },
-          {
-            name: "guardian",
-            type: "core::starknet::contract_address::ContractAddress",
-          },
-          {
-            name: "encrypted_details",
-            type: "core::byte_array::ByteArray",
-          },
-          {
-            name: "security_level",
-            type: "core::integer::u8",
-          },
-          {
-            name: "auto_execute",
-            type: "core::bool",
-          },
-          {
-            name: "emergency_contacts",
-            type: "core::array::Array::<core::starknet::contract_address::ContractAddress>",
-          },
-        ],
-        outputs: [
-          {
-            type: "core::integer::u256",
-          },
-        ],
-        state_mutability: "external",
-      },
-      {
         name: "add_beneficiary_to_plan",
-        type: "function",
         inputs: [
           {
             name: "plan_id",
@@ -777,16 +743,12 @@ export const InheritXAbi: Abi = [
             type: "core::starknet::contract_address::ContractAddress",
           },
           {
-            name: "percentage",
-            type: "core::integer::u8",
-          },
-          {
-            name: "email_hash",
+            name: "name",
             type: "core::byte_array::ByteArray",
           },
           {
-            name: "age",
-            type: "core::integer::u8",
+            name: "email",
+            type: "core::byte_array::ByteArray",
           },
           {
             name: "relationship",
@@ -797,8 +759,8 @@ export const InheritXAbi: Abi = [
         state_mutability: "external",
       },
       {
-        name: "remove_beneficiary_from_plan",
         type: "function",
+        name: "remove_beneficiary_from_plan",
         inputs: [
           {
             name: "plan_id",
@@ -817,8 +779,8 @@ export const InheritXAbi: Abi = [
         state_mutability: "external",
       },
       {
-        name: "update_beneficiary_percentages",
         type: "function",
+        name: "update_beneficiary_percentages",
         inputs: [
           {
             name: "plan_id",
@@ -833,8 +795,8 @@ export const InheritXAbi: Abi = [
         state_mutability: "external",
       },
       {
-        name: "get_beneficiary_percentages",
         type: "function",
+        name: "get_beneficiary_percentages",
         inputs: [
           {
             name: "plan_id",
@@ -849,8 +811,8 @@ export const InheritXAbi: Abi = [
         state_mutability: "view",
       },
       {
-        name: "get_beneficiaries",
         type: "function",
+        name: "get_beneficiaries",
         inputs: [
           {
             name: "plan_id",
@@ -865,8 +827,8 @@ export const InheritXAbi: Abi = [
         state_mutability: "view",
       },
       {
-        name: "get_plan_count",
         type: "function",
+        name: "get_plan_count",
         inputs: [],
         outputs: [
           {
@@ -876,8 +838,8 @@ export const InheritXAbi: Abi = [
         state_mutability: "view",
       },
       {
-        name: "get_inheritance_plan",
         type: "function",
+        name: "get_inheritance_plan",
         inputs: [
           {
             name: "plan_id",
@@ -886,14 +848,14 @@ export const InheritXAbi: Abi = [
         ],
         outputs: [
           {
-            type: "inheritx_contracts::base::types::InheritancePlan",
+            type: "inheritx_contracts::base::types::PlanDetails",
           },
         ],
         state_mutability: "view",
       },
       {
-        name: "get_escrow_details",
         type: "function",
+        name: "get_escrow_details",
         inputs: [
           {
             name: "plan_id",
@@ -908,8 +870,8 @@ export const InheritXAbi: Abi = [
         state_mutability: "view",
       },
       {
-        name: "get_inactivity_monitor",
         type: "function",
+        name: "get_inactivity_monitor",
         inputs: [
           {
             name: "wallet_address",
@@ -924,8 +886,8 @@ export const InheritXAbi: Abi = [
         state_mutability: "view",
       },
       {
-        name: "get_beneficiary_count",
         type: "function",
+        name: "get_beneficiary_count",
         inputs: [
           {
             name: "basic_info_id",
@@ -940,8 +902,72 @@ export const InheritXAbi: Abi = [
         state_mutability: "view",
       },
       {
-        name: "create_plan_basic_info",
         type: "function",
+        name: "get_plan_name",
+        inputs: [
+          {
+            name: "plan_id",
+            type: "core::integer::u256",
+          },
+        ],
+        outputs: [
+          {
+            type: "core::byte_array::ByteArray",
+          },
+        ],
+        state_mutability: "view",
+      },
+      {
+        type: "function",
+        name: "get_plan_description",
+        inputs: [
+          {
+            name: "plan_id",
+            type: "core::integer::u256",
+          },
+        ],
+        outputs: [
+          {
+            type: "core::byte_array::ByteArray",
+          },
+        ],
+        state_mutability: "view",
+      },
+      {
+        type: "function",
+        name: "get_plan_summary",
+        inputs: [
+          {
+            name: "plan_id",
+            type: "core::integer::u256",
+          },
+        ],
+        outputs: [
+          {
+            type: "(core::byte_array::ByteArray, core::byte_array::ByteArray, core::integer::u256, inheritx_contracts::base::types::AssetType, core::integer::u64)",
+          },
+        ],
+        state_mutability: "view",
+      },
+      {
+        type: "function",
+        name: "hash_claim_code",
+        inputs: [
+          {
+            name: "code",
+            type: "core::byte_array::ByteArray",
+          },
+        ],
+        outputs: [
+          {
+            type: "core::byte_array::ByteArray",
+          },
+        ],
+        state_mutability: "view",
+      },
+      {
+        type: "function",
+        name: "create_plan_basic_info",
         inputs: [
           {
             name: "plan_name",
@@ -963,6 +989,10 @@ export const InheritXAbi: Abi = [
             name: "initial_beneficiary_email",
             type: "core::byte_array::ByteArray",
           },
+          {
+            name: "claim_code",
+            type: "core::byte_array::ByteArray",
+          },
         ],
         outputs: [
           {
@@ -972,8 +1002,8 @@ export const InheritXAbi: Abi = [
         state_mutability: "external",
       },
       {
-        name: "set_asset_allocation",
         type: "function",
+        name: "set_asset_allocation",
         inputs: [
           {
             name: "basic_info_id",
@@ -987,13 +1017,17 @@ export const InheritXAbi: Abi = [
             name: "asset_allocations",
             type: "core::array::Array::<inheritx_contracts::base::types::AssetAllocation>",
           },
+          {
+            name: "claim_codes",
+            type: "core::array::Array::<core::byte_array::ByteArray>",
+          },
         ],
         outputs: [],
         state_mutability: "external",
       },
       {
+        type: "function",
         name: "mark_rules_conditions_set",
-        type: "function",
         inputs: [
           {
             name: "basic_info_id",
@@ -1004,8 +1038,8 @@ export const InheritXAbi: Abi = [
         state_mutability: "external",
       },
       {
+        type: "function",
         name: "mark_verification_completed",
-        type: "function",
         inputs: [
           {
             name: "basic_info_id",
@@ -1016,8 +1050,8 @@ export const InheritXAbi: Abi = [
         state_mutability: "external",
       },
       {
+        type: "function",
         name: "mark_preview_ready",
-        type: "function",
         inputs: [
           {
             name: "basic_info_id",
@@ -1028,8 +1062,8 @@ export const InheritXAbi: Abi = [
         state_mutability: "external",
       },
       {
-        name: "activate_inheritance_plan",
         type: "function",
+        name: "activate_inheritance_plan",
         inputs: [
           {
             name: "basic_info_id",
@@ -1044,8 +1078,8 @@ export const InheritXAbi: Abi = [
         state_mutability: "external",
       },
       {
-        name: "extend_plan_timeframe",
         type: "function",
+        name: "extend_plan_timeframe",
         inputs: [
           {
             name: "plan_id",
@@ -1060,8 +1094,8 @@ export const InheritXAbi: Abi = [
         state_mutability: "external",
       },
       {
-        name: "update_plan_parameters",
         type: "function",
+        name: "update_plan_parameters",
         inputs: [
           {
             name: "plan_id",
@@ -1084,8 +1118,8 @@ export const InheritXAbi: Abi = [
         state_mutability: "external",
       },
       {
-        name: "update_inactivity_threshold",
         type: "function",
+        name: "update_inactivity_threshold",
         inputs: [
           {
             name: "plan_id",
@@ -1100,23 +1134,27 @@ export const InheritXAbi: Abi = [
         state_mutability: "external",
       },
       {
-        name: "create_monthly_disbursement_plan",
         type: "function",
+        name: "create_distribution_plan",
         inputs: [
+          {
+            name: "distribution_method",
+            type: "core::integer::u8",
+          },
           {
             name: "total_amount",
             type: "core::integer::u256",
           },
           {
-            name: "monthly_amount",
+            name: "period_amount",
             type: "core::integer::u256",
           },
           {
-            name: "start_month",
+            name: "start_date",
             type: "core::integer::u64",
           },
           {
-            name: "end_month",
+            name: "end_date",
             type: "core::integer::u64",
           },
           {
@@ -1132,8 +1170,8 @@ export const InheritXAbi: Abi = [
         state_mutability: "external",
       },
       {
-        name: "execute_monthly_disbursement",
         type: "function",
+        name: "execute_distribution",
         inputs: [
           {
             name: "plan_id",
@@ -1144,8 +1182,8 @@ export const InheritXAbi: Abi = [
         state_mutability: "external",
       },
       {
-        name: "pause_monthly_disbursement",
         type: "function",
+        name: "pause_distribution",
         inputs: [
           {
             name: "plan_id",
@@ -1160,8 +1198,8 @@ export const InheritXAbi: Abi = [
         state_mutability: "external",
       },
       {
-        name: "resume_monthly_disbursement",
         type: "function",
+        name: "resume_distribution",
         inputs: [
           {
             name: "plan_id",
@@ -1172,8 +1210,8 @@ export const InheritXAbi: Abi = [
         state_mutability: "external",
       },
       {
-        name: "get_monthly_disbursement_status",
         type: "function",
+        name: "get_distribution_status",
         inputs: [
           {
             name: "plan_id",
@@ -1182,14 +1220,14 @@ export const InheritXAbi: Abi = [
         ],
         outputs: [
           {
-            type: "inheritx_contracts::base::types::MonthlyDisbursementPlan",
+            type: "inheritx_contracts::base::types::DistributionPlan",
           },
         ],
         state_mutability: "view",
       },
       {
-        name: "create_inactivity_monitor",
         type: "function",
+        name: "create_inactivity_monitor",
         inputs: [
           {
             name: "wallet_address",
@@ -1212,8 +1250,8 @@ export const InheritXAbi: Abi = [
         state_mutability: "external",
       },
       {
-        name: "update_wallet_activity",
         type: "function",
+        name: "update_wallet_activity",
         inputs: [
           {
             name: "wallet_address",
@@ -1224,8 +1262,8 @@ export const InheritXAbi: Abi = [
         state_mutability: "external",
       },
       {
-        name: "check_inactivity_status",
         type: "function",
+        name: "check_inactivity_status",
         inputs: [
           {
             name: "plan_id",
@@ -1240,8 +1278,8 @@ export const InheritXAbi: Abi = [
         state_mutability: "view",
       },
       {
-        name: "get_security_settings",
         type: "function",
+        name: "get_security_settings",
         inputs: [],
         outputs: [
           {
@@ -1251,8 +1289,8 @@ export const InheritXAbi: Abi = [
         state_mutability: "view",
       },
       {
-        name: "update_security_settings",
         type: "function",
+        name: "update_security_settings",
         inputs: [
           {
             name: "max_beneficiaries",
@@ -1297,8 +1335,8 @@ export const InheritXAbi: Abi = [
     ],
   },
   {
-    name: "constructor",
     type: "constructor",
+    name: "constructor",
     inputs: [
       {
         name: "admin",
@@ -1319,154 +1357,238 @@ export const InheritXAbi: Abi = [
     ],
   },
   {
-    kind: "struct",
-    name: "openzeppelin_upgrades::upgradeable::UpgradeableComponent::Upgraded",
     type: "event",
+    name: "openzeppelin_upgrades::upgradeable::UpgradeableComponent::Upgraded",
+    kind: "struct",
     members: [
       {
-        kind: "data",
         name: "class_hash",
         type: "core::starknet::class_hash::ClassHash",
+        kind: "data",
       },
     ],
   },
   {
-    kind: "enum",
-    name: "openzeppelin_upgrades::upgradeable::UpgradeableComponent::Event",
     type: "event",
+    name: "openzeppelin_upgrades::upgradeable::UpgradeableComponent::Event",
+    kind: "enum",
     variants: [
       {
-        kind: "nested",
         name: "Upgraded",
         type: "openzeppelin_upgrades::upgradeable::UpgradeableComponent::Upgraded",
+        kind: "nested",
       },
     ],
   },
   {
-    kind: "struct",
+    type: "event",
     name: "openzeppelin_security::pausable::PausableComponent::Paused",
-    type: "event",
-    members: [
-      {
-        kind: "data",
-        name: "account",
-        type: "core::starknet::contract_address::ContractAddress",
-      },
-    ],
-  },
-  {
     kind: "struct",
-    name: "openzeppelin_security::pausable::PausableComponent::Unpaused",
-    type: "event",
     members: [
       {
-        kind: "data",
         name: "account",
         type: "core::starknet::contract_address::ContractAddress",
+        kind: "data",
       },
     ],
   },
   {
-    kind: "enum",
-    name: "openzeppelin_security::pausable::PausableComponent::Event",
     type: "event",
+    name: "openzeppelin_security::pausable::PausableComponent::Unpaused",
+    kind: "struct",
+    members: [
+      {
+        name: "account",
+        type: "core::starknet::contract_address::ContractAddress",
+        kind: "data",
+      },
+    ],
+  },
+  {
+    type: "event",
+    name: "openzeppelin_security::pausable::PausableComponent::Event",
+    kind: "enum",
     variants: [
       {
-        kind: "nested",
         name: "Paused",
         type: "openzeppelin_security::pausable::PausableComponent::Paused",
+        kind: "nested",
       },
       {
-        kind: "nested",
         name: "Unpaused",
         type: "openzeppelin_security::pausable::PausableComponent::Unpaused",
+        kind: "nested",
       },
     ],
   },
   {
-    kind: "struct",
-    name: "inheritx_contracts::base::events::BasicPlanInfoCreated",
     type: "event",
+    name: "inheritx_contracts::base::events::PlanCreated",
+    kind: "struct",
     members: [
       {
-        kind: "data",
-        name: "basic_info_id",
+        name: "plan_id",
         type: "core::integer::u256",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "owner",
         type: "core::starknet::contract_address::ContractAddress",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "plan_name",
         type: "core::byte_array::ByteArray",
+        kind: "data",
       },
       {
+        name: "plan_description",
+        type: "core::byte_array::ByteArray",
         kind: "data",
+      },
+      {
+        name: "beneficiary_name",
+        type: "core::byte_array::ByteArray",
+        kind: "data",
+      },
+      {
+        name: "beneficiary_relationship",
+        type: "core::byte_array::ByteArray",
+        kind: "data",
+      },
+      {
+        name: "beneficiary_email",
+        type: "core::byte_array::ByteArray",
+        kind: "data",
+      },
+      {
+        name: "asset_type",
+        type: "core::integer::u8",
+        kind: "data",
+      },
+      {
+        name: "asset_amount",
+        type: "core::integer::u256",
+        kind: "data",
+      },
+      {
+        name: "distribution_method",
+        type: "core::integer::u8",
+        kind: "data",
+      },
+      {
         name: "created_at",
         type: "core::integer::u64",
+        kind: "data",
       },
     ],
   },
   {
-    kind: "struct",
-    name: "inheritx_contracts::base::events::AssetAllocationSet",
     type: "event",
+    name: "inheritx_contracts::base::events::BasicPlanInfoCreated",
+    kind: "struct",
     members: [
       {
-        kind: "data",
-        name: "plan_id",
+        name: "basic_info_id",
         type: "core::integer::u256",
+        kind: "data",
       },
       {
+        name: "owner",
+        type: "core::starknet::contract_address::ContractAddress",
         kind: "data",
+      },
+      {
+        name: "plan_name",
+        type: "core::byte_array::ByteArray",
+        kind: "data",
+      },
+      {
+        name: "created_at",
+        type: "core::integer::u64",
+        kind: "data",
+      },
+    ],
+  },
+  {
+    type: "event",
+    name: "inheritx_contracts::base::events::AssetAllocationSet",
+    kind: "struct",
+    members: [
+      {
+        name: "plan_id",
+        type: "core::integer::u256",
+        kind: "data",
+      },
+      {
         name: "beneficiary_count",
         type: "core::integer::u8",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "total_percentage",
         type: "core::integer::u8",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "set_at",
         type: "core::integer::u64",
+        kind: "data",
       },
     ],
   },
   {
-    kind: "struct",
-    name: "inheritx_contracts::base::events::RulesConditionsSet",
     type: "event",
+    name: "inheritx_contracts::base::events::RulesConditionsSet",
+    kind: "struct",
     members: [
       {
-        kind: "data",
         name: "plan_id",
         type: "core::integer::u256",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "guardian",
         type: "core::starknet::contract_address::ContractAddress",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "auto_execute",
         type: "core::bool",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "set_at",
         type: "core::integer::u64",
+        kind: "data",
       },
     ],
   },
   {
-    name: "inheritx_contracts::base::types::ComplianceStatus",
     type: "enum",
+    name: "inheritx_contracts::base::types::KYCStatus",
+    variants: [
+      {
+        name: "Pending",
+        type: "()",
+      },
+      {
+        name: "Approved",
+        type: "()",
+      },
+      {
+        name: "Rejected",
+        type: "()",
+      },
+      {
+        name: "Unknown",
+        type: "()",
+      },
+    ],
+  },
+  {
+    type: "enum",
+    name: "inheritx_contracts::base::types::ComplianceStatus",
     variants: [
       {
         name: "Pending",
@@ -1487,35 +1609,35 @@ export const InheritXAbi: Abi = [
     ],
   },
   {
-    kind: "struct",
-    name: "inheritx_contracts::base::events::VerificationCompleted",
     type: "event",
+    name: "inheritx_contracts::base::events::VerificationCompleted",
+    kind: "struct",
     members: [
       {
-        kind: "data",
         name: "plan_id",
         type: "core::integer::u256",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "kyc_status",
         type: "inheritx_contracts::base::types::KYCStatus",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "compliance_status",
         type: "inheritx_contracts::base::types::ComplianceStatus",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "verified_at",
         type: "core::integer::u64",
+        kind: "data",
       },
     ],
   },
   {
-    name: "inheritx_contracts::base::types::ValidationStatus",
     type: "enum",
+    name: "inheritx_contracts::base::types::ValidationStatus",
     variants: [
       {
         name: "Pending",
@@ -1540,57 +1662,57 @@ export const InheritXAbi: Abi = [
     ],
   },
   {
-    kind: "struct",
-    name: "inheritx_contracts::base::events::PlanPreviewGenerated",
     type: "event",
+    name: "inheritx_contracts::base::events::PlanPreviewGenerated",
+    kind: "struct",
     members: [
       {
-        kind: "data",
         name: "plan_id",
         type: "core::integer::u256",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "validation_status",
         type: "inheritx_contracts::base::types::ValidationStatus",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "activation_ready",
         type: "core::bool",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "generated_at",
         type: "core::integer::u64",
+        kind: "data",
       },
     ],
   },
   {
-    kind: "struct",
-    name: "inheritx_contracts::base::events::PlanActivated",
     type: "event",
+    name: "inheritx_contracts::base::events::PlanActivated",
+    kind: "struct",
     members: [
       {
-        kind: "data",
         name: "plan_id",
         type: "core::integer::u256",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "activated_by",
         type: "core::starknet::contract_address::ContractAddress",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "activated_at",
         type: "core::integer::u64",
+        kind: "data",
       },
     ],
   },
   {
-    name: "inheritx_contracts::base::types::PlanCreationStatus",
     type: "enum",
+    name: "inheritx_contracts::base::types::PlanCreationStatus",
     variants: [
       {
         name: "BasicInfoCreated",
@@ -1619,35 +1741,35 @@ export const InheritXAbi: Abi = [
     ],
   },
   {
-    kind: "struct",
-    name: "inheritx_contracts::base::events::PlanCreationStepCompleted",
     type: "event",
+    name: "inheritx_contracts::base::events::PlanCreationStepCompleted",
+    kind: "struct",
     members: [
       {
-        kind: "data",
         name: "plan_id",
         type: "core::integer::u256",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "step",
         type: "inheritx_contracts::base::types::PlanCreationStatus",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "completed_at",
         type: "core::integer::u64",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "completed_by",
         type: "core::starknet::contract_address::ContractAddress",
+        kind: "data",
       },
     ],
   },
   {
-    name: "inheritx_contracts::base::types::ActivityType",
     type: "enum",
+    name: "inheritx_contracts::base::types::ActivityType",
     variants: [
       {
         name: "PlanCreated",
@@ -1716,612 +1838,602 @@ export const InheritXAbi: Abi = [
     ],
   },
   {
-    kind: "struct",
-    name: "inheritx_contracts::base::events::ActivityLogged",
     type: "event",
+    name: "inheritx_contracts::base::events::ActivityLogged",
+    kind: "struct",
     members: [
       {
-        kind: "data",
         name: "activity_id",
         type: "core::integer::u256",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "plan_id",
         type: "core::integer::u256",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "user_address",
         type: "core::starknet::contract_address::ContractAddress",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "activity_type",
         type: "inheritx_contracts::base::types::ActivityType",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "timestamp",
         type: "core::integer::u64",
+        kind: "data",
       },
     ],
   },
   {
-    kind: "struct",
-    name: "inheritx_contracts::base::events::PlanStatusUpdated",
     type: "event",
+    name: "inheritx_contracts::base::events::PlanStatusUpdated",
+    kind: "struct",
     members: [
       {
-        kind: "data",
         name: "plan_id",
         type: "core::integer::u256",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "old_status",
         type: "inheritx_contracts::base::types::PlanStatus",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "new_status",
         type: "inheritx_contracts::base::types::PlanStatus",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "updated_by",
         type: "core::starknet::contract_address::ContractAddress",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "updated_at",
         type: "core::integer::u64",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "reason",
         type: "core::byte_array::ByteArray",
+        kind: "data",
       },
     ],
   },
   {
-    kind: "struct",
-    name: "inheritx_contracts::base::events::BeneficiaryModified",
     type: "event",
+    name: "inheritx_contracts::base::events::BeneficiaryModified",
+    kind: "struct",
     members: [
       {
-        kind: "data",
         name: "plan_id",
         type: "core::integer::u256",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "beneficiary_address",
         type: "core::starknet::contract_address::ContractAddress",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "modification_type",
         type: "core::byte_array::ByteArray",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "modified_at",
         type: "core::integer::u64",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "modified_by",
         type: "core::starknet::contract_address::ContractAddress",
+        kind: "data",
       },
     ],
   },
   {
-    kind: "struct",
-    name: "inheritx_contracts::base::events::MonthlyDisbursementPlanCreated",
     type: "event",
+    name: "inheritx_contracts::base::events::DistributionPlanCreated",
+    kind: "struct",
     members: [
       {
-        kind: "data",
         name: "plan_id",
         type: "core::integer::u256",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "owner",
         type: "core::starknet::contract_address::ContractAddress",
+        kind: "data",
       },
       {
+        name: "distribution_method",
+        type: "core::integer::u8",
         kind: "data",
+      },
+      {
         name: "total_amount",
         type: "core::integer::u256",
+        kind: "data",
       },
       {
-        kind: "data",
-        name: "monthly_amount",
+        name: "period_amount",
         type: "core::integer::u256",
+        kind: "data",
       },
       {
-        kind: "data",
-        name: "start_month",
+        name: "start_date",
         type: "core::integer::u64",
+        kind: "data",
       },
       {
-        kind: "data",
-        name: "end_month",
+        name: "end_date",
         type: "core::integer::u64",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "created_at",
         type: "core::integer::u64",
+        kind: "data",
       },
     ],
   },
   {
-    kind: "struct",
-    name: "inheritx_contracts::base::events::MonthlyDisbursementExecuted",
     type: "event",
+    name: "inheritx_contracts::base::events::DistributionExecuted",
+    kind: "struct",
     members: [
       {
-        kind: "data",
-        name: "disbursement_id",
-        type: "core::integer::u256",
-      },
-      {
-        kind: "data",
         name: "plan_id",
         type: "core::integer::u256",
+        kind: "data",
       },
       {
+        name: "record_id",
+        type: "core::integer::u256",
         kind: "data",
-        name: "month",
+      },
+      {
+        name: "period",
         type: "core::integer::u64",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "amount",
         type: "core::integer::u256",
+        kind: "data",
       },
       {
-        kind: "data",
-        name: "beneficiaries_count",
-        type: "core::integer::u8",
-      },
-      {
-        kind: "data",
         name: "executed_at",
         type: "core::integer::u64",
+        kind: "data",
       },
       {
+        name: "beneficiaries_count",
+        type: "core::integer::u8",
         kind: "data",
-        name: "transaction_hash",
-        type: "core::byte_array::ByteArray",
       },
     ],
   },
   {
-    kind: "struct",
-    name: "inheritx_contracts::base::events::MonthlyDisbursementPaused",
     type: "event",
+    name: "inheritx_contracts::base::events::DistributionPaused",
+    kind: "struct",
     members: [
       {
-        kind: "data",
         name: "plan_id",
         type: "core::integer::u256",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "paused_at",
         type: "core::integer::u64",
+        kind: "data",
       },
       {
-        kind: "data",
-        name: "paused_by",
-        type: "core::starknet::contract_address::ContractAddress",
-      },
-      {
-        kind: "data",
         name: "reason",
         type: "core::byte_array::ByteArray",
+        kind: "data",
       },
     ],
   },
   {
-    kind: "struct",
-    name: "inheritx_contracts::base::events::MonthlyDisbursementResumed",
     type: "event",
+    name: "inheritx_contracts::base::events::DistributionResumed",
+    kind: "struct",
     members: [
       {
-        kind: "data",
         name: "plan_id",
         type: "core::integer::u256",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "resumed_at",
         type: "core::integer::u64",
-      },
-      {
         kind: "data",
-        name: "resumed_by",
-        type: "core::starknet::contract_address::ContractAddress",
       },
     ],
   },
   {
-    kind: "struct",
-    name: "inheritx_contracts::base::events::MonthlyDisbursementCancelled",
     type: "event",
+    name: "inheritx_contracts::base::events::DistributionCancelled",
+    kind: "struct",
     members: [
       {
-        kind: "data",
         name: "plan_id",
         type: "core::integer::u256",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "cancelled_at",
         type: "core::integer::u64",
+        kind: "data",
       },
       {
-        kind: "data",
-        name: "cancelled_by",
-        type: "core::starknet::contract_address::ContractAddress",
-      },
-      {
-        kind: "data",
         name: "reason",
         type: "core::byte_array::ByteArray",
+        kind: "data",
       },
     ],
   },
   {
-    kind: "struct",
-    name: "inheritx_contracts::base::events::DisbursementBeneficiaryAdded",
     type: "event",
+    name: "inheritx_contracts::base::events::DisbursementBeneficiaryAdded",
+    kind: "struct",
     members: [
       {
-        kind: "data",
         name: "plan_id",
         type: "core::integer::u256",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "beneficiary_address",
         type: "core::starknet::contract_address::ContractAddress",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "percentage",
         type: "core::integer::u8",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "monthly_amount",
         type: "core::integer::u256",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "added_at",
         type: "core::integer::u64",
+        kind: "data",
       },
     ],
   },
   {
-    kind: "struct",
-    name: "inheritx_contracts::base::events::DisbursementBeneficiaryRemoved",
     type: "event",
+    name: "inheritx_contracts::base::events::DisbursementBeneficiaryRemoved",
+    kind: "struct",
     members: [
       {
-        kind: "data",
         name: "plan_id",
         type: "core::integer::u256",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "beneficiary_address",
         type: "core::starknet::contract_address::ContractAddress",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "removed_at",
         type: "core::integer::u64",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "removed_by",
         type: "core::starknet::contract_address::ContractAddress",
+        kind: "data",
       },
     ],
   },
   {
-    kind: "struct",
-    name: "inheritx_contracts::base::events::InheritancePlanCreated",
     type: "event",
+    name: "inheritx_contracts::base::events::InheritancePlanCreated",
+    kind: "struct",
     members: [
       {
-        kind: "data",
         name: "plan_id",
         type: "core::integer::u256",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "owner",
         type: "core::starknet::contract_address::ContractAddress",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "asset_type",
         type: "core::integer::u8",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "amount",
         type: "core::integer::u256",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "timeframe",
         type: "core::integer::u64",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "beneficiary_count",
         type: "core::integer::u8",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "created_at",
         type: "core::integer::u64",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "security_level",
         type: "core::integer::u8",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "auto_execute",
         type: "core::bool",
+        kind: "data",
       },
     ],
   },
   {
-    kind: "struct",
-    name: "inheritx_contracts::base::events::PlanTimeframeExtended",
     type: "event",
+    name: "inheritx_contracts::base::events::PlanTimeframeExtended",
+    kind: "struct",
     members: [
       {
-        kind: "data",
         name: "plan_id",
         type: "core::integer::u256",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "extended_by",
         type: "core::starknet::contract_address::ContractAddress",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "additional_time",
         type: "core::integer::u64",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "new_active_date",
         type: "core::integer::u64",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "extended_at",
         type: "core::integer::u64",
+        kind: "data",
       },
     ],
   },
   {
-    kind: "struct",
-    name: "inheritx_contracts::base::events::PlanParametersUpdated",
     type: "event",
+    name: "inheritx_contracts::base::events::PlanParametersUpdated",
+    kind: "struct",
     members: [
       {
-        kind: "data",
         name: "plan_id",
         type: "core::integer::u256",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "updated_by",
         type: "core::starknet::contract_address::ContractAddress",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "old_security_level",
         type: "core::integer::u8",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "new_security_level",
         type: "core::integer::u8",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "old_auto_execute",
         type: "core::bool",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "new_auto_execute",
         type: "core::bool",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "old_guardian",
         type: "core::starknet::contract_address::ContractAddress",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "new_guardian",
         type: "core::starknet::contract_address::ContractAddress",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "updated_at",
         type: "core::integer::u64",
+        kind: "data",
       },
     ],
   },
   {
-    kind: "struct",
-    name: "inheritx_contracts::base::events::InactivityThresholdUpdated",
     type: "event",
+    name: "inheritx_contracts::base::events::InactivityThresholdUpdated",
+    kind: "struct",
     members: [
       {
-        kind: "data",
         name: "plan_id",
         type: "core::integer::u256",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "updated_by",
         type: "core::starknet::contract_address::ContractAddress",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "old_threshold",
         type: "core::integer::u64",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "new_threshold",
         type: "core::integer::u64",
+        kind: "data",
       },
       {
-        kind: "data",
         name: "updated_at",
         type: "core::integer::u64",
+        kind: "data",
       },
     ],
   },
   {
-    kind: "enum",
-    name: "inheritx_contracts::core_plans::InheritXPlans::Event",
     type: "event",
+    name: "inheritx_contracts::core_plans::InheritXPlans::Event",
+    kind: "enum",
     variants: [
       {
-        kind: "flat",
         name: "UpgradeableEvent",
         type: "openzeppelin_upgrades::upgradeable::UpgradeableComponent::Event",
+        kind: "flat",
       },
       {
-        kind: "flat",
         name: "PausableEvent",
         type: "openzeppelin_security::pausable::PausableComponent::Event",
+        kind: "flat",
       },
       {
+        name: "PlanCreated",
+        type: "inheritx_contracts::base::events::PlanCreated",
         kind: "nested",
+      },
+      {
         name: "BasicPlanInfoCreated",
         type: "inheritx_contracts::base::events::BasicPlanInfoCreated",
+        kind: "nested",
       },
       {
-        kind: "nested",
         name: "AssetAllocationSet",
         type: "inheritx_contracts::base::events::AssetAllocationSet",
+        kind: "nested",
       },
       {
-        kind: "nested",
         name: "RulesConditionsSet",
         type: "inheritx_contracts::base::events::RulesConditionsSet",
+        kind: "nested",
       },
       {
-        kind: "nested",
         name: "VerificationCompleted",
         type: "inheritx_contracts::base::events::VerificationCompleted",
+        kind: "nested",
       },
       {
-        kind: "nested",
         name: "PlanPreviewGenerated",
         type: "inheritx_contracts::base::events::PlanPreviewGenerated",
+        kind: "nested",
       },
       {
-        kind: "nested",
         name: "PlanActivated",
         type: "inheritx_contracts::base::events::PlanActivated",
+        kind: "nested",
       },
       {
-        kind: "nested",
         name: "PlanCreationStepCompleted",
         type: "inheritx_contracts::base::events::PlanCreationStepCompleted",
+        kind: "nested",
       },
       {
-        kind: "nested",
         name: "ActivityLogged",
         type: "inheritx_contracts::base::events::ActivityLogged",
+        kind: "nested",
       },
       {
-        kind: "nested",
         name: "PlanStatusUpdated",
         type: "inheritx_contracts::base::events::PlanStatusUpdated",
+        kind: "nested",
       },
       {
-        kind: "nested",
         name: "BeneficiaryModified",
         type: "inheritx_contracts::base::events::BeneficiaryModified",
+        kind: "nested",
       },
       {
+        name: "DistributionPlanCreated",
+        type: "inheritx_contracts::base::events::DistributionPlanCreated",
         kind: "nested",
-        name: "MonthlyDisbursementPlanCreated",
-        type: "inheritx_contracts::base::events::MonthlyDisbursementPlanCreated",
       },
       {
+        name: "DistributionExecuted",
+        type: "inheritx_contracts::base::events::DistributionExecuted",
         kind: "nested",
-        name: "MonthlyDisbursementExecuted",
-        type: "inheritx_contracts::base::events::MonthlyDisbursementExecuted",
       },
       {
+        name: "DistributionPaused",
+        type: "inheritx_contracts::base::events::DistributionPaused",
         kind: "nested",
-        name: "MonthlyDisbursementPaused",
-        type: "inheritx_contracts::base::events::MonthlyDisbursementPaused",
       },
       {
+        name: "DistributionResumed",
+        type: "inheritx_contracts::base::events::DistributionResumed",
         kind: "nested",
-        name: "MonthlyDisbursementResumed",
-        type: "inheritx_contracts::base::events::MonthlyDisbursementResumed",
       },
       {
+        name: "DistributionCancelled",
+        type: "inheritx_contracts::base::events::DistributionCancelled",
         kind: "nested",
-        name: "MonthlyDisbursementCancelled",
-        type: "inheritx_contracts::base::events::MonthlyDisbursementCancelled",
       },
       {
-        kind: "nested",
         name: "DisbursementBeneficiaryAdded",
         type: "inheritx_contracts::base::events::DisbursementBeneficiaryAdded",
+        kind: "nested",
       },
       {
-        kind: "nested",
         name: "DisbursementBeneficiaryRemoved",
         type: "inheritx_contracts::base::events::DisbursementBeneficiaryRemoved",
+        kind: "nested",
       },
       {
-        kind: "nested",
         name: "InheritancePlanCreated",
         type: "inheritx_contracts::base::events::InheritancePlanCreated",
+        kind: "nested",
       },
       {
-        kind: "nested",
         name: "PlanTimeframeExtended",
         type: "inheritx_contracts::base::events::PlanTimeframeExtended",
+        kind: "nested",
       },
       {
-        kind: "nested",
         name: "PlanParametersUpdated",
         type: "inheritx_contracts::base::events::PlanParametersUpdated",
+        kind: "nested",
       },
       {
-        kind: "nested",
         name: "InactivityThresholdUpdated",
         type: "inheritx_contracts::base::events::InactivityThresholdUpdated",
+        kind: "nested",
       },
     ],
   },

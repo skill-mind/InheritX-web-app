@@ -9,10 +9,9 @@ import {
 } from "@starknet-react/core";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Abi, Account, CallData, Contract, RpcProvider } from "starknet";
+import { INHERITX_CONTRACT_ADDRESS } from "@/constant/ca_address";
 
-export const INHERITX_CONTRACT_ADDRESS =
-  "0x0353bbcf8d11dad6fd7fd2eec371142ae6a38bc3c2fab5a35a91a1796f11c56d";
-const BEARER_TOKEN = process.env.NEXT_PUBLIC_BEARER_TOKEN || "";
+// const BEARER_TOKEN = process.env.NEXT_PUBLIC_BEARER_TOKEN || "";
 
 // Utility function to perform contract read operations
 export function useContractFetch(
@@ -147,14 +146,14 @@ export function useContractEvents(
         console.error("Error checking for events:", error);
       }
     },
-    [INHERITX_CONTRACT_ADDRESS, provider]
+    [provider]
   );
 
   useEffect(() => {
     if (enabled && INHERITX_CONTRACT_ADDRESS && blockNumber) {
       checkForEvents(blockNumber);
     }
-  }, [INHERITX_CONTRACT_ADDRESS, blockNumber, checkForEvents, enabled]);
+  }, [blockNumber, checkForEvents, enabled]);
 
   const lastEvents = useMemo(() => {
     return [...events].reverse().slice(0, limit);
@@ -223,12 +222,13 @@ export async function readTokenBalance(
 }
 
 export async function writeContractWithStarknetJs(
-  account: Account,
+  contractAddress: string,
   entrypoint: string,
-  args: any //Object of arguments e.g. {uri: "1234"}
+  args: any, //Object of arguments e.g. {uri: "1234"}
+  account: Account
 ) {
   const result = await account.execute({
-    contractAddress: INHERITX_CONTRACT_ADDRESS,
+    contractAddress: contractAddress,
     entrypoint,
     calldata: CallData.compile(args),
   });

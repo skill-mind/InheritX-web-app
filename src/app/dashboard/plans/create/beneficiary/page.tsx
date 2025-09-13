@@ -3,17 +3,25 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useCreatePlan } from "@/contexts/CreatePlanContext";
 import BeneficiarySuccessModal from "./BeneficiarySuccessModal";
 import BeneficiaryErrorModal from "./BeneficiaryErrorModal";
 
 const BeneficiaryPage = () => {
   const router = useRouter();
+  const { addBeneficiary } = useCreatePlan();
   const [step] = useState(1);
-  const [form, setForm] = useState({ name: "", relationship: "", email: "" });
+  const [form, setForm] = useState({
+    name: "",
+    relationship: "",
+    email: "",
+    address: "",
+  });
   const [touched, setTouched] = useState({
     name: false,
     relationship: false,
     email: false,
+    beneficiaryAddress: false,
   });
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
@@ -22,7 +30,12 @@ const BeneficiaryPage = () => {
   const isNameValid = form.name.trim().length > 0;
   const isRelationshipValid = form.relationship.trim().length > 0;
   const isEmailValid = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email);
-  const isFormValid = isNameValid && isRelationshipValid && isEmailValid;
+  const isBeneficiaryAddressValid = form.address.trim().length > 0;
+  const isFormValid =
+    isNameValid &&
+    isRelationshipValid &&
+    isEmailValid &&
+    isBeneficiaryAddressValid;
 
   // Progress bar style
   const progressPercent = step === 1 ? 0 : 100;
@@ -168,6 +181,25 @@ const BeneficiaryPage = () => {
             </span>
           )}
         </div>
+
+        <div>
+          <label className="block text-[#FCFFFF] text-[15px] mb-2">
+            Beneficiary Address
+          </label>
+          <input
+            type="email"
+            value={form.address}
+            onChange={(e) => setForm({ ...form, address: e.target.value })}
+            onBlur={() => setTouched({ ...touched, beneficiaryAddress: true })}
+            placeholder="0x013..."
+            className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[16px] outline-none"
+          />
+          {!isBeneficiaryAddressValid && touched.beneficiaryAddress && (
+            <span className="text-red-500 text-xs mt-1">
+              Enter a valid Address
+            </span>
+          )}
+        </div>
         <div className="flex flex-col md:flex-row gap-4 mt-8 w-full">
           <button
             type="button"
@@ -178,6 +210,16 @@ const BeneficiaryPage = () => {
               if (form.name.trim().toLowerCase() === "error") {
                 setShowError(true);
               } else {
+                // Add beneficiary to context
+                console.log("=== ADDING BENEFICIARY ===");
+                console.log("Form data:", form);
+                addBeneficiary({
+                  name: form.name,
+                  relationship: form.relationship,
+                  email: form.email,
+                  address: form.address,
+                });
+                console.log("Beneficiary added to context");
                 setShowSuccess(true);
               }
             }}
@@ -204,13 +246,7 @@ const BeneficiaryPage = () => {
         }}
         onNext={() => {
           setShowSuccess(false);
-          router.push(
-            `/dashboard/plans/create?name=${encodeURIComponent(
-              form.name
-            )}&relationship=${encodeURIComponent(
-              form.relationship
-            )}&email=${encodeURIComponent(form.email)}`
-          );
+          router.push("/dashboard/plans/create");
         }}
       />
       <BeneficiaryErrorModal
