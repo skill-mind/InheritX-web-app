@@ -3,10 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import {
-  CreatePlanProvider,
-  useCreatePlan,
-} from "@/contexts/CreatePlanContext";
+import { useCreatePlan } from "@/contexts/CreatePlanContext";
 
 const disbursementOptions = [
   "Lump Sum (All At Once)",
@@ -17,7 +14,8 @@ const disbursementOptions = [
 
 const RulesPageContent = () => {
   const router = useRouter();
-  const { formData, updateFormData } = useCreatePlan();
+  const { formData, updateFormData, getDistributionMethodFromString } =
+    useCreatePlan();
   const [showDisbursementDropdown, setShowDisbursementDropdown] =
     useState(false);
 
@@ -159,7 +157,11 @@ const RulesPageContent = () => {
                         type="button"
                         className="flex items-center gap-2 w-full px-4 py-3 text-[#FCFFFF] hover:bg-[#33C5E014] text-[15px]"
                         onClick={() => {
-                          updateFormData({ disbursementType: option });
+                          updateFormData({
+                            disbursementType: option,
+                            distributionMethod:
+                              getDistributionMethodFromString(option),
+                          });
                           setShowDisbursementDropdown(false);
                         }}
                       >
@@ -277,10 +279,4 @@ const RulesPageContent = () => {
   );
 };
 
-const RulesPage = () => (
-  <CreatePlanProvider>
-    <RulesPageContent />
-  </CreatePlanProvider>
-);
-
-export default RulesPage;
+export default RulesPageContent;

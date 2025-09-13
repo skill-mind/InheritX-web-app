@@ -30,3 +30,7 @@ export function createCairoEnum(value: string): CairoCustomEnum {
 export function copyToClipboard(text: string) {
   navigator.clipboard.writeText(text);
 }
+
+export function truncateAddress(address: string) {
+  return `${address.slice(0, 6)}...${address.slice(-4)}`;
+}

@@ -6,10 +6,31 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 import NotificationModal from "./NotificationModal";
+import { useAccount, useConnect, useDisconnect } from "@starknet-react/core";
+import { truncateAddress } from "@/lib/utils";
+import { connect } from "starknetkit";
+import { useEffect, useState } from "react";
+import ConnectWalletModal from "@/components/connect-wallet";
 
 export default function AdminHeader() {
   const router = useRouter();
   const [showNotifModal, setShowNotifModal] = React.useState(false);
+  const { address, isConnected } = useAccount();
+  const { disconnect } = useDisconnect();
+  const [showWalletModal, setShowWalletModal] = useState(false);
+
+  // Debug logging
+  console.log("Dashboard Header - Wallet Status:", { address, isConnected });
+
+  const handleWalletClick = () => {
+    if (isConnected && address) {
+      // If connected, disconnect immediately
+      disconnect();
+    } else {
+      // If not connected, show wallet modal
+      setShowWalletModal(true);
+    }
+  };
 
   return (
     <section className="sticky top-0 left-0 right-0 z-50 w-full bg-[#161E22]/80 backdrop-blur-md  flex justify-center border-b border-[#1C252A] h-[92px] md:h-[124px]">
@@ -27,6 +48,15 @@ export default function AdminHeader() {
           </Link>
         </div>
         <div className="flex items-center justify-between space-x-4 #1C252A">
+          <button
+            className="px-4 py-2 bg-[#259BA6] hover:bg-[#1E7F88] text-white rounded-md transition-colors duration-200"
+            onClick={handleWalletClick}
+          >
+            {isConnected && address
+              ? `Disconnect (${truncateAddress(address)})`
+              : "Connect Wallet"}
+          </button>
+
           {/* KYC Verification */}
           <div
             className="md:flex items-center hidden space-x-4 bg-[#33C5E014] w-[183px] h-[60px] rounded-[24px] px-[20px] py-[8px] border-none transition-colors duration-200 hover:bg-[#33C5E033] cursor-pointer group"
@@ -66,7 +96,9 @@ export default function AdminHeader() {
               className="rounded-full group-hover:ring-2 group-hover:ring-[#33C5E0] transition-all duration-200"
             />
             <span className="text-[#92A5A8] text-[12px] md:text-[14px] font-medium bg-transparent group-hover:text-[#33C5E0] transition-colors duration-200">
-              0x231f...5678
+              {isConnected && address
+                ? truncateAddress(address)
+                : "Not Connected"}
             </span>
           </div>
 
@@ -94,6 +126,11 @@ export default function AdminHeader() {
       <NotificationModal
         open={showNotifModal}
         onClose={() => setShowNotifModal(false)}
+      />
+
+      <ConnectWalletModal
+        isOpen={showWalletModal}
+        onClose={() => setShowWalletModal(false)}
       />
     </section>
   );

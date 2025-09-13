@@ -4,14 +4,17 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import SuccessModal from "../SuccessModal";
-import {
-  CreatePlanProvider,
-  useCreatePlan,
-} from "@/contexts/CreatePlanContext";
+import { useCreatePlan } from "@/contexts/CreatePlanContext";
+import { useAccount } from "@starknet-react/core";
+import { truncateAddress } from "@/lib/utils";
+import { CallData } from "starknet";
+import { myProvider } from "@/lib/utils";
+import { INHERITX_CONTRACT_ADDRESS } from "@/constant/ca_address";
 
 const PreviewPageContent = () => {
   const router = useRouter();
   const { formData, createPlan } = useCreatePlan();
+  const { account } = useAccount();
   const [showSuccess, setShowSuccess] = useState(false);
   const [isCreatingPlan, setIsCreatingPlan] = useState(false);
 
@@ -29,6 +32,19 @@ const PreviewPageContent = () => {
     formData.selectedBeneficiaries.includes(b.id)
   );
 
+  // Debug logging - This will show every time the component renders
+  // console.log("=== PREVIEW PAGE DEBUG ===");
+  // console.log("Form Data:", formData);
+  // console.log("Selected Beneficiaries:", selectedBeneficiaries);
+  // console.log("Assets:", formData.assets);
+  // console.log("Plan Name:", formData.planName);
+  // console.log("Plan Description:", formData.planDescription);
+  // console.log("Claim Code:", formData.claimCode);
+  // console.log("Distribution Method:", formData.distributionMethod);
+  // console.log("Asset Type:", formData.assetType);
+  // console.log("Asset Amount:", formData.assetAmount);
+  // console.log("=== END DEBUG ===");
+
   // Calculate asset percentages
   const totalAssetAmount = formData.assets.reduce(
     (sum, asset) => sum + asset.amount,
@@ -45,10 +61,44 @@ const PreviewPageContent = () => {
   }));
 
   const handleCreatePlan = async () => {
+    if (!account) {
+      console.error("Please connect your wallet to continue");
+      return;
+    }
+
     try {
       setIsCreatingPlan(true);
-      await createPlan();
-      setShowSuccess(true);
+
+      // First, prepare the form data and get contract parameters
+      const contractParams = await createPlan();
+
+      if (contractParams) {
+        console.log("Using contract parameters:", contractParams);
+
+        // Execute the transaction directly using account.execute
+        const result = await account.execute({
+          contractAddress: INHERITX_CONTRACT_ADDRESS,
+          entrypoint: "create_inheritance_plan",
+          calldata: CallData.compile(contractParams),
+        });
+
+        console.log("Transaction submitted:", result);
+
+        // Wait for transaction to be confirmed
+        const status = await myProvider.waitForTransaction(
+          result.transaction_hash
+        );
+
+        if (status.isSuccess()) {
+          console.log("Success! 🎉 Your inheritance plan has been created.");
+          setShowSuccess(true);
+        } else {
+          console.error("Transaction failed");
+        }
+      } else {
+        console.log("No contract parameters available");
+        setShowSuccess(true);
+      }
     } catch (error) {
       console.error("Error creating plan:", error);
     } finally {
@@ -165,15 +215,21 @@ const PreviewPageContent = () => {
                 <span className="font-semibold text-[#FCFFFF]">
                   DESCRIPTION:
                 </span>{" "}
-                {formData.description}
+                {formData.planDescription}
               </div>
               <div>
                 <span className="font-semibold text-[#FCFFFF]">
                   BENEFICIARIES:
                 </span>{" "}
-                {selectedBeneficiaries.length} selected
+                {selectedBeneficiaries.length > 0
+                  ? selectedBeneficiaries.length
+                  : formData.beneficiaries.length}{" "}
+                selected
               </div>
-              {selectedBeneficiaries.map((b, idx) => (
+              {(selectedBeneficiaries.length > 0
+                ? selectedBeneficiaries
+                : formData.beneficiaries
+              ).map((b, idx) => (
                 <div key={idx} className="ml-4">
                   <span className="inline-flex items-center gap-2">
                     <Image
@@ -184,6 +240,11 @@ const PreviewPageContent = () => {
                       className="rounded-full"
                     />
                     {b.name} ({b.relationship}) - {b.email}
+                    {b.address && (
+                      <span className="text-[#33C5E0]">
+                        - {truncateAddress(b.address)}
+                      </span>
+                    )}
                   </span>
                 </div>
               ))}
@@ -207,16 +268,35 @@ const PreviewPageContent = () => {
               </button>
             </div>
             <div className="flex flex-col gap-2 text-[#BFC6C8] text-[15px]">
-              {assetsWithPercentages.map((a, idx) => (
-                <div key={idx} className="flex items-center gap-4">
+              {formData.assets.length > 0 ? (
+                formData.assets.map((asset, idx) => (
+                  <div key={idx} className="flex items-center gap-4">
+                    <span className="font-semibold text-[#FCFFFF]">ASSET:</span>
+                    <span>{asset.label}</span>
+                    <span className="ml-auto">Amount: {asset.amount}</span>
+                  </div>
+                ))
+              ) : formData.assetAmount > 0 ? (
+                <div className="flex items-center gap-4">
                   <span className="font-semibold text-[#FCFFFF]">
-                    {a.type}:
+                    ASSET TYPE:
                   </span>
-                  <span>{a.label}</span>
-                  <span className="ml-auto">Amount: {a.amount}</span>
-                  <span>%: {a.percent}</span>
+                  <span>
+                    {formData.assetType === 0
+                      ? "STRK"
+                      : formData.assetType === 1
+                      ? "USDT"
+                      : formData.assetType === 2
+                      ? "USDC"
+                      : "NFT"}
+                  </span>
+                  <span className="ml-auto">
+                    Amount: {formData.assetAmount}
+                  </span>
                 </div>
-              ))}
+              ) : (
+                <div className="text-[#BFC6C8]">No assets added yet</div>
+              )}
             </div>
           </div>
           {/* Rules & Conditions */}
@@ -249,13 +329,20 @@ const PreviewPageContent = () => {
                 <span className="font-semibold text-[#FCFFFF]">
                   DISTRIBUTION:
                 </span>{" "}
-                {formData.distribution === "lump"
-                  ? `Lump Sum - ${formData.lumpDate}`
-                  : formData.distribution === "recurring"
-                  ? `${formData.disbursementType} - ${
-                      formData.percentages[formData.disbursementType] || 0
-                    }% per period`
-                  : "Not specified"}
+                {formData.disbursementType || "Not specified"}
+                {formData.lumpDate &&
+                  formData.disbursementType === "Lump Sum (All At Once)" && (
+                    <span className="ml-2 text-[#33C5E0]">
+                      - {formData.lumpDate}
+                    </span>
+                  )}
+                {formData.percentages[formData.disbursementType] &&
+                  formData.disbursementType !== "Lump Sum (All At Once)" && (
+                    <span className="ml-2 text-[#33C5E0]">
+                      - {formData.percentages[formData.disbursementType]}% per
+                      period
+                    </span>
+                  )}
               </div>
               {formData.note && (
                 <div>
@@ -341,27 +428,6 @@ const PreviewPageContent = () => {
             </div>
           </div> */}
 
-          {/* Notes */}
-          <div className="bg-[#161E22] border border-[#232B36] rounded-[18px] p-6 mb-4">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-[#FCFFFF] text-lg font-medium">Notes</h3>
-              <button
-                className="flex items-center gap-2 text-[#33C5E0] border border-[#33C5E03D] px-4 py-2 rounded-[24px] text-[14px] hover:bg-[#33C5E0] hover:text-[#161E22]"
-                onClick={handleEditNotes}
-              >
-                <Image
-                  src="/assets/icons/edit.svg"
-                  alt="edit"
-                  width={16}
-                  height={16}
-                />
-                Edit Notes
-              </button>
-            </div>
-            <div className="text-[#BFC6C8] text-[15px]">
-              {formData.note || "No notes added"}
-            </div>
-          </div>
           {/* Action Buttons */}
           <div className="flex flex-col md:flex-row gap-4 justify-center mt-8">
             <button className="bg-[#1C252A] border-none text-[#33C5E0] px-8 py-3 rounded-t-[8px] rounded-b-[24px] font-medium md:w-[243px] text-[14px] hover:bg-[#33C5E0] hover:text-[#161E22] transition-colors">
@@ -407,10 +473,4 @@ const PreviewPageContent = () => {
   );
 };
 
-const PreviewPage = () => (
-  <CreatePlanProvider>
-    <PreviewPageContent />
-  </CreatePlanProvider>
-);
-
-export default PreviewPage;
+export default PreviewPageContent;

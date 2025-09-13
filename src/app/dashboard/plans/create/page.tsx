@@ -1,12 +1,10 @@
 "use client";
 
-import React, { useState, Suspense } from "react";
+import React from "react";
 import Image from "next/image";
-import { useRouter, useSearchParams } from "next/navigation";
-import {
-  CreatePlanProvider,
-  useCreatePlan,
-} from "@/contexts/CreatePlanContext";
+import { useRouter } from "next/navigation";
+import { useCreatePlan } from "@/contexts/CreatePlanContext";
+import { truncateAddress } from "@/lib/utils";
 
 interface Beneficiary {
   id: number;
@@ -20,35 +18,21 @@ interface Beneficiary {
 
 function CreatePlanPageContent() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const { formData, updateFormData, addBeneficiary } = useCreatePlan();
 
   // Validation
   const isPlanNameValid = formData.planName.trim().length > 0;
-  const isDescriptionValid = formData.description.trim().length > 0;
+  const isDescriptionValid = formData.planDescription.trim().length > 0;
+  const isBeneficiaryValid = formData.selectedBeneficiaries.length > 0;
   const isFormValid =
-    isPlanNameValid &&
-    isDescriptionValid &&
-    formData.selectedBeneficiaries.length > 0;
+    isPlanNameValid && isDescriptionValid && isBeneficiaryValid;
 
-  React.useEffect(() => {
-    const name = searchParams.get("name");
-    const relationship = searchParams.get("relationship");
-    const email = searchParams.get("email");
-    if (name && relationship && email) {
-      // Check if beneficiary already exists
-      const exists = formData.beneficiaries.some(
-        (b) => b.name === name && b.email === email
-      );
-      if (!exists) {
-        addBeneficiary({
-          name,
-          relationship,
-          email,
-        });
-      }
-    }
-  }, [searchParams, formData.beneficiaries, addBeneficiary]);
+  // Debug logging
+  console.log("=== CREATE PAGE DEBUG ===");
+  console.log("Form Data:", formData);
+  console.log("Beneficiaries:", formData.beneficiaries);
+  console.log("Selected Beneficiaries:", formData.selectedBeneficiaries);
+  console.log("=== END DEBUG ===");
 
   return (
     <main className="flex flex-col gap-6 p-4 md:p-8 w-full">
@@ -145,8 +129,10 @@ function CreatePlanPageContent() {
               Description
             </label>
             <textarea
-              value={formData.description}
-              onChange={(e) => updateFormData({ description: e.target.value })}
+              value={formData.planDescription}
+              onChange={(e) =>
+                updateFormData({ planDescription: e.target.value })
+              }
               placeholder="Text"
               className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[15px] outline-none min-h-[60px]"
             />
@@ -194,6 +180,9 @@ function CreatePlanPageContent() {
                     </span>
                     <span className="text-[#33C5E0] text-[12px] underline mb-1">
                       {b.email}
+                    </span>
+                    <span className="text-[#BFC6C8] text-[12px] mb-1">
+                      {truncateAddress(b.address) || "No address provided"}
                     </span>
                     <button
                       type="button"
@@ -276,7 +265,7 @@ function CreatePlanPageContent() {
               Description is required
             </span>
           )}
-          {formData.selectedBeneficiaries.length === 0 && (
+          {!isBeneficiaryValid && (
             <span className="text-red-500 text-xs mt-1">
               Select at least one beneficiary
             </span>
@@ -287,12 +276,4 @@ function CreatePlanPageContent() {
   );
 }
 
-const CreatePlanPage = () => (
-  <CreatePlanProvider>
-    <Suspense>
-      <CreatePlanPageContent />
-    </Suspense>
-  </CreatePlanProvider>
-);
-
-export default CreatePlanPage;
+export default CreatePlanPageContent;

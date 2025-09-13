@@ -43,7 +43,7 @@ const Navbar = () => {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center w-1/2 justify-between">
               {/* Logo */}
-              <div className="flex-shrink-0">     
+              <div className="flex-shrink-0">
                 <Link href="/" className="flex items-center">
                   <Image
                     src="/assets/icons/logo.svg"
