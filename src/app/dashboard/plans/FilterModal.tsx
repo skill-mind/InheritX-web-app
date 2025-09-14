@@ -36,13 +36,13 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply, curre
         </div>
         <div className="flex gap-4 w-full justify-center mt-2">
           <button
-            className="px-6 py-2 rounded-[16px] bg-[#232B36] text-[#FCFFFF] text-[14px] font-medium border border-[#425558] hover:bg-[#232B36]/80 transition-colors"
+            className="px-6 py-2 cursor-pointer rounded-[16px] bg-[#232B36] text-[#FCFFFF] text-[14px] font-medium border border-[#425558] hover:bg-[#232B36]/80 transition-colors"
             onClick={onClose}
           >
             Cancel
           </button>
           <button
-            className="px-6 py-2 rounded-[16px] bg-[#33C5E0] text-[#161E22] text-[14px] font-semibold border border-[#33C5E0] hover:bg-cyan-400 transition-colors"
+            className="px-6 py-2 cursor-pointer rounded-[16px] bg-[#33C5E0] text-[#161E22] text-[14px] font-semibold border border-[#33C5E0] hover:bg-cyan-400 transition-colors"
             onClick={() => onApply(selected)}
           >
             Apply

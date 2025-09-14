@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 import Image from "next/image";
@@ -43,21 +43,65 @@ const activityTabs = [
 export default function DashboardHome() {
   const router = useRouter();
 
+  useEffect(() => {
+    const run = () => {
+      try {
+        const els = Array.from(document.querySelectorAll(".reveal"));
+        const obs = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting)
+                entry.target.classList.add("reveal-active");
+            });
+          },
+          { threshold: 0.12 }
+        );
+        els.forEach((el, i) => {
+          (el as HTMLElement).style.willChange = "transform, opacity";
+          obs.observe(el);
+          const rect = el.getBoundingClientRect();
+          const step = parseInt(el.getAttribute("data-step") || String(i));
+          if (rect.top < window.innerHeight * 0.9) {
+            setTimeout(
+              () => el.classList.add("reveal-active"),
+              60 * (step + 1)
+            );
+          }
+        });
+      } catch (e) {
+        /* ignore */
+      }
+    };
+    if (
+      document.readyState === "complete" ||
+      document.readyState === "interactive"
+    )
+      run();
+    else window.addEventListener("DOMContentLoaded", run);
+  }, []);
+
   return (
     <main className="flex flex-col gap-6 p-2 md:p-8 w-full mb-[10rem]">
       <section className="mb-4">
-        <h2 className="text-lg md:text-2xl font-medium text-[#FCFFFF] mb-1">
+        <h2
+          className="text-lg md:text-2xl font-medium text-[#FCFFFF] mb-1 reveal"
+          data-step={0}
+        >
           Good morning, EBUBE
         </h2>
-        <p className="text-[12px] md:text-[14px] text-[#92A5A8]">
+        <p
+          className="text-[12px] md:text-[14px] text-[#92A5A8] reveal"
+          data-step={1}
+        >
           Monitor, protect, and manage the platform.
         </p>
       </section>
       <section className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        {summaryCards.map((card) => (
+        {summaryCards.map((card, idx) => (
           <div
             key={card.label}
-            className="bg-[#182024] w-full h-[212px] rounded-xl py-[32px] px-[20px] flex flex-col items-center shadow-md"
+            className="bg-[#182024] w-full h-[212px] rounded-xl py-[32px] px-[20px] flex flex-col items-center shadow-md reveal hover-raise"
+            data-step={2 + idx}
           >
             <span className="text-3xl md:text-4xl font-semibold text-[#FCFFFF] mb-2">
               {card.value}
@@ -100,7 +144,7 @@ export default function DashboardHome() {
           <span className="text-[#BFC6C8] font-medium text-[14px]">
             RECENT ACTIVITIES
           </span>
-          <button className="flex items-center text-[12px] font-normal gap-1 text-[#92A5A8] hover:underline">
+          <button className="flex items-center text-[12px] font-normal gap-1 text-[#92A5A8] hover:underline cursor-pointer">
             <Image
               src="/assets/icons/filter.svg"
               alt="filter icon"
@@ -115,7 +159,7 @@ export default function DashboardHome() {
           {activityTabs.map((tab) => (
             <button
               key={tab}
-              className="px-4 py-1 text-sm font-normal text-[#BFC6C8] transition-colors"
+              className="px-4 py-1 text-sm font-normal text-[#BFC6C8] transition-colors cursor-pointer hover:text-white hover:bg-[#182024] rounded"
             >
               {tab}
             </button>
@@ -129,13 +173,32 @@ export default function DashboardHome() {
             Add Beneficiaries, Add Guardians or Create Plans to get started
           </span>
           <button
-            className="w-[171px] h-[52px] rounded-[24px] px-6 py-2 border border-[#33C5E03D] text-cyan-400 hover:bg-cyan-900/30 transition-colors"
+            className="w-[171px] h-[52px] rounded-[24px] px-6 py-2 border border-[#33C5E03D] text-cyan-400 hover:bg-cyan-900/30 transition-colors cursor-pointer hover-raise"
             onClick={() => router.push("/dashboard/plans")}
           >
             + &nbsp;&nbsp;Create Plan
           </button>
         </div>
       </section>
+      <style jsx>{`
+        .reveal {
+          opacity: 0;
+          transform: translateY(18px);
+          transition: opacity 520ms cubic-bezier(0.2, 0.9, 0.3, 1),
+            transform 520ms cubic-bezier(0.2, 0.9, 0.3, 1);
+        }
+        .reveal.reveal-active {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        .hover-raise {
+          transition: transform 260ms ease, box-shadow 260ms ease;
+        }
+        .hover-raise:hover {
+          transform: translateY(-6px);
+          box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+        }
+      `}</style>
     </main>
   );
 }

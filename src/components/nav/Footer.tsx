@@ -23,7 +23,7 @@ const Footer: React.FC<FooterProps> = ({ logo, socialIcons = [] }) => {
     { label: "ABOUT", href: "/about" },
     { label: "FAQS", href: "/faqs" },
     { label: "GUIDELINES", href: "/guidelines" },
-    { label: "SUPPORT", href: "/support" },
+    { label: "SUPPORT", href: "/contact" },
   ];
 
   const defaultSocialIcons = [
@@ -87,14 +87,16 @@ const Footer: React.FC<FooterProps> = ({ logo, socialIcons = [] }) => {
             <nav className="flex flex-wrap justify-center lg:justify-start gap-0 items-center">
               {quickLinks.map((link, index) => (
                 <React.Fragment key={index}>
-                  <a
+                  <Link
                     href={link.href}
+                    prefetch={false}
+                    scroll={false}
                     className={`text-sm font-semibold underline hover:text-cyan-400 transition-colors duration-200 text-[#FCFFFF] ${
                       pathname === link.href ? "!text-[#33C5E0]" : ""
                     }`}
                   >
                     {link.label}
-                  </a>
+                  </Link>
                   {index < quickLinks.length - 1 && (
                     <span className="mx-2 w-[8px] h-[8px] bg-[#2A3338] inline-block"></span>
                   )}
@@ -104,7 +106,7 @@ const Footer: React.FC<FooterProps> = ({ logo, socialIcons = [] }) => {
           </div>
 
           {/* Logo Section */}
-          <div className="order-1 lg:order-2 flex justify-center">
+          <div className="order-1 lg:order-2 flex justify-center hover:scale-95 duration-500">
             {logo || (
               <Link href="/" className="flex items-center">
                 <Image
@@ -126,13 +128,15 @@ const Footer: React.FC<FooterProps> = ({ logo, socialIcons = [] }) => {
             <div className="flex justify-center lg:justify-end gap-2 items-center">
               {iconsToRender.map((social, index) => (
                 <React.Fragment key={index}>
-                  <a
+                  <Link
                     href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     aria-label={social.label}
                     className="w-10 h-10 bg-transparent rounded-lg flex items-center justify-center hover:bg-gray-600 transition-colors duration-200"
                   >
                     {social.icon}
-                  </a>
+                  </Link>
                   {index < iconsToRender.length - 1 && (
                     <span className="mx-1 w-[8px] h-[8px] bg-[#2A3338]"></span>
                   )}
@@ -149,8 +153,10 @@ const Footer: React.FC<FooterProps> = ({ logo, socialIcons = [] }) => {
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className={`underline transition-colors duration-200 ${
-                    pathname === link.href ? "!text-[#FCFFFF]" : ""
+                  className={`inline-flex items-center px-2 py-1 rounded transition-all duration-200 transform hover:text-[#33C5E0] hover:scale-105 hover:underline ${
+                    pathname === link.href
+                      ? "text-[#33C5E0] font-semibold scale-105"
+                      : "text-[#92A5A8]"
                   }`}
                   prefetch={false}
                   scroll={false}
@@ -163,9 +169,8 @@ const Footer: React.FC<FooterProps> = ({ logo, socialIcons = [] }) => {
           </ul>
           <p className="text-gray-400 text-sm text-center">
             Copyright © InheritX{" "}
-            {typeof window !== "undefined"
-              ? new Date().getFullYear()
-              : "2025"}, All Rights Reserved
+            {typeof window !== "undefined" ? new Date().getFullYear() : "2025"},
+            All Rights Reserved
           </p>
         </div>
       </div>

@@ -129,14 +129,14 @@ const TwoFAModal: React.FC<TwoFAModalProps> = ({
         </div>
         <div className="flex w-full gap-4 mt-6">
           <button
-            className="flex-1 bg-[#232B36] text-white py-3 rounded-full font-medium text-base transition-colors hover:bg-[#232B36]/80"
+            className="flex-1 cursor-pointer bg-[#232B36] text-white py-3 rounded-full font-medium text-base transition-colors hover:bg-[#232B36]/80"
             onClick={onClose}
             type="button"
           >
             Cancel
           </button>
           <button
-            className={`flex-1 bg-[#33C5E0] text-[#161E22] py-3 rounded-full font-medium text-base transition-colors ${
+            className={`flex-1 cursor-pointer bg-[#33C5E0] text-[#161E22] py-3 rounded-full font-medium text-base transition-colors ${
               isCodeValid
                 ? "hover:bg-[#33C5E0]/90"
                 : "opacity-60 cursor-not-allowed"

@@ -73,7 +73,7 @@ export default function KYCReviewPage() {
     <main className="flex flex-col gap-6 p-4 md:p-8 w-full overflow-x-hidden max-w-full min-h-screen bg-transparent">
       <div className="flex items-center gap-4 mb-2">
         <button
-          className="text-[#BFC6C8] text-[15px] flex items-center gap-2"
+          className="text-[#BFC6C8] text-[15px] flex items-center gap-2 cursor-pointer transition-all duration-150 ease-out hover:scale-105 active:scale-95"
           onClick={() => router.back()}
         >
           <Image
@@ -94,13 +94,13 @@ export default function KYCReviewPage() {
         {/* Progress Steps */}
         <div className="flex flex-row items-center justify-between w-full mb-2 max-w-full overflow-x-auto">
           {steps.map((step, idx) => (
-            <div key={step.label} className="flex flex-col items-center flex-1">
+            <div key={step.label} className="flex flex-col items-center flex-1 group cursor-pointer">
               <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${
+                className={`w-8 h-8 rounded-full flex items-center justify-center border-2 transition-all duration-150 ease-out transform ${
                   idx === 3
                     ? "border-cyan-400 bg-[#161E22]"
                     : "border-cyan-400 bg-[#33C5E0]"
-                }`}
+                } group-hover:scale-105`}
               >
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                   <circle cx="10" cy="10" r="10" fill="#33C5E0" />
@@ -115,9 +115,9 @@ export default function KYCReviewPage() {
               </div>
               {idx < steps.length - 1 && <div className="kyc-step-bar" />}
               <div
-                className={`mt-2 text-xs font-medium ${
+                className={`mt-2 text-xs font-medium transition-colors duration-150 ${
                   idx === 3 ? "text-cyan-400" : "text-[#BFC6C8]"
-                }`}
+                } group-hover:text-white`}
               >
                 {step.label}
               </div>
@@ -168,7 +168,7 @@ export default function KYCReviewPage() {
             <div className="flex flex-row flex-wrap gap-4 items-center bg-transparent">
               {kycData.documents.map((doc, idx) => (
                 <div key={idx} className="flex flex-col items-center">
-                  <div className="w-[120px] h-[80px] bg-[#232B36] rounded-[12px] flex items-center justify-center overflow-hidden mb-2">
+                  <div tabIndex={0} role="button" className="w-[120px] h-[80px] bg-[#232B36] rounded-[12px] flex items-center justify-center overflow-hidden mb-2 transition-all duration-150 ease-out hover:scale-105 hover:shadow-md cursor-pointer">
                     <Image
                       src={doc.src}
                       alt={doc.label}
@@ -187,7 +187,7 @@ export default function KYCReviewPage() {
           <div className="flex flex-row gap-4 mt-8">
             <button
               type="button"
-              className="bg-[#1C252A] text-[#33C5E0] border-none rounded-t-[8px] rounded-b-[24px] px-8 py-3 md:px-[48px] font-medium h-[56px] flex items-center gap-2 text-[14px] transition-colors hover:bg-[#232B36]"
+              className="bg-[#1C252A] text-[#33C5E0] border-none rounded-t-[8px] rounded-b-[24px] px-8 py-3 md:px-[48px] font-medium h-[56px] flex items-center gap-2 text-[14px] transition-all duration-150 ease-out hover:bg-[#232B36] hover:scale-105 active:scale-95 cursor-pointer"
               onClick={handleEditInfo}
             >
               EDIT INFO
@@ -201,7 +201,7 @@ export default function KYCReviewPage() {
             </button>
             <button
               type="button"
-              className="bg-[#33C5E0] text-[#161E22] border-none rounded-t-[8px] rounded-b-[24px] px-8 py-3 md:px-[48px] font-medium h-[56px] flex items-center gap-2 text-[14px] transition-colors hover:bg-[#33C5E0]/90"
+              className="bg-[#33C5E0] text-[#161E22] border-none rounded-t-[8px] rounded-b-[24px] px-8 py-3 md:px-[48px] font-medium h-[56px] flex items-center gap-2 text-[14px] transition-all duration-150 ease-out hover:bg-[#33C5E0]/90 hover:scale-105 active:scale-95 cursor-pointer"
               onClick={handleSubmitKYC}
             >
               SUBMIT KYC
@@ -222,19 +222,19 @@ export default function KYCReviewPage() {
         onClose={handleModalClose}
         onContinue={handleModalContinue}
       />
-      <style jsx>{`
+      {/* <style jsx>{`
         .kyc-step-bar {
-          position: absolute;
-          top: 20px;
-          left: 50%;
-          width: 100%;
+          flex: 1 1 auto;
           height: 2px;
           background: #181f25;
-          z-index: -1;
+          margin: 10px 8px;
+          border-radius: 2px;
+          align-self: center;
+          transition: background .15s ease, transform .15s ease;
         }
         @media (max-width: 600px) {
           .kyc-step-bar {
-            top: 16px;
+            margin-top: 8px;
           }
           .bg-[#161E22] {
             padding: 1rem !important;
@@ -254,7 +254,7 @@ export default function KYCReviewPage() {
             padding-right: 1rem !important;
           }
         }
-      `}</style>
+      `}</style> */}
     </main>
   );
 }

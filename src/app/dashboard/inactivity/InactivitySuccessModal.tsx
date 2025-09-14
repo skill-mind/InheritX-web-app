@@ -31,13 +31,13 @@ const InactivitySuccessModal: React.FC<InactivitySuccessModalProps> = ({ onCance
       </div>
       <div className="flex flex-col md:flex-row gap-4 w-full mt-4">
         <button
-          className="flex-1 bg-[#222C32] text-[#FCFFFF] hover:bg-[#1C252A] rounded-full py-3 font-medium text-[16px] border border-[#222C32]"
+          className="flex-1 cursor-pointer bg-[#222C32] text-[#FCFFFF] hover:bg-[#1C252A] rounded-full py-3 font-medium text-[16px] border border-[#222C32]"
           onClick={onCancel}
         >
           Cancel
         </button>
         <button
-          className="flex-1 bg-[#33C5E0] text-[#161E22] hover:bg-cyan-600 rounded-full py-3 font-semibold text-[16px] border border-[#33C5E0]"
+          className="flex-1 cursor-pointer bg-[#33C5E0] text-[#161E22] hover:bg-cyan-600 rounded-full py-3 font-semibold text-[16px] border border-[#33C5E0]"
           onClick={onContinue}
         >
           Continue

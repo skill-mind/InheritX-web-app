@@ -32,7 +32,7 @@ const BeneficiaryPage = () => {
       <div className="flex items-center justify-between w-full mb-2">
         <div className="flex items-center gap-4">
           <button
-            className="text-[#BFC6C8] cursor-pointer text-[15px] flex items-center gap-2"
+            className="text-[#BFC6C8] cursor-pointer text-[15px] flex items-center gap-2 hover-raise clickable"
             onClick={() => router.back()}
           >
             <Image
@@ -49,7 +49,19 @@ const BeneficiaryPage = () => {
             </span>
           </h2>
         </div>
-        <button className="border border-[#33C5E03D] px-6 py-3 rounded-[24px] text-[#33C5E0] text-[15px] flex items-center gap-2 hover:bg-[#33C5E0] hover:text-[#161E22] duration-500 cursor-pointer">
+        <button
+          type="button"
+          disabled={!isFormValid}
+          onClick={() => {
+            if (!isFormValid) return;
+            if (form.name.trim().toLowerCase() === "error") {
+              setShowError(true);
+            } else {
+              setShowSuccess(true);
+            }
+          }}
+          className="border border-[#33C5E03D] px-6 py-3 rounded-[24px] text-[#33C5E0] text-[15px] flex items-center gap-2 hover:bg-[#33C5E0] hover:text-[#161E22] duration-500 cursor-pointer hover-raise clickable"
+        >
           <Image
             src="/assets/icons/plus.svg"
             alt="plus"
@@ -126,7 +138,7 @@ const BeneficiaryPage = () => {
             onChange={(e) => setForm({ ...form, name: e.target.value })}
             onBlur={() => setTouched({ ...touched, name: true })}
             placeholder="John Doe"
-            className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[16px] outline-none"
+            className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[16px] outline-none input-transition"
           />
           {!isNameValid && touched.name && (
             <span className="text-red-500 text-xs mt-1">
@@ -142,7 +154,7 @@ const BeneficiaryPage = () => {
             value={form.relationship}
             onChange={(e) => setForm({ ...form, relationship: e.target.value })}
             onBlur={() => setTouched({ ...touched, relationship: true })}
-            className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] text-[16px] outline-none"
+            className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] text-[16px] outline-none input-transition"
           >
             <option value="">Select Relationship</option>
             <option value="Child">Child</option>
@@ -166,7 +178,7 @@ const BeneficiaryPage = () => {
             onChange={(e) => setForm({ ...form, email: e.target.value })}
             onBlur={() => setTouched({ ...touched, email: true })}
             placeholder="johndoe@gmail.com"
-            className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[16px] outline-none"
+            className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[16px] outline-none input-transition"
           />
           {!isEmailValid && touched.email && (
             <span className="text-red-500 text-xs mt-1">
@@ -177,7 +189,7 @@ const BeneficiaryPage = () => {
         <div className="flex flex-col md:flex-row gap-4 mt-8 w-full">
           <button
             type="button"
-            className="bg-[#1C252A] text-[#FCFFFF] px-8 py-3 rounded-t-[8px] rounded-b-[24px] font-medium text-[15px] w-full flex items-center justify-center gap-2 border border-[#232B36]"
+            className="bg-[#1C252A] cursor-pointer text-[#FCFFFF] px-8 py-3 rounded-t-[8px] rounded-b-[24px] font-medium text-[15px] w-full flex items-center justify-center gap-2 border border-[#232B36] hover-raise clickable"
             onClick={() => {}}
           >
             SAVE AS DRAFT
@@ -194,7 +206,7 @@ const BeneficiaryPage = () => {
           <button
             type="button"
             disabled={!isFormValid}
-            className={`bg-[#33C5E0] text-[#161E22] px-8 py-3 rounded-t-[8px] rounded-b-[24px] font-medium text-[15px] w-full flex items-center justify-center gap-2 border border-[#232B36] transition-colors hover:bg-[#33C5E0]/90 disabled:bg-[#1C252A] disabled:text-[#FCFFFF] disabled:cursor-not-allowed`}
+            className={`bg-[#33C5E0] text-[#161E22] px-8 py-3 rounded-t-[8px] rounded-b-[24px] font-medium text-[15px] w-full flex items-center justify-center gap-2 border border-[#232B36] transition-colors hover:bg-[#33C5E0]/90 disabled:bg-[#1C252A] disabled:text-[#FCFFFF] disabled:cursor-not-allowed hover-raise clickable`}
             onClick={() => {
               if (!isFormValid) return;
               if (form.name.trim().toLowerCase() === "error") {
@@ -240,6 +252,26 @@ const BeneficiaryPage = () => {
         onCancel={() => setShowError(false)}
         onRetry={() => setShowError(false)}
       />
+      <style jsx>{`
+        .hover-raise {
+          transition: transform 220ms ease, box-shadow 220ms ease;
+        }
+        .hover-raise:hover {
+          transform: translateY(-6px);
+          box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+        }
+        .clickable {
+          cursor: pointer;
+        }
+        .input-transition {
+          transition: box-shadow 180ms ease, border-color 180ms ease;
+        }
+        .input-transition:focus {
+          box-shadow: 0 8px 20px rgba(51, 197, 224, 0.08);
+          border-color: #33c5e0;
+          outline: none;
+        }
+      `}</style>
     </main>
   );
 };

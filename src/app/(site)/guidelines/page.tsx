@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./guidelines.css";
 import Image from "next/image";
 
@@ -11,6 +11,37 @@ const GuidelinesPage = () => {
     terms: false,
   });
 
+  useEffect(() => {
+    const run = () => {
+      try {
+        const els = Array.from(document.querySelectorAll('.reveal'));
+        const obs = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) entry.target.classList.add('reveal-active');
+            });
+          },
+          { threshold: 0.12 }
+        );
+
+        els.forEach((el, i) => {
+          (el as HTMLElement).style.willChange = 'transform, opacity';
+          obs.observe(el);
+          const rect = el.getBoundingClientRect();
+          const step = parseInt(el.getAttribute('data-step') || String(i));
+          if (rect.top < window.innerHeight * 0.9) {
+            setTimeout(() => el.classList.add('reveal-active'), 60 * (step + 1));
+          }
+        });
+      } catch (e) {
+        /* ignore */
+      }
+    };
+
+    if (document.readyState === 'complete' || document.readyState === 'interactive') run();
+    else window.addEventListener('DOMContentLoaded', run);
+  }, []);
+
   const toggleSection = (key: string) => {
     setExpanded((prev) => ({ ...prev, [key]: !prev[key] }));
   };
@@ -20,10 +51,10 @@ const GuidelinesPage = () => {
       <div className="max-w-6xl">
         {/* Header */}
         <div className="mb-4">
-          <h1 className="text-[24px] md:text-[32px] text-[#FCFFFF] font-semibold mb-4">
+          <h1 className="text-[24px] md:text-[32px] text-[#FCFFFF] font-semibold mb-4 reveal" data-step={0}>
             Guidelines
           </h1>
-          <p className="text-[#92A5A8] text-base md:text-[14px]">
+          <p className="text-[#92A5A8] text-base md:text-[14px] reveal" data-step={1}>
             Here are some frequently asked questions about InheritX
           </p>
         </div>
@@ -31,7 +62,7 @@ const GuidelinesPage = () => {
         {/* Guidelines Cards */}
         <div className="space-y-6 sm:space-y-8">
           {/* Privacy Policy Card */}
-          <div className="bg-transparent border-none rounded-lg flex flex-col">
+          <div className="bg-transparent border-none rounded-lg flex flex-col reveal hover-raise" data-step={2}>
             <button
               className="flex items-center justify-between space-x-4 w-full focus:outline-none"
               onClick={() => toggleSection("privacy")}
@@ -326,7 +357,7 @@ const GuidelinesPage = () => {
           </div>
 
           {/* Code of Ethics Card (separate) */}
-          <div className="bg-transparent border-none rounded-lg flex flex-col">
+          <div className="bg-transparent border-none rounded-lg flex flex-col reveal hover-raise" data-step={3}>
             <button
               className="flex items-center justify-between space-x-4 w-full focus:outline-none"
               onClick={() => toggleSection("code")}
@@ -583,7 +614,7 @@ const GuidelinesPage = () => {
           </div>
 
           {/* Terms and Conditions Card (separate) */}
-          <div className="bg-transparent border-none rounded-lg flex flex-col">
+          <div className="bg-transparent border-none rounded-lg flex flex-col reveal hover-raise" data-step={4}>
             <button
               className="flex items-center justify-between space-x-4 w-full focus:outline-none"
               onClick={() => toggleSection("terms")}
@@ -727,8 +758,8 @@ const GuidelinesPage = () => {
                         PLATFORM LIABILITY LIMITATIONS
                       </h3>
                       <p className="mb-2 text-[#FCFFFF] text-sm">
-                        The Platform&apos;s Liability Is Limited In The Following
-                        Circumstances:
+                        The Platform&apos;s Liability Is Limited In The
+                        Following Circumstances:
                       </p>
                       <ul className="list-disc pl-6 text-[#FCFFFF] text-sm space-y-1">
                         <li>Loss Of Digital Assets Due To Market Volatility</li>
@@ -882,21 +913,27 @@ const GuidelinesPage = () => {
           </div>
 
           {/* Launch App Button */}
-          <div className="pt-4 mt-[1rem]">
-            <button className="group bg-[#33C5E0] hover:bg-cyan-300 space-x-4 text-[#161E22] text-[14px] font-medium px-8 py-4 rounded-b-[24px] rounded-t-[8px] transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-cyan-400/25 flex items-center">
-              <span>LAUNCH APP</span>
-              <Image
-                src="/assets/icons/arrowup.svg"
-                alt="arrow up icon"
-                width={12}
-                height={12}
-              />
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
+          <div className="pt-4 mt-[1rem] reveal" data-step={5}>
+            <button className="group cursor-pointer bg-[#33C5E0] hover:bg-cyan-300 space-x-4 text-[#161E22] text-[14px] font-medium px-8 py-4 rounded-b-[24px] rounded-t-[8px] transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-cyan-400/25 flex items-center hover-raise">
+               <span>LAUNCH APP</span>
+               <Image
+                 src="/assets/icons/arrowup.svg"
+                 alt="arrow up icon"
+                 width={12}
+                 height={12}
+               />
+             </button>
+           </div>
+         </div>
+       </div>
++      <style jsx>{`
++        .reveal { opacity: 0; transform: translateY(18px); transition: opacity 520ms cubic-bezier(.2,.9,.3,1), transform 520ms cubic-bezier(.2,.9,.3,1); }
++        .reveal.reveal-active { opacity: 1; transform: translateY(0); }
++        .hover-raise { transition: transform 260ms ease, box-shadow 260ms ease; }
++        .hover-raise:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(0,0,0,0.28); }
++      `}</style>
+     </div>
+   );
+ };
 
-export default GuidelinesPage;
+ export default GuidelinesPage;

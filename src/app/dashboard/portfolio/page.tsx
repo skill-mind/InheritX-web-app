@@ -171,7 +171,7 @@ const PortfolioPage = () => {
         {summaryCards.map((card) => (
           <div
             key={card.label}
-            className="md:min-w-[220px] w-full flex flex-col items-center rounded-xl bg-[#182024] p-6 shadow-md max-w-full"
+            className="md:min-w-[220px] w-full flex flex-col items-center rounded-xl bg-[#182024] p-6 shadow-md max-w-full transition-transform duration-200 ease-out hover:scale-[1.02] hover:shadow-lg cursor-pointer"
           >
             {/* NFTs Count card custom layout */}
             {card.label === "NFTs Count" ? (
@@ -190,7 +190,7 @@ const PortfolioPage = () => {
                       alt="avatar"
                       width={28}
                       height={28}
-                      className="rounded-full border-2 border-[#232B36] bg-[#232B36]"
+                      className="rounded-full border-2 border-[#232B36] bg-[#232B36] transition-transform duration-150 hover:scale-110 cursor-pointer"
                     />
                   ))}
                 </div>
@@ -213,7 +213,7 @@ const PortfolioPage = () => {
                         alt="avatar"
                         width={28}
                         height={28}
-                        className="rounded-full border-2 border-[#232B36] bg-[#232B36]"
+                        className="rounded-full border-2 border-[#232B36] bg-[#232B36] transition-transform duration-150 hover:scale-110 cursor-pointer"
                       />
                     ))}
                     {card.label === "NFTs Count" && (
@@ -224,7 +224,7 @@ const PortfolioPage = () => {
                 {card.label === "Recent Swaps" ? (
                   <div className="relative w-full mt-2">
                     <div
-                      className="flex w-full justify-between items-center bg-[#1C252A] h-[60px] rounded-[24px] border border-[#2A3338] py-[14px] px-[20px] cursor-pointer"
+                      className="flex w-full justify-between items-center bg-[#1C252A] h-[60px] rounded-[24px] border border-[#2A3338] py-[14px] px-[20px] cursor-pointer transition-shadow duration-150 hover:shadow-inner"
                       onClick={() => setSwapDropdownOpen((v) => !v)}
                     >
                       <span className="text-[#0DA314] text-[12px] font-normal flex items-center">
@@ -240,7 +240,7 @@ const PortfolioPage = () => {
                         {swapTimes.map((time) => (
                           <button
                             key={time}
-                            className={`w-full text-left px-4 py-2 text-[13px] text-[#BFC6C8] hover:bg-[#33C5E014] ${
+                            className={`w-full text-left px-4 py-2 text-[13px] text-[#BFC6C8] hover:bg-[#33C5E014] cursor-pointer ${
                               selectedSwapTime === time
                                 ? "text-[#33C5E0] font-semibold"
                                 : ""
@@ -286,7 +286,7 @@ const PortfolioPage = () => {
         <h2 className="text-[#FCFFFF] text-[14px] font-medium mb-[1.5rem] border-b border-b-[#33C5E014] pb-2">
           CHART & INSIGHTS
         </h2>
-        <div className="bg-[#182024] rounded-[24px] p-4 sm:p-6 min-h-[260px] flex flex-col lg:flex-row gap-8 w-full max-w-full overflow-x-auto">
+        <div className="bg-[#182024] rounded-[24px] p-4 sm:p-6 min-h-[260px] flex flex-col lg:flex-row gap-8 w-full max-w-full overflow-x-auto transition-shadow duration-200 hover:shadow-lg">
           {/* Line Chart */}
           <div className="flex-1 min-w-0 w-full max-w-full">
             <div className="flex items-center gap-4 mb-2">
@@ -295,7 +295,7 @@ const PortfolioPage = () => {
                 {ranges.map((r) => (
                   <button
                     key={r}
-                    className={`text-[12px] px-3 py-1 rounded-full border transition-all duration-150 ${
+                    className={`text-[12px] px-3 py-1 rounded-full border transition-all duration-150 cursor-pointer ${
                       activeRange === r
                         ? "bg-[#161E22] text-[#33C5E0] border-[#33C5E0]"
                         : "bg-transparent text-[#92A5A8] border-[#222C32]"
@@ -323,19 +323,19 @@ const PortfolioPage = () => {
             <span className="text-[#92A5A8] text-[12px] mb-2 text-center">
               Sum Of All Asset Values
             </span>
-            <div className="w-[180px] h-[180px] mx-auto">
+            <div className="w-[180px] h-[180px] mx-auto hover-raise">
               <Doughnut data={doughnutData} options={doughnutOptions} />
             </div>
             <div className="flex justify-center gap-4 mt-4">
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 hover:opacity-90 transition-opacity">
                 <span className="inline-block w-3 h-3 rounded-full bg-[#F87171]"></span>
                 <span className="text-[#BFC6C8] text-[12px]">ETH</span>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 hover:opacity-90 transition-opacity">
                 <span className="inline-block w-3 h-3 rounded-full bg-[#A78BFA]"></span>
                 <span className="text-[#BFC6C8] text-[12px]">NFTs</span>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 hover:opacity-90 transition-opacity">
                 <span className="inline-block w-3 h-3 rounded-full bg-[#FDBA74]"></span>
                 <span className="text-[#BFC6C8] text-[12px]">
                   Real World Asset
@@ -367,7 +367,7 @@ const PortfolioPage = () => {
               {assetTable.map((row, idx) => (
                 <tr
                   key={idx}
-                  className="border-b border-[#1C252A] text-[#FCFFFF] text-[13px] sm:text-[14px]"
+                  className="border-b border-[#1C252A] text-[#FCFFFF] text-[13px] sm:text-[14px] transition-colors duration-150 hover:bg-[#1C252A]"
                 >
                   <td className="py-3 sm:py-4 px-1 sm:px-2 font-normal flex items-center gap-2 min-w-[120px]">
                     <span className="text-[#425558] text-[13px] sm:text-[14px] w-4 inline-block">
@@ -378,6 +378,7 @@ const PortfolioPage = () => {
                       alt={row.asset}
                       width={24}
                       height={24}
+                      className="cursor-pointer"
                     />
                     {row.asset}
                   </td>
@@ -398,7 +399,7 @@ const PortfolioPage = () => {
                             activeActionsIdx === idx ? null : idx
                           )
                         }
-                        className="p-2 rounded-full hover:bg-[#232B2F] focus:outline-none"
+                        className="p-2 rounded-full hover:bg-[#232B2F] focus:outline-none cursor-pointer transition-colors duration-150"
                       >
                         <svg
                           width="20"
@@ -414,13 +415,13 @@ const PortfolioPage = () => {
                       {activeActionsIdx === idx && (
                         <div className="absolute z-10 top-10 right-0 bg-[#232B2F] border border-[#425558] rounded-xl shadow-lg flex flex-col w-36 animate-fade-in">
                           <button
-                            className="bg-[#33C5E0] cursor-pointer text-[#161E22] px-4 py-2 rounded-t-xl text-[12px] font-semibold hover:bg-cyan-400 w-full text-left"
+                            className="bg-[#33C5E0] cursor-pointer text-[#161E22] px-4 py-2 rounded-t-xl text-[12px] font-semibold hover:bg-cyan-400 w-full text-left transition-transform duration-150 hover:scale-105"
                             onClick={() => router.push("/dashboard/swap")}
                           >
                             SWAP
                           </button>
                           <button
-                            className="bg-[#232B2F] cursor-pointer border-t border-[#425558] text-[#BFC6C8] px-4 py-2 rounded-b-xl text-[12px] font-medium hover:bg-[#232B2F]/80 w-full text-left"
+                            className="bg-[#232B2F] cursor-pointer border-t border-[#425558] text-[#BFC6C8] px-4 py-2 rounded-b-xl text-[12px] font-medium hover:bg-[#232B2F]/80 w-full text-left transition-transform duration-150 hover:scale-105"
                             onClick={() => router.push("/dashboard/plans")}
                           >
                             ADD TO PLAN
@@ -431,13 +432,13 @@ const PortfolioPage = () => {
                     {/* Desktop: show buttons inline */}
                     <div className="hidden sm:flex gap-2">
                       <button
-                        className="bg-[#33C5E0] cursor-pointer text-[#161E22] px-4 sm:px-5 py-2 rounded-[16px] text-[12px] font-semibold hover:bg-cyan-400 w-full sm:w-auto"
+                        className="bg-[#33C5E0] cursor-pointer text-[#161E22] px-4 sm:px-5 py-2 rounded-[16px] text-[12px] font-semibold hover:bg-cyan-400 w-full sm:w-auto transition-transform duration-150 hover:scale-105"
                         onClick={() => router.push("/dashboard/swap")}
                       >
                         SWAP
                       </button>
                       <button
-                        className="bg-[#232B2F] cursor-pointer border border-[#425558] text-[#BFC6C8] px-4 sm:px-5 py-2 rounded-[16px] text-[12px] font-medium hover:bg-[#232B2F]/80 w-full sm:w-auto"
+                        className="bg-[#232B2F] cursor-pointer border border-[#425558] text-[#BFC6C8] px-4 sm:px-5 py-2 rounded-[16px] text-[12px] font-medium hover:bg-[#232B2F]/80 w-full sm:w-auto transition-transform duration-150 hover:scale-105"
                         onClick={() => router.push("/dashboard/plans")}
                       >
                         ADD TO PLAN
@@ -454,6 +455,25 @@ const PortfolioPage = () => {
           </table>
         </div>
       </section>
+
+      {/* scoped micro-interaction styles */}
+      <style jsx>{`
+        .hover-raise {
+          transition: transform 180ms cubic-bezier(.2,.9,.2,1), box-shadow 180ms cubic-bezier(.2,.9,.2,1);
+        }
+        .hover-raise:hover {
+          transform: translateY(-6px);
+          box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+        }
+        .clickable {
+          cursor: pointer;
+        }
+        .button-focus:focus {
+          outline: 3px solid rgba(51,197,224,0.12);
+          outline-offset: 2px;
+          border-radius: 12px;
+        }
+      `}</style>
     </main>
   );
 };

@@ -11,8 +11,10 @@ export default function AdminLayout({
       <AdminHeader />
 
       <div className="flex flex-1 max-w-[110rem] mx-auto w-full">
-        <AdminSidebar />
-        <main className="flex-1 p-6">{children}</main>
+        <div className="fixed">
+          <AdminSidebar />
+        </div>
+        <main className="flex-1 p-6 ml-0 md:ml-[15rem]">{children}</main>
       </div>
     </div>
   );

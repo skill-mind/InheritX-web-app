@@ -20,7 +20,10 @@ const assetOptions: Omit<Asset, "amount">[] = [
   { label: "USDT", icon: "/assets/icons/usdt.png" },
 ];
 
-const PieChart = dynamic(() => import("react-minimal-pie-chart").then(mod => mod.PieChart), { ssr: false });
+const PieChart = dynamic(
+  () => import("react-minimal-pie-chart").then((mod) => mod.PieChart),
+  { ssr: false }
+);
 
 const AssetAllocationPage = () => {
   const router = useRouter();
@@ -40,7 +43,7 @@ const AssetAllocationPage = () => {
       !amount ||
       isNaN(Number(amount)) ||
       Number(amount) <= 0 ||
-      assets.some(a => a.label === selectedAsset.label)
+      assets.some((a) => a.label === selectedAsset.label)
     )
       return;
     setAssets([...assets, { ...selectedAsset, amount: Number(amount) }]);
@@ -55,7 +58,10 @@ const AssetAllocationPage = () => {
     <main className="flex flex-col gap-6 p-4 md:p-8 w-full">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4 mb-2">
-          <button className="text-[#BFC6C8] cursor-pointer text-[15px] flex items-center gap-2" onClick={() => router.back()}>
+          <button
+            className="text-[#BFC6C8] cursor-pointer text-[15px] flex items-center gap-2 hover-raise clickable"
+            onClick={() => router.back()}
+          >
             <Image
               src="/assets/icons/back.svg"
               alt="back"
@@ -71,7 +77,7 @@ const AssetAllocationPage = () => {
           </h2>
         </div>
         <div>
-          <button className="border border-[#33C5E03D] p-[14px] rounded-[24px] text-[#33C5E0] text-[14px] hover:bg-[#33C5E0] hover:text-[#161E22] duration-500 cursor-pointer">
+          <button className="border border-[#33C5E03D] p-[14px] rounded-[24px] text-[#33C5E0] text-[14px] hover:bg-[#33C5E0] hover:text-[#161E22] duration-500 cursor-pointer hover-raise clickable">
             <Image
               src="/assets/icons/plus.svg"
               alt="plus icon"
@@ -133,7 +139,7 @@ const AssetAllocationPage = () => {
                 <label className="text-[#BFC6C8] text-xs mb-1">Asset</label>
                 <div className="relative">
                   <button
-                    className="flex items-center w-full bg-[#182024] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] text-[15px] outline-none justify-between"
+                    className="flex items-center w-full bg-[#182024] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] text-[15px] outline-none justify-between hover-raise clickable"
                     type="button"
                     onClick={() => setDropdownOpen((v) => !v)}
                   >
@@ -162,7 +168,7 @@ const AssetAllocationPage = () => {
                       {assetOptions.map((option) => (
                         <button
                           key={option.label}
-                          className="flex items-center gap-2 w-full px-4 py-2 text-[#FCFFFF] hover:bg-[#232B36] text-[15px]"
+                          className="flex items-center gap-2 w-full px-4 py-2 text-[#FCFFFF] hover:bg-[#232B36] text-[15px] cursor-pointer"
                           onClick={() => {
                             setSelectedAsset(option);
                             setDropdownOpen(false);
@@ -190,12 +196,12 @@ const AssetAllocationPage = () => {
                     step="any"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
-                    className="w-full bg-[#182024] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] text-[15px] outline-none"
+                    className="w-full bg-[#182024] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] text-[15px] outline-none input-transition"
                     placeholder="0.00"
                   />
                   <button
                     type="button"
-                    className="bg-[#232B36] text-[#FCFFFF] px-3 py-1 rounded-full text-xs font-medium"
+                    className="bg-[#232B36] text-[#FCFFFF] px-3 py-1 rounded-full text-xs font-medium hover-raise clickable"
                     onClick={() => setAmount("100")}
                   >
                     MAX
@@ -222,18 +228,24 @@ const AssetAllocationPage = () => {
                         : 0
                     }
                     readOnly
-                    className="w-full bg-[#182024] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] text-[15px] outline-none"
+                    className="w-full bg-[#182024] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] text-[15px] outline-none input-transition"
                   />
                 </div>
               </div>
             </div>
             <button
               type="button"
-              className={`flex items-center justify-end self-end gap-2 w-full md:w-fit text-[15px] px-8 py-3 font-medium p-[14px] h-[56px] rounded-[24px] float-end border border-[#33C5E03D] transition-colors bg-[#1C252A] text-[#33C5E0] hover:text-[#1C252A] hover:bg-[#33C5E0]/90 ${
-                !isFormValid || assets.some(a => a.label === selectedAsset.label) ? "opacity-50 cursor-not-allowed" : ""
+              className={`flex cursor-pointer items-center justify-end self-end gap-2 w-full md:w-fit text-[15px] px-8 py-3 font-medium p-[14px] h-[56px] rounded-[24px] float-end border border-[#33C5E03D] transition-colors bg-[#1C252A] text-[#33C5E0] hover:text-[#1C252A] hover:bg-[#33C5E0]/90 ${
+                !isFormValid ||
+                assets.some((a) => a.label === selectedAsset.label)
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
               }`}
               onClick={handleAddAsset}
-              disabled={!isFormValid || assets.some(a => a.label === selectedAsset.label)}
+              disabled={
+                !isFormValid ||
+                assets.some((a) => a.label === selectedAsset.label)
+              }
             >
               <Image
                 src="/assets/icons/plus.svg"
@@ -247,14 +259,29 @@ const AssetAllocationPage = () => {
             {assets.length > 0 && (
               <div className="mt-6 flex flex-col gap-4">
                 {assets.map((a, idx) => (
-                  <div key={idx} className="flex flex-row items-center gap-4 bg-[#182024] border border-[#232B36] rounded-[16px] px-4 py-3">
+                  <div
+                    key={idx}
+                    className="flex flex-row items-center gap-4 bg-[#182024] border border-[#232B36] rounded-[16px] px-4 py-3 hover-raise clickable"
+                  >
                     <div className="flex items-center gap-2 w-1/3">
-                      <Image src={a.icon} alt={a.label} width={24} height={24} />
-                      <span className="text-[#FCFFFF] text-[15px] font-medium">{a.label}</span>
+                      <Image
+                        src={a.icon}
+                        alt={a.label}
+                        width={24}
+                        height={24}
+                      />
+                      <span className="text-[#FCFFFF] text-[15px] font-medium">
+                        {a.label}
+                      </span>
                     </div>
-                    <div className="w-1/3 text-[#FCFFFF] text-[15px] font-medium">{a.amount}</div>
+                    <div className="w-1/3 text-[#FCFFFF] text-[15px] font-medium">
+                      {a.amount}
+                    </div>
                     <div className="w-1/3 text-[#33C5E0] text-[15px] font-medium">
-                      {totalAmount > 0 ? ((a.amount / totalAmount) * 100).toFixed(0) : 0}%
+                      {totalAmount > 0
+                        ? ((a.amount / totalAmount) * 100).toFixed(0)
+                        : 0}
+                      %
                     </div>
                   </div>
                 ))}
@@ -271,7 +298,9 @@ const AssetAllocationPage = () => {
                 Sum Of All Asset Values
               </span>
               {assets.length === 0 ? (
-                <span className="text-[#BFC6C8] text-[16px]">No Assets Yet</span>
+                <span className="text-[#BFC6C8] text-[16px]">
+                  No Assets Yet
+                </span>
               ) : (
                 <PieChart
                   data={assets.map((a) => ({
@@ -297,7 +326,10 @@ const AssetAllocationPage = () => {
                   rounded
                   animate
                   label={({ dataEntry }) =>
-                    `${String(dataEntry.title ?? "")} ${((Number(dataEntry.value) / (totalAmount || 1)) * 100).toFixed(0)}%`
+                    `${String(dataEntry.title ?? "")} ${(
+                      (Number(dataEntry.value) / (totalAmount || 1)) *
+                      100
+                    ).toFixed(0)}%`
                   }
                   labelStyle={{
                     fontSize: "6px",
@@ -312,7 +344,7 @@ const AssetAllocationPage = () => {
                   {assets.map((a, idx) => (
                     <div
                       key={idx}
-                      className="flex items-center gap-1 text-xs text-[#FCFFFF]"
+                      className="flex items-center gap-1 text-xs text-[#FCFFFF] card-hover clickable"
                     >
                       <span
                         className="inline-block w-3 h-3 rounded-full mr-1"
@@ -333,8 +365,7 @@ const AssetAllocationPage = () => {
                               : "#BFC6C8",
                         }}
                       ></span>
-                      {a.label}{" "}
-                      {totalAmount > 0
+                      {a.label} {totalAmount > 0
                         ? ((a.amount / totalAmount) * 100).toFixed(0)
                         : 0}
                       %
@@ -348,7 +379,7 @@ const AssetAllocationPage = () => {
         <div className="flex justify-start mt-8">
           <button
             type="button"
-            className={`bg-[#33C5E0] w-[243px] text-[#161E22] text-center px-8 py-3 font-medium rounded-[16px] h-[56px] rounded-t-[8px] rounded-b-[24px] flex items-center justify-center gap-2 border border-[#232B36] text-[14px] transition-colors hover:bg-[#33C5E0]/90 disabled:bg-[#1C252A] disabled:text-[#425558] disabled:cursor-not-allowed`}
+            className={`bg-[#33C5E0] w-[243px] text-[#161E22] text-center px-8 py-3 font-medium rounded-[16px] h-[56px] rounded-t-[8px] rounded-b-[24px] flex items-center justify-center gap-2 border border-[#232B36] text-[14px] transition-colors hover:bg-[#33C5E0]/90 disabled:bg-[#1C252A] disabled:text-[#425558] disabled:cursor-not-allowed hover-raise clickable`}
             disabled={assets.length === 0}
             onClick={() => {
               if (assets.length > 0)
@@ -366,6 +397,15 @@ const AssetAllocationPage = () => {
           </button>
         </div>
       </div>
+      <style jsx>{`
+        .hover-raise { transition: transform 220ms ease, box-shadow 220ms ease; }
+        .hover-raise:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(0,0,0,0.12); }
+        .card-hover { transition: transform 200ms ease, box-shadow 200ms ease; }
+        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.06); }
+        .clickable { cursor: pointer; }
+        .input-transition { transition: box-shadow 180ms ease, border-color 180ms ease; }
+        .input-transition:focus { box-shadow: 0 8px 20px rgba(51,197,224,0.08); border-color: #33C5E0; outline: none; }
+      `}</style>
     </main>
   );
 };

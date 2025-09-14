@@ -41,7 +41,7 @@ const VerificationPage = () => {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4 mb-2">
           <button
-            className="text-[#BFC6C8] cursor-pointer text-[15px] flex items-center gap-2"
+            className="text-[#BFC6C8] cursor-pointer text-[15px] flex items-center gap-2 hover-raise clickable"
             onClick={() => router.back()}
           >
             <Image
@@ -59,7 +59,7 @@ const VerificationPage = () => {
           </h2>
         </div>
         <div>
-          <button className="border border-[#33C5E03D] p-[14px] rounded-[24px] text-[#33C5E0] text-[14px] hover:bg-[#33C5E0] hover:text-[#161E22] duration-500 cursor-pointer">
+          <button className="border border-[#33C5E03D] p-[14px] rounded-[24px] text-[#33C5E0] text-[14px] hover:bg-[#33C5E0] hover:text-[#161E22] duration-500 cursor-pointer hover-raise clickable">
             <Image
               src="/assets/icons/plus.svg"
               alt="plus icon"
@@ -136,7 +136,7 @@ const VerificationPage = () => {
               </p>
               <label
                 htmlFor="legal-upload"
-                className="flex items-center gap-2 px-6 py-3 rounded-[24px] border border-[#33C5E03D] text-[#33C5E0] text-[15px] cursor-pointer hover:bg-[#33C5E0] hover:text-[#161E22] duration-500"
+                className="flex items-center gap-2 px-6 py-3 rounded-[24px] border border-[#33C5E03D] text-[#33C5E0] text-[15px] cursor-pointer hover:bg-[#33C5E0] hover:text-[#161E22] duration-500 hover-raise clickable"
               >
                 <Image
                   src="/assets/icons/upload.svg"
@@ -158,7 +158,7 @@ const VerificationPage = () => {
                 <div className="flex flex-wrap gap-6 mt-6 w-full justify-center">
                   {legalFiles.map((file, idx) => (
                     <div key={idx} className="flex flex-col items-center">
-                      <div className="w-[120px] h-[120px] bg-[#232B36] rounded-[12px] flex items-center justify-center overflow-hidden">
+                      <div className="w-[120px] h-[120px] bg-[#232B36] rounded-[12px] flex items-center justify-center overflow-hidden card-hover clickable">
                         {file.type.startsWith("image/") ? (
                           <Image
                             src={URL.createObjectURL(file)}
@@ -200,7 +200,7 @@ const VerificationPage = () => {
                 value={trusteeName}
                 onChange={(e) => setTrusteeName(e.target.value)}
                 placeholder="e.g. John Doe"
-                className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[15px] outline-none"
+                className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[15px] outline-none input-transition"
               />
               <label htmlFor="" className="text-[14px] text-[#92A5A8]">
                 Phone Number
@@ -211,7 +211,7 @@ const VerificationPage = () => {
                 value={trusteePhone}
                 onChange={(e) => setTrusteePhone(e.target.value)}
                 placeholder="e.g. +234 812 3455 678"
-                className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[15px] outline-none"
+                className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[15px] outline-none input-transition"
               />
               <label htmlFor="" className="text-[14px] text-[#92A5A8]">
                 Email
@@ -222,12 +222,12 @@ const VerificationPage = () => {
                 value={trusteeEmail}
                 onChange={(e) => setTrusteeEmail(e.target.value)}
                 placeholder="e.g. example@gmail.com"
-                className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[15px] outline-none"
+                className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[15px] outline-none input-transition"
               />
               <div className="flex justify-end mt-2">
                 <button
                   type="button"
-                  className="flex items-center gap-2 bg-[#161E22] border border-[#33C5E03D] text-[#33C5E0] px-6 py-3 rounded-[24px] font-normal text-[12px] hover:bg-[#33C5E014] transition-colors"
+                  className="flex items-center gap-2 bg-[#161E22] border border-[#33C5E03D] text-[#33C5E0] px-6 py-3 rounded-[24px] font-normal text-[12px] hover:bg-[#33C5E014] transition-colors hover-raise clickable"
                   onClick={handleAddTrustee}
                   disabled={!isTrusteeValid}
                 >
@@ -246,7 +246,7 @@ const VerificationPage = () => {
                   {trustees.map((t, idx) => (
                     <li
                       key={idx}
-                      className="flex flex-col md:flex-row md:items-center gap-2 md:gap-6 mb-2 text-[#33C5E0]"
+                      className="flex flex-col md:flex-row md:items-center gap-2 md:gap-6 mb-2 text-[#33C5E0] hover-raise clickable"
                     >
                       <span>{t.name}</span>
                       <span>{t.phone}</span>
@@ -261,7 +261,7 @@ const VerificationPage = () => {
             <button
               type="button"
               disabled={!isFormValid}
-              className={`bg-[#33C5E0] w-[243px] text-[#161E22] text-center px-8 py-3 font-medium rounded-[16px] h-[56px] rounded-t-[8px] rounded-b-[24px] flex items-center gap-2 border border-[#232B36] text-[14px] transition-colors hover:bg-[#33C5E0]/90 disabled:bg-[#1C252A] disabled:text-[#425558] disabled:cursor-not-allowed`}
+              className={`bg-[#33C5E0] w-[243px] text-[#161E22] text-center px-8 py-3 font-medium rounded-[16px] h-[56px] rounded-t-[8px] rounded-b-[24px] flex items-center gap-2 border border-[#232B36] text-[14px] transition-colors hover:bg-[#33C5E0]/90 disabled:bg-[#1C252A] disabled:text-[#425558] disabled:cursor-not-allowed hover-raise clickable`}
               onClick={() => {
                 if (isFormValid) router.push("/dashboard/plans/create/preview");
               }}
@@ -278,6 +278,15 @@ const VerificationPage = () => {
           </div>
         </form>
       </div>
+      <style jsx>{`
+        .hover-raise { transition: transform 220ms ease, box-shadow 220ms ease; }
+        .hover-raise:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(0,0,0,0.12); }
+        .card-hover { transition: transform 200ms ease, box-shadow 200ms ease; }
+        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.06); }
+        .clickable { cursor: pointer; }
+        .input-transition { transition: box-shadow 180ms ease, border-color 180ms ease; }
+        .input-transition:focus { box-shadow: 0 8px 20px rgba(51,197,224,0.08); border-color: #33C5E0; outline: none; }
+      `}</style>
     </main>
   );
 };

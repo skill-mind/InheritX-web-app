@@ -29,7 +29,7 @@ const RulesPage = () => {
     <main className="flex flex-col gap-6 p-4 md:p-8 w-full">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4 mb-2">
-          <button className="text-[#BFC6C8] cursor-pointer text-[15px] flex items-center gap-2" onClick={() => router.back()}>
+          <button className="text-[#BFC6C8] cursor-pointer text-[15px] flex items-center gap-2 hover-raise clickable" onClick={() => router.back()}>
             <Image
               src="/assets/icons/back.svg"
               alt="back"
@@ -43,7 +43,7 @@ const RulesPage = () => {
           </h2>
         </div>
         <div>
-          <button className="border border-[#33C5E03D] p-[14px] rounded-[24px] text-[#33C5E0] text-[14px] hover:bg-[#33C5E0] hover:text-[#161E22] duration-500 cursor-pointer">
+          <button className="border border-[#33C5E03D] p-[14px] rounded-[24px] text-[#33C5E0] text-[14px] hover:bg-[#33C5E0] hover:text-[#161E22] duration-500 cursor-pointer hover-raise clickable">
             <Image src="/assets/icons/plus.svg" alt="plus icon" width={14} height={14} className="inline-block mr-2" />
             <span>Save As Draft</span>
           </button>
@@ -114,7 +114,7 @@ const RulesPage = () => {
                   <div className="relative w-full mt-4">
                     <button
                       type="button"
-                      className="flex items-center justify-between w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] text-[15px] outline-none"
+                      className="flex items-center justify-between w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] text-[15px] outline-none hover-raise clickable"
                       onClick={() => setShowLumpDropdown((v) => !v)}
                     >
                       <span>{lumpDate ? lumpDate : "Input Lump Sum distribution date"}</span>
@@ -129,7 +129,7 @@ const RulesPage = () => {
                           type="date"
                           value={lumpDate}
                           onChange={e => { setLumpDate(e.target.value); setShowLumpDropdown(false); }}
-                          className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] text-[15px] outline-none text-center"
+                          className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] text-[15px] outline-none text-center input-transition"
                         />
                         <span className="text-[#BFC6C8] text-xs mt-2">DD/MM/YYYY</span>
                       </div>
@@ -151,7 +151,7 @@ const RulesPage = () => {
                   <div className="relative w-full mt-4">
                     <button
                       type="button"
-                      className="flex items-center justify-between w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] text-[15px] outline-none"
+                      className="flex items-center justify-between w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] text-[15px] outline-none hover-raise clickable"
                       onClick={() => setShowDisbursementDropdown((v) => !v)}
                     >
                       <span>{disbursementType || "Disbursement"}</span>
@@ -165,7 +165,7 @@ const RulesPage = () => {
                           <li key={option}>
                             <button
                               type="button"
-                              className="flex items-center gap-2 w-full px-4 py-3 text-[#FCFFFF] hover:bg-[#33C5E014] text-[15px]"
+                              className="flex items-center gap-2 w-full px-4 py-3 text-[#FCFFFF] hover:bg-[#33C5E014] text-[15px] clickable"
                               onClick={() => { setDisbursementType(option); setShowDisbursementDropdown(false); }}
                             >
                               <span className="w-4 h-4 rounded-full border border-[#33C5E0] flex items-center justify-center mr-2">
@@ -191,7 +191,7 @@ const RulesPage = () => {
                             setPercentages(prev => ({ ...prev, [disbursementType]: val }));
                           }}
                           placeholder="Enter percentage (1-100%)"
-                          className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] text-[15px] outline-none"
+                          className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] text-[15px] outline-none input-transition"
                         />
                         <span className="text-[#425558] text-xs">This is the percentage of the total inheritance to be received {disbursementType.split(' ')[0].toLowerCase()}.</span>
                         {percentages[disbursementType] && (Number(percentages[disbursementType]) < 1 || Number(percentages[disbursementType]) > 100) && (
@@ -218,7 +218,7 @@ const RulesPage = () => {
             <button
               type="button"
               disabled={!isFormValid}
-              className={`bg-[#33C5E0] w-[243px] text-[#161E22] text-center px-8 py-3 justify-center font-medium rounded-[16px] h-[56px] rounded-t-[8px] rounded-b-[24px] flex items-center gap-2 border border-[#232B36] text-[14px] transition-colors hover:bg-[#33C5E0]/90 disabled:bg-[#1C252A] disabled:text-[#425558] disabled:cursor-not-allowed`}
+              className={`bg-[#33C5E0] w-[243px] text-[#161E22] text-center px-8 py-3 justify-center font-medium rounded-[16px] h-[56px] rounded-t-[8px] rounded-b-[24px] flex items-center gap-2 border border-[#232B36] text-[14px] transition-colors hover:bg-[#33C5E0]/90 disabled:bg-[#1C252A] disabled:text-[#425558] disabled:cursor-not-allowed hover-raise clickable`}
               onClick={() => {
                 if (isFormValid) router.push("/dashboard/plans/create/rules-verification");
               }}
@@ -229,6 +229,15 @@ const RulesPage = () => {
           </div>
         </form>
       </div>
+      <style jsx>{`
+        .hover-raise { transition: transform 220ms ease, box-shadow 220ms ease; }
+        .hover-raise:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(0,0,0,0.12); }
+        .card-hover { transition: transform 200ms ease, box-shadow 200ms ease; }
+        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.06); }
+        .clickable { cursor: pointer; }
+        .input-transition { transition: box-shadow 180ms ease, border-color 180ms ease; }
+        .input-transition:focus { box-shadow: 0 8px 20px rgba(51,197,224,0.08); border-color: #33C5E0; outline: none; }
+      `}</style>
     </main>
   );
 };

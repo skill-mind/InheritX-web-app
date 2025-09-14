@@ -115,7 +115,7 @@ const Navbar = () => {
       </nav>
 
       {/* Mobile Navigation - always visible, row at bottom */}
-      <div className="fixed bottom-0 md:hidden left-0 w-full z-50">
+      <div className="fixed bottom-0 md:hidden left-0 w-full z-50 bg-[#161E22]">
         <div className="w-full flex justify-center items-center bg-transparent border-slate-700 z-50 py-2">
           <div className="flex flex-row justify-center items-center w-full">
             {navItems

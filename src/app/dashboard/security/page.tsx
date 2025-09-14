@@ -17,7 +17,7 @@ function Toggle({ checked, onChange }: ToggleProps) {
     <button
       type="button"
       onClick={() => onChange(!checked)}
-      className={`w-12 h-6 flex items-center rounded-full p-1 transition-colors duration-200 ${
+      className={`w-12 h-6 flex items-center rounded-full p-1 transition-colors duration-200 group cursor-pointer ${
         checked ? "bg-cyan-400" : "bg-[#232B36]"
       }`}
       aria-pressed={checked}
@@ -25,7 +25,7 @@ function Toggle({ checked, onChange }: ToggleProps) {
       <span
         className={`w-5 h-5 bg-white rounded-full shadow-md transform transition-transform duration-200 ${
           checked ? "translate-x-6" : "translate-x-0"
-        }`}
+        } group-hover:scale-105`}
       />
     </button>
   );
@@ -137,7 +137,7 @@ const SecurityPage = () => {
             Two-Factor Authentication
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-[#BFC6C8] font-normal text-[14px] ml-[1rem]">
+            <span className="text-[#BFC6C8] font-normal text-[14px] ml-[1rem] cursor-default">
               Enable Two-Factor Authentication
             </span>
             <Toggle checked={twoFA} onChange={handle2FAToggle} />
@@ -150,7 +150,7 @@ const SecurityPage = () => {
               You are logged in on 2 devices
             </span>
           </div>
-          <div className="bg-[#182024] rounded-xl py-[16px] px-[24px] flex flex-col gap-3">
+          <div className="bg-[#182024] rounded-xl py-[16px] px-[24px] flex flex-col gap-3 transition-shadow duration-150 hover:shadow-md">
             <div className="flex items-center justify-between">
               <span className="bg-transparent text-[12px] text-[#92A5A8] text-xs px-3 py-1 rounded-full mr-2">
                 DESKTOP
@@ -158,7 +158,7 @@ const SecurityPage = () => {
               <span className="text-[#FCFFFF] text-[14px] font-normal flex-1 ml-4">
                 Mac M1
               </span>
-              <button className="bg-[#1C252A] border border-[#2A3338] py-[8px] px-[16px] text-[#BFC6C8] text-xs rounded-[24px] text-[12px] font-semibold ml-2">
+              <button className="bg-[#1C252A] border border-[#2A3338] py-[8px] px-[16px] text-[#BFC6C8] text-xs rounded-[24px] text-[12px] font-semibold ml-2 transition-transform duration-150 hover:scale-105 cursor-pointer">
                 LOG OUT
               </button>
             </div>
@@ -169,7 +169,7 @@ const SecurityPage = () => {
               <span className="text-[#FCFFFF] text-[14px] font-normal flex-1 ml-4">
                 Samsung S21 FE
               </span>
-              <button className="bg-[#1C252A] border border-[#2A3338] py-[8px] px-[16px] text-[#BFC6C8] text-xs rounded-[24px] text-[12px] font-semibold ml-2">
+              <button className="bg-[#1C252A] border border-[#2A3338] py-[8px] px-[16px] text-[#BFC6C8] text-xs rounded-[24px] text-[12px] font-semibold ml-2 transition-transform duration-150 hover:scale-105 cursor-pointer">
                 LOG OUT
               </button>
             </div>
@@ -180,13 +180,13 @@ const SecurityPage = () => {
             Biometric Authentication
           </div>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-[#BFC6C8] text-[14px] border border-[#1C252A]">
+            <span className="text-[#BFC6C8] text-[14px] border border-[#1C252A] px-3 py-2 rounded-md cursor-pointer transition-colors duration-150 hover:bg-[#1C252A]">
               Enable Fingerprint
             </span>
             <Toggle checked={fingerprint} onChange={handleFingerprintToggle} />
           </div>
           <div className="flex items-center justify-between mt-[2rem]">
-            <span className="text-[#BFC6C8] text-[14px] border border-[#1C252A]">
+            <span className="text-[#BFC6C8] text-[14px] border border-[#1C252A] px-3 py-2 rounded-md cursor-pointer transition-colors duration-150 hover:bg-[#1C252A]">
               Enable Face ID
             </span>
             <Toggle checked={faceID} onChange={handleFaceIDToggle} />
@@ -200,12 +200,12 @@ const SecurityPage = () => {
             </span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-[#BFC6C8] text-[14px]">Notify by email</span>
+            <span className="text-[#BFC6C8] text-[14px] cursor-default">Notify by email</span>
             <Toggle checked={emailAlert} onChange={setEmailAlert} />
           </div>
         </div>
         <div className="flex flex-col items-center justify-start gap-2">
-          <button className="flex items-center gap-2 w-fit text-[14px] px-8 py-3 font-medium rounded-t-[8px] rounded-b-[24px] bg-[#1C252A] h-[48px]  text-[#33C5E0] border border-[#232B36] hover:bg-cyan-900/30 transition-colors mt-2">
+          <button className="flex items-center gap-2 w-fit text-[14px] px-8 py-3 font-medium rounded-t-[8px] rounded-b-[24px] bg-[#1C252A] h-[48px]  text-[#33C5E0] border border-[#232B36] hover:bg-cyan-900/30 transition duration-150 hover:scale-105 cursor-pointer focus:outline-none mt-2">
             SAVE SETTINGS
             <svg width="18" height="18" fill="none" viewBox="0 0 24 24">
               <path

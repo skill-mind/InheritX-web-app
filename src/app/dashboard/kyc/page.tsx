@@ -50,7 +50,7 @@ const KYCPage = () => {
   return (
     <main className="flex flex-col gap-6 p-4 md:p-8 w-full overflow-x-hidden max-w-full">
       <div className="flex items-center gap-4 mb-2">
-        <button className="text-[#BFC6C8] text-[15px] flex items-center gap-2">
+        <button className="text-[#BFC6C8] text-[15px] flex items-center gap-2 cursor-pointer transition-colors duration-150 hover:text-white">
           <Image
             src="/assets/icons/back.svg"
             alt="back"
@@ -71,14 +71,14 @@ const KYCPage = () => {
           {steps.map((step, idx) => (
             <div key={step.label} className="flex flex-col items-center flex-1">
               <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${
+                className={`w-8 h-8 rounded-full flex items-center justify-center border-2 transition duration-150 transform ${
                   idx === 0
                     ? "border-cyan-400 bg-[#161E22]"
                     : "border-[#232B36] bg-[#232B36]"
-                }`}
+                } hover:scale-105 cursor-pointer`}
               >
                 <span
-                  className={`text-[15px] font-semibold ${
+                  className={`text-[15px] font-semibold transition-colors duration-150 ${
                     idx === 0 ? "text-cyan-400" : "text-[#BFC6C8]"
                   }`}
                 >
@@ -87,7 +87,7 @@ const KYCPage = () => {
               </div>
               {idx < steps.length - 1 && <div className="kyc-step-bar" />}
               <div
-                className={`mt-2 text-xs font-medium ${
+                className={`mt-2 text-xs font-medium transition-colors duration-150 ${
                   idx === 0 ? "text-cyan-400" : "text-[#BFC6C8]"
                 }`}
               >
@@ -111,7 +111,7 @@ const KYCPage = () => {
             <input
               type="text"
               name="fullName"
-              className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[15px] outline-none"
+              className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[15px] outline-none transition duration-150 focus:shadow-[0_0_0_6px_rgba(51,197,224,0.06)] focus:border-[#33C5E0]"
               value={form.fullName}
               onChange={handleChange}
               onBlur={handleBlur}
@@ -126,7 +126,7 @@ const KYCPage = () => {
             <input
               type="email"
               name="email"
-              className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[15px] outline-none"
+              className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[15px] outline-none transition duration-150 focus:shadow-[0_0_0_6px_rgba(51,197,224,0.06)] focus:border-[#33C5E0]"
               value={form.email}
               onChange={handleChange}
               onBlur={handleBlur}
@@ -142,7 +142,7 @@ const KYCPage = () => {
             <input
               type="text"
               name="dob"
-              className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[15px] outline-none"
+              className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[15px] outline-none transition duration-150 focus:shadow-[0_0_0_6px_rgba(51,197,224,0.06)] focus:border-[#33C5E0]"
               value={form.dob}
               onChange={handleChange}
               onBlur={handleBlur}
@@ -159,7 +159,7 @@ const KYCPage = () => {
             <input
               type="text"
               name="address"
-              className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[15px] outline-none"
+              className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[15px] outline-none transition duration-150 focus:shadow-[0_0_0_6px_rgba(51,197,224,0.06)] focus:border-[#33C5E0]"
               value={form.address}
               onChange={handleChange}
               onBlur={handleBlur}
@@ -172,7 +172,7 @@ const KYCPage = () => {
           <div className="flex justify-start mt-8">
             <button
               type="button"
-              className="bg-[#33C5E0] w-[243px] text-[#161E22] text-center px-8 py-3 font-medium rounded-[16px] h-[56px] rounded-t-[8px] rounded-b-[24px] flex items-center gap-2 border border-[#232B36] text-[14px] transition-colors hover:bg-[#33C5E0]/90 disabled:bg-[#1C252A] disabled:text-[#425558] disabled:cursor-not-allowed"
+              className={`bg-[#33C5E0] w-[243px] text-[#161E22] text-center px-8 py-3 font-medium rounded-[16px] h-[56px] rounded-t-[8px] rounded-b-[24px] flex items-center gap-2 border border-[#232B36] text-[14px] transition duration-150 hover:bg-[#33C5E0]/90 hover:scale-105 ${!isValid ? 'disabled:bg-[#1C252A] disabled:text-[#425558] disabled:cursor-not-allowed' : 'cursor-pointer'}`}
               disabled={!isValid}
               onClick={() => router.push("/dashboard/kyc/id-upload")}
             >
@@ -188,7 +188,7 @@ const KYCPage = () => {
           </div>
         </form>
       </div>
-      <style jsx>{`
+      {/* <style jsx>{`
         .kyc-container {
           background: #10171d;
           min-height: 100vh;
@@ -369,7 +369,7 @@ const KYCPage = () => {
             padding: 0 0.2rem;
           }
         }
-      `}</style>
+      `}</style> */}
     </main>
   );
 };

@@ -1,0 +1,19 @@
+.how-box {
+  box-shadow:
+    inset 4px 4px 10px rgba(17, 23, 26, 0.9),
+    inset -4px -4px 8px rgba(27, 37, 42, 0.9);
+  background: rgba(16, 22, 24, 0.45);
+  backdrop-filter: blur(6px);
+}
+
+.how-tabs .active {
+  background: rgba(51, 197, 224, 0.08);
+  color: #33C5E0;
+  border: 1px solid rgba(51,197,224,0.12);
+}
+
+/* small utility to match faq spacing */
+.how-contact {
+  box-shadow: 4px 4px 10px rgba(0,0,0,0.5);
+  background: rgba(24,32,36,0.6);
+}

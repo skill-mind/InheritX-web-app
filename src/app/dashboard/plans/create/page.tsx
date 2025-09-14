@@ -27,7 +27,8 @@ function CreatePlanPageContent() {
   // Validation
   const isPlanNameValid = planName.trim().length > 0;
   const isDescriptionValid = description.trim().length > 0;
-  const isFormValid = isPlanNameValid && isDescriptionValid && selectedBeneficiaries.length > 0;
+  const isFormValid =
+    isPlanNameValid && isDescriptionValid && selectedBeneficiaries.length > 0;
 
   React.useEffect(() => {
     const name = searchParams.get("name");
@@ -36,7 +37,7 @@ function CreatePlanPageContent() {
     if (name && relationship && email) {
       setBeneficiaries((prev) => {
         // Prevent duplicate add if already present
-        if (prev.some(b => b.name === name && b.email === email)) return prev;
+        if (prev.some((b) => b.name === name && b.email === email)) return prev;
         return [
           ...prev,
           {
@@ -54,7 +55,10 @@ function CreatePlanPageContent() {
     <main className="flex flex-col gap-6 p-4 md:p-8 w-full">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4 mb-2">
-          <button className="text-[#BFC6C8] cursor-pointer text-[15px] flex items-center gap-2" onClick={() => router.back()}>
+          <button
+            className="text-[#BFC6C8] cursor-pointer text-[15px] flex items-center gap-2"
+            onClick={() => router.back()}
+          >
             <Image
               src="/assets/icons/back.svg"
               alt="back"
@@ -138,7 +142,7 @@ function CreatePlanPageContent() {
               value={planName}
               onChange={(e) => setPlanName(e.target.value)}
               placeholder="Graduation Inheritance"
-              className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[15px] outline-none"
+              className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[15px] outline-none input-transition"
             />
           </div>
           <div>
@@ -149,7 +153,7 @@ function CreatePlanPageContent() {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Text"
-              className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[15px] outline-none min-h-[60px]"
+              className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[15px] outline-none min-h-[60px] input-transition"
             />
           </div>
           <div>
@@ -160,10 +164,12 @@ function CreatePlanPageContent() {
               {beneficiaries.map((b, idx) => (
                 <div
                   key={idx}
-                  className={`relative flex flex-col items-center bg-[#182024] border border-[#2A3338] rounded-[24px] h-[298px] p-0 min-w-[240px] max-w-[260px] w-full transition-all
-                    ${selectedBeneficiaries.includes(b.id)
-                      ? "ring-2 ring-[#2A3338] bg-[#33C5E014]"
-                      : ""}
+                  className={`relative flex flex-col items-center bg-[#182024] border border-[#2A3338] rounded-[24px] h-[298px] p-0 min-w-[240px] max-w-[260px] w-full transition-all card-hover clickable
+                    ${
+                      selectedBeneficiaries.includes(b.id)
+                        ? "ring-2 ring-[#2A3338] bg-[#33C5E014]"
+                        : ""
+                    }
                   `}
                   onClick={() => {
                     setSelectedBeneficiaries((prev) =>
@@ -172,7 +178,6 @@ function CreatePlanPageContent() {
                         : [...prev, b.id]
                     );
                   }}
-                  style={{ cursor: "pointer" }}
                 >
                   <Image
                     src={"/assets/images/beneficiary1.svg"}
@@ -197,7 +202,15 @@ function CreatePlanPageContent() {
                       aria-label="Edit Beneficiary"
                       onClick={(e) => {
                         e.stopPropagation();
-                        router.push(`/dashboard/plans/create/beneficiary?name=${encodeURIComponent(b.name)}&relationship=${encodeURIComponent(b.relationship)}&email=${encodeURIComponent(b.email)}&edit=true&id=${b.id}`);
+                        router.push(
+                          `/dashboard/plans/create/beneficiary?name=${encodeURIComponent(
+                            b.name
+                          )}&relationship=${encodeURIComponent(
+                            b.relationship
+                          )}&email=${encodeURIComponent(
+                            b.email
+                          )}&edit=true&id=${b.id}`
+                        );
                       }}
                     >
                       <Image
@@ -213,8 +226,10 @@ function CreatePlanPageContent() {
               <div className="flex flex-col items-center justify-center bg-transparent border border-[#33C5E03D] rounded-[18px] w-[144px] h-[144px] hover:bg-[#33C5E014] transition-colors">
                 <button
                   type="button"
-                  className="flex flex-col items-center justify-center"
-                  onClick={() => router.push("/dashboard/plans/create/beneficiary")}
+                  className="flex flex-col items-center justify-center cursor-pointer"
+                  onClick={() =>
+                    router.push("/dashboard/plans/create/beneficiary")
+                  }
                 >
                   <Image
                     src="/assets/icons/plus.svg"
@@ -235,7 +250,8 @@ function CreatePlanPageContent() {
               disabled={!isFormValid}
               className={`bg-[#33C5E0] w-[243px] cursor-pointer text-center justify-center text-[#161E22] px-8 py-3 font-medium rounded-[16px] h-[56px] rounded-t-[8px] rounded-b-[24px] flex items-center gap-2 border border-[#232B36] transition-colors hover:bg-[#33C5E0]/90 disabled:bg-[#1C252A] disabled:text-[#FCFFFF] disabled:cursor-not-allowed`}
               onClick={() => {
-                if (isFormValid) router.push("/dashboard/plans/create/asset-allocation");
+                if (isFormValid)
+                  router.push("/dashboard/plans/create/asset-allocation");
               }}
             >
               NEXT
@@ -252,16 +268,31 @@ function CreatePlanPageContent() {
           </div>
           {/* Validation messages */}
           {!isPlanNameValid && (
-            <span className="text-red-500 text-xs mt-1">Plan name is required</span>
+            <span className="text-red-500 text-xs mt-1">
+              Plan name is required
+            </span>
           )}
           {!isDescriptionValid && (
-            <span className="text-red-500 text-xs mt-1">Description is required</span>
+            <span className="text-red-500 text-xs mt-1">
+              Description is required
+            </span>
           )}
           {selectedBeneficiaries.length === 0 && (
-            <span className="text-red-500 text-xs mt-1">Select at least one beneficiary</span>
+            <span className="text-red-500 text-xs mt-1">
+              Select at least one beneficiary
+            </span>
           )}
         </form>
       </div>
+      <style jsx>{`
+          .hover-raise { transition: transform 220ms ease, box-shadow 220ms ease; }
+          .hover-raise:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(0,0,0,0.12); }
+          .card-hover { transition: transform 220ms ease, box-shadow 220ms ease; }
+          .card-hover:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(0,0,0,0.06); }
+          .clickable { cursor: pointer; }
+          .input-transition { transition: box-shadow 180ms ease, border-color 180ms ease; }
+          .input-transition:focus { box-shadow: 0 8px 20px rgba(51,197,224,0.08); border-color: #33C5E0; outline: none; }
+        `}</style>
     </main>
   );
 }
