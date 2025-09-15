@@ -79,6 +79,8 @@ function ConnectWalletModal({ isOpen, onClose }: ConnectModalProps) {
                 ) : connector.icon ? (
                   <Image
                     src={connector.icon as string}
+                    width={28}
+                    height={28}
                     className="w-7 h-7"
                     alt={connector.name}
                   />

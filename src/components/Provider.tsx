@@ -25,13 +25,12 @@ export function StarknetProvider({ children }: { children: React.ReactNode }) {
     // Add fallback RPC providers
     if (chain.id === sepolia.id) {
       return {
-        nodeUrl:
-          "https://starknet-sepolia.g.alchemy.com/starknet/version/rpc/v0_8/Z-bu_aTuwBtbfy7YQ4vOS2ZPQgWJpZdw",
+        nodeUrl: process.env.NEXT_PUBLIC_RPC_URL,
       };
     }
     // Fallback for other chains
     return {
-      nodeUrl: `https://starknet-${chain.network}.g.alchemy.com/v2/your-api-key`,
+      nodeUrl: process.env.NEXT_PUBLIC_RPC_URL,
     };
   }, []);
 
