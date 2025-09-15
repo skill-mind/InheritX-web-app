@@ -1,55 +1,38 @@
 "use client";
 
-import React, { useState, Suspense } from "react";
+import React from "react";
 import Image from "next/image";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useCreatePlan } from "@/contexts/CreatePlanContext";
+import { truncateAddress } from "@/lib/utils";
 
-interface Beneficiary {
-  id: number;
-  name: string;
-  relationship: string;
-  email: string;
-  phone?: string;
-  avatar?: string;
-  address?: string;
-}
+// interface Beneficiary {
+//   id: number;
+//   name: string;
+//   relationship: string;
+//   email: string;
+//   phone?: string;
+//   avatar?: string;
+//   address?: string;
+// }
 
 function CreatePlanPageContent() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const [planName, setPlanName] = useState("");
-  const [description, setDescription] = useState("");
-  const [selectedBeneficiaries, setSelectedBeneficiaries] = useState<number[]>([
-    1, 2,
-  ]);
-  const [beneficiaries, setBeneficiaries] = useState<Beneficiary[]>([]);
+  const { formData, updateFormData } = useCreatePlan();
 
   // Validation
-  const isPlanNameValid = planName.trim().length > 0;
-  const isDescriptionValid = description.trim().length > 0;
+  const isPlanNameValid = formData.planName.trim().length > 0;
+  const isDescriptionValid = formData.planDescription.trim().length > 0;
+  const isBeneficiaryValid = formData.selectedBeneficiaries.length > 0;
   const isFormValid =
-    isPlanNameValid && isDescriptionValid && selectedBeneficiaries.length > 0;
+    isPlanNameValid && isDescriptionValid && isBeneficiaryValid;
 
-  React.useEffect(() => {
-    const name = searchParams.get("name");
-    const relationship = searchParams.get("relationship");
-    const email = searchParams.get("email");
-    if (name && relationship && email) {
-      setBeneficiaries((prev) => {
-        // Prevent duplicate add if already present
-        if (prev.some((b) => b.name === name && b.email === email)) return prev;
-        return [
-          ...prev,
-          {
-            id: prev.length > 0 ? prev[prev.length - 1].id + 1 : 1,
-            name,
-            relationship,
-            email,
-          },
-        ];
-      });
-    }
-  }, [searchParams]);
+  // Debug logging
+  console.log("=== CREATE PAGE DEBUG ===");
+  console.log("Form Data:", formData);
+  console.log("Beneficiaries:", formData.beneficiaries);
+  console.log("Selected Beneficiaries:", formData.selectedBeneficiaries);
+  console.log("=== END DEBUG ===");
 
   return (
     <main className="flex flex-col gap-6 p-4 md:p-8 w-full">
@@ -93,7 +76,7 @@ function CreatePlanPageContent() {
       <div className="w-full flex flex-col gap-8">
         {/* Progress Steps */}
         <div className="flex flex-row items-center justify-between w-full mb-2">
-          {[1, 2, 3, 4, 5].map((step, idx) => (
+          {[1, 2, 3, 4].map((step, idx) => (
             <div key={step} className="flex flex-col items-center flex-1">
               <div
                 className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${
@@ -116,13 +99,9 @@ function CreatePlanPageContent() {
                 }`}
               >
                 {
-                  [
-                    "Basic Information",
-                    "Asset Allocation",
-                    "Rules",
-                    "Verification",
-                    "Preview",
-                  ][idx]
+                  ["Basic Information", "Asset Allocation", "Rules", "Preview"][
+                    idx
+                  ]
                 }
               </span>
             </div>
@@ -139,10 +118,10 @@ function CreatePlanPageContent() {
             </label>
             <input
               type="text"
-              value={planName}
-              onChange={(e) => setPlanName(e.target.value)}
+              value={formData.planName}
+              onChange={(e) => updateFormData({ planName: e.target.value })}
               placeholder="Graduation Inheritance"
-              className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[15px] outline-none input-transition"
+              className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[15px] outline-none"
             />
           </div>
           <div>
@@ -150,10 +129,12 @@ function CreatePlanPageContent() {
               Description
             </label>
             <textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              value={formData.planDescription}
+              onChange={(e) =>
+                updateFormData({ planDescription: e.target.value })
+              }
               placeholder="Text"
-              className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[15px] outline-none min-h-[60px] input-transition"
+              className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[15px] outline-none min-h-[60px]"
             />
           </div>
           <div>
@@ -161,29 +142,33 @@ function CreatePlanPageContent() {
               Select Beneficiary
             </label>
             <div className="flex flex-row flex-wrap gap-6 items-stretch">
-              {beneficiaries.map((b, idx) => (
+              {formData.beneficiaries.map((b, idx) => (
                 <div
                   key={idx}
-                  className={`relative flex flex-col items-center bg-[#182024] border border-[#2A3338] rounded-[24px] h-[298px] p-0 min-w-[240px] max-w-[260px] w-full transition-all card-hover clickable
+                  className={`relative flex flex-col items-center bg-[#182024] border border-[#2A3338] rounded-[24px] h-[298px] p-0 min-w-[240px] max-w-[260px] w-full transition-all
                     ${
-                      selectedBeneficiaries.includes(b.id)
+                      formData.selectedBeneficiaries.includes(b.id)
                         ? "ring-2 ring-[#2A3338] bg-[#33C5E014]"
                         : ""
                     }
                   `}
                   onClick={() => {
-                    setSelectedBeneficiaries((prev) =>
-                      prev.includes(b.id)
-                        ? prev.filter((id) => id !== b.id)
-                        : [...prev, b.id]
-                    );
+                    updateFormData({
+                      selectedBeneficiaries:
+                        formData.selectedBeneficiaries.includes(b.id)
+                          ? formData.selectedBeneficiaries.filter(
+                              (id) => id !== b.id
+                            )
+                          : [...formData.selectedBeneficiaries, b.id],
+                    });
                   }}
+                  style={{ cursor: "pointer" }}
                 >
                   <Image
-                    src={"/assets/images/beneficiary1.svg"}
+                    src={"/assets/images/beneficiary_main.png"}
                     alt={b.name}
                     width={70}
-                    height={70}
+                    height={80}
                     className="h-[50%] w-full mb-2"
                   />
                   <div className="w-full py-[8px] px-[16px] flex flex-col items-start justify-around h-[50%]">
@@ -195,6 +180,9 @@ function CreatePlanPageContent() {
                     </span>
                     <span className="text-[#33C5E0] text-[12px] underline mb-1">
                       {b.email}
+                    </span>
+                    <span className="text-[#BFC6C8] text-[12px] mb-1">
+                      {truncateAddress(b.address) || "No address provided"}
                     </span>
                     <button
                       type="button"
@@ -226,7 +214,7 @@ function CreatePlanPageContent() {
               <div className="flex flex-col items-center justify-center bg-transparent border border-[#33C5E03D] rounded-[18px] w-[144px] h-[144px] hover:bg-[#33C5E014] transition-colors">
                 <button
                   type="button"
-                  className="flex flex-col items-center justify-center cursor-pointer"
+                  className="flex flex-col items-center justify-center"
                   onClick={() =>
                     router.push("/dashboard/plans/create/beneficiary")
                   }
@@ -277,30 +265,15 @@ function CreatePlanPageContent() {
               Description is required
             </span>
           )}
-          {selectedBeneficiaries.length === 0 && (
+          {!isBeneficiaryValid && (
             <span className="text-red-500 text-xs mt-1">
               Select at least one beneficiary
             </span>
           )}
         </form>
       </div>
-      <style jsx>{`
-          .hover-raise { transition: transform 220ms ease, box-shadow 220ms ease; }
-          .hover-raise:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(0,0,0,0.12); }
-          .card-hover { transition: transform 220ms ease, box-shadow 220ms ease; }
-          .card-hover:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(0,0,0,0.06); }
-          .clickable { cursor: pointer; }
-          .input-transition { transition: box-shadow 180ms ease, border-color 180ms ease; }
-          .input-transition:focus { box-shadow: 0 8px 20px rgba(51,197,224,0.08); border-color: #33C5E0; outline: none; }
-        `}</style>
     </main>
   );
 }
 
-const CreatePlanPage = () => (
-  <Suspense>
-    <CreatePlanPageContent />
-  </Suspense>
-);
-
-export default CreatePlanPage;
+export default CreatePlanPageContent;

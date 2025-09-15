@@ -272,23 +272,7 @@ export default function HowItWorksPage() {
                 />
               </button>
             </div>
-          </div>
-
-          {/* Right column - Contact support small card */}
-          <div
-            className="w-full lg:w-[320px] flex-shrink-0 reveal"
-            data-step={999}
-            style={{ transitionDelay: `260ms` }}
-          >
-            <div
-              className="how-contact rounded-md p-6 flex items-center gap-3 text-[#92A5A8] text-[14px] justify-center reveal"
-              data-step={1000}
-              style={{ transitionDelay: `300ms` }}
-            >
-              <Headphones className="w-[18px] h-[18px] text-[#92A5A8]" />
-              <span className="font-medium">Contact Support</span>
-            </div>
-          </div>
+          </div>          
         </div>
       </div>
 

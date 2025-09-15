@@ -29,13 +29,13 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ open, onClose, onContinue }
         </div>
         <div className="flex flex-col md:flex-row gap-4 w-full mt-4">
           <button
-            className="bg-[#1C252A] cursor-pointer text-[#FCFFFF] px-8 py-3 rounded-[24px] font-medium text-[15px] w-full md:w-1/2 hover:scale-105 duration-500"
+            className="bg-[#1C252A] text-[#FCFFFF] px-8 py-3 rounded-[24px] font-medium text-[15px] w-full md:w-1/2"
             onClick={onClose}
           >
             Cancel
           </button>
           <button
-            className="bg-[#33C5E0] cursor-pointer text-[#161E22] px-8 py-3 rounded-[24px] font-medium text-[15px] w-full md:w-1/2 hover:scale-105 duration-500"
+            className="bg-[#33C5E0] text-[#161E22] px-8 py-3 rounded-[24px] font-medium text-[15px] w-full md:w-1/2"
             onClick={onContinue}
           >
             Continue

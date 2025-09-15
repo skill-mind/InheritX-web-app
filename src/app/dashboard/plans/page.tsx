@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import DeletePlanModal from "./DeletePlanModal";
@@ -74,50 +74,6 @@ const PlansPage = () => {
   const [filter, setFilter] = useState("All");
   const router = useRouter();
 
-  useEffect(() => {
-    // Observe all elements with the .reveal class and add the reveal-active class
-    // when they intersect. Re-run this whenever the active tab changes so newly
-    // mounted tab content (like the Activities table) gets observed and revealed.
-    let obs: IntersectionObserver | null = null;
-    const run = () => {
-      try {
-        const els = Array.from(document.querySelectorAll(".reveal"));
-        if (obs) obs.disconnect();
-        obs = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting)
-                (entry.target as HTMLElement).classList.add("reveal-active");
-            });
-          },
-          { threshold: 0.12 }
-        );
-
-        els.forEach((el, i) => {
-          (el as HTMLElement).style.willChange = "transform, opacity";
-          obs!.observe(el);
-          const rect = el.getBoundingClientRect();
-          const step = parseInt(el.getAttribute("data-step") || String(i));
-          if (rect.top < window.innerHeight * 0.9) {
-            setTimeout(
-              () => (el as HTMLElement).classList.add("reveal-active"),
-              60 * (step + 1)
-            );
-          }
-        });
-      } catch (e) {
-        console.error(e);
-      }
-    };
-
-    // Run now and whenever activeTab changes so newly mounted elements get observed
-    run();
-
-    return () => {
-      if (obs) obs.disconnect();
-    };
-  }, [activeTab]);
-
   const handleEdit = (idx: number) => {
     // Navigate to edit page with plan id
     router.push(`/dashboard/plans/create?id=${plansData[idx].id}&edit=true`);
@@ -151,26 +107,19 @@ const PlansPage = () => {
   };
 
   return (
-    <main className="flex flex-col gap-6 p-0 md:p-8 w-full">
-      <section className="mb-0 flex flex-col md:flex-row items-start gap-[1rem] md:items-center justify-between">
+    <main className="flex flex-col gap-6 p-4 md:p-8 w-full">
+      <section className="mb-0 flex items-center justify-between">
         <div>
-          <h2
-            className="text-lg md:text-2xl font-medium text-[#FCFFFF] mb-1 reveal"
-            data-step={0}
-          >
+          <h2 className="text-lg md:text-2xl font-medium text-[#FCFFFF] mb-1">
             Plans
           </h2>
-          <p
-            className="text-[12px] md:text-[14px] text-[#92A5A8] reveal"
-            data-step={1}
-          >
+          <p className="text-[12px] md:text-[14px] text-[#92A5A8]">
             Create and manage your inheritance plans
           </p>
         </div>
         <div>
           <button
-            className="border border-[#33C5E03D] p-[14px] rounded-[24px] text-[#33C5E0] text-[12px] md:text-[14px] hover:bg-[#33C5E0] hover:text-[#161E22] duration-500 cursor-pointer reveal hover-raise"
-            data-step={2}
+            className="border border-[#33C5E03D] p-[14px] rounded-[24px] text-[#33C5E0] text-[14px] hover:bg-[#33C5E0] hover:text-[#161E22] duration-500 cursor-pointer"
             onClick={() => router.push("/dashboard/plans/create")}
           >
             <Image
@@ -191,20 +140,18 @@ const PlansPage = () => {
               <button
                 key={tab}
                 onClick={() => setActiveTab(idx)}
-                className={`px-4 py-1 text-sm font-medium  transition-colors cursor-pointer reveal hover-raise ${
+                className={`px-4 py-1 text-sm font-medium  transition-colors cursor-pointer ${
                   idx === activeTab
                     ? "text-cyan-400 bg-[#1C252A] py-[12px] rounded-b-[24px] px-[18px] w-fit h-[48px] flex items-center"
                     : "text-[#BFC6C8]"
                 }`}
-                data-step={3 + idx}
               >
                 {tab}
               </button>
             ))}
           </div>
           <button
-            className="flex cursor-pointer items-center text-[12px] font-normal gap-1 text-[#92A5A8] hover:underline reveal hover-raise"
-            data-step={5}
+            className="flex cursor-pointer items-center text-[12px] font-normal gap-1 text-[#92A5A8] hover:underline"
             onClick={() => setShowFilterModal(true)}
           >
             <Image
@@ -238,10 +185,7 @@ const PlansPage = () => {
               </button>
             </div>
           ) : (
-            <div
-              className="flex flex-col bg-[#182024] rounded-[24px] py-[32px] px-[8px] md:px-[24px] min-h-[320px] w-full overflow-x-auto reveal hover-raise"
-              data-step={6}
-            >
+            <div className="flex flex-col bg-[#182024] rounded-[24px] py-[32px] px-[8px] md:px-[24px] min-h-[320px] w-full overflow-x-auto">
               <table className="w-full md:min-w-[900px]">
                 <thead>
                   <tr className="text-left text-[#92A5A8] text-[14px] font-normal">
@@ -257,13 +201,13 @@ const PlansPage = () => {
                 </thead>
                 <tbody>
                   {plansData
-                    .filter((plan) =>
+                    .filter(plan =>
                       filter === "All" ? true : plan.status === filter
                     )
                     .map((plan, idx) => (
                       <tr
                         key={idx}
-                        className="border-t border-[#232B36] text-[#FCFFFF] text-[15px] hover:bg-[#1B2326] transition-colors"
+                        className="border-t border-[#232B36] text-[#FCFFFF] text-[15px]"
                       >
                         <td className="py-4 px-2 min-w-[160px]">
                           <div className="flex flex-col gap-1">
@@ -336,7 +280,7 @@ const PlansPage = () => {
                                   activeActionsIdx === idx ? null : idx
                                 )
                               }
-                              className="p-2 rounded-full hover:bg-[#232B2F] focus:outline-none cursor-pointer hover-raise"
+                              className="p-2 rounded-full hover:bg-[#232B2F] focus:outline-none"
                             >
                               <svg
                                 width="20"
@@ -345,18 +289,8 @@ const PlansPage = () => {
                                 viewBox="0 0 24 24"
                               >
                                 <circle cx="12" cy="5" r="1.5" fill="#BFC6C8" />
-                                <circle
-                                  cx="12"
-                                  cy="12"
-                                  r="1.5"
-                                  fill="#BFC6C8"
-                                />
-                                <circle
-                                  cx="12"
-                                  cy="19"
-                                  r="1.5"
-                                  fill="#BFC6C8"
-                                />
+                                <circle cx="12" cy="12" r="1.5" fill="#BFC6C8" />
+                                <circle cx="12" cy="19" r="1.5" fill="#BFC6C8" />
                               </svg>
                             </button>
                             {activeActionsIdx === idx && (
@@ -385,19 +319,19 @@ const PlansPage = () => {
                           {/* Desktop: show buttons inline */}
                           <div className="hidden sm:flex gap-2 items-center">
                             <button
-                              className="bg-[#232B2F] cursor-pointer border border-[#425558] text-[#BFC6C8] px-4 py-2 rounded-[16px] text-[12px] font-medium hover:bg-[#232B2F]/80 hover-raise"
+                              className="bg-[#232B2F] cursor-pointer border border-[#425558] text-[#BFC6C8] px-4 py-2 rounded-[16px] text-[12px] font-medium hover:bg-[#232B2F]/80"
                               onClick={() => handleEdit(idx)}
                             >
                               EDIT
                             </button>
                             <button
-                              className="bg-[#33C5E0] cursor-pointer text-[#161E22] px-4 py-2 rounded-[16px] text-[12px] font-semibold hover:bg-cyan-400 hover-raise"
+                              className="bg-[#33C5E0] cursor-pointer text-[#161E22] px-4 py-2 rounded-[16px] text-[12px] font-semibold hover:bg-cyan-400"
                               onClick={() => handleView(idx)}
                             >
                               VIEW
                             </button>
                             <button
-                              className="p-2 rounded-full hover:bg-[#E53E3E] cursor-pointer hover-raise"
+                              className="p-2 rounded-full hover:bg-[#E53E3E]"
                               onClick={() => handleDelete(idx)}
                             >
                               <svg
@@ -431,10 +365,7 @@ const PlansPage = () => {
             </div>
           )
         ) : (
-          <div
-            className="flex flex-col bg-[#182024] rounded-[24px] py-[32px] px-[12px] md:px-[24px] min-h-[320px] w-full overflow-x-auto reveal hover-raise"
-            data-step={7}
-          >
+          <div className="flex flex-col bg-[#182024] rounded-[24px] py-[32px] px-[12px] md:px-[24px] min-h-[320px] w-full overflow-x-auto">
             <table className="w-full min-w-[900px]">
               <thead>
                 <tr className="text-left text-[#92A5A8] text-[14px] font-normal">
@@ -446,7 +377,7 @@ const PlansPage = () => {
                 {activities.map((item, idx) => (
                   <tr
                     key={idx}
-                    className="border-t border-[#232B36] text-[#FCFFFF] text-[15px] hover:bg-[#1B2326] transition-colors"
+                    className="border-t border-[#232B36] text-[#FCFFFF] text-[15px]"
                   >
                     <td className="py-4 px-2">{item.activity}</td>
                     <td className="py-4 px-2 text-[#92A5A8] text-[13px]">
@@ -459,25 +390,6 @@ const PlansPage = () => {
           </div>
         )}
       </section>
-      <style jsx>{`
-        .reveal {
-          opacity: 0;
-          transform: translateY(18px);
-          transition: opacity 520ms cubic-bezier(0.2, 0.9, 0.3, 1),
-            transform 520ms cubic-bezier(0.2, 0.9, 0.3, 1);
-        }
-        .reveal.reveal-active {
-          opacity: 1;
-          transform: translateY(0);
-        }
-        .hover-raise {
-          transition: transform 220ms ease, box-shadow 220ms ease;
-        }
-        .hover-raise:hover {
-          transform: translateY(-6px);
-          box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
-        }
-      `}</style>
       <DeletePlanModal
         open={showDeleteModal}
         onClose={closeDeleteModal}

@@ -3,17 +3,25 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useCreatePlan } from "@/contexts/CreatePlanContext";
 import BeneficiarySuccessModal from "./BeneficiarySuccessModal";
 import BeneficiaryErrorModal from "./BeneficiaryErrorModal";
 
 const BeneficiaryPage = () => {
   const router = useRouter();
+  const { addBeneficiary } = useCreatePlan();
   const [step] = useState(1);
-  const [form, setForm] = useState({ name: "", relationship: "", email: "" });
+  const [form, setForm] = useState({
+    name: "",
+    relationship: "",
+    email: "",
+    address: "",
+  });
   const [touched, setTouched] = useState({
     name: false,
     relationship: false,
     email: false,
+    beneficiaryAddress: false,
   });
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
@@ -22,7 +30,12 @@ const BeneficiaryPage = () => {
   const isNameValid = form.name.trim().length > 0;
   const isRelationshipValid = form.relationship.trim().length > 0;
   const isEmailValid = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email);
-  const isFormValid = isNameValid && isRelationshipValid && isEmailValid;
+  const isBeneficiaryAddressValid = form.address.trim().length > 0;
+  const isFormValid =
+    isNameValid &&
+    isRelationshipValid &&
+    isEmailValid &&
+    isBeneficiaryAddressValid;
 
   // Progress bar style
   const progressPercent = step === 1 ? 0 : 100;
@@ -32,7 +45,7 @@ const BeneficiaryPage = () => {
       <div className="flex items-center justify-between w-full mb-2">
         <div className="flex items-center gap-4">
           <button
-            className="text-[#BFC6C8] cursor-pointer text-[15px] flex items-center gap-2 hover-raise clickable"
+            className="text-[#BFC6C8] cursor-pointer text-[15px] flex items-center gap-2"
             onClick={() => router.back()}
           >
             <Image
@@ -49,19 +62,7 @@ const BeneficiaryPage = () => {
             </span>
           </h2>
         </div>
-        <button
-          type="button"
-          disabled={!isFormValid}
-          onClick={() => {
-            if (!isFormValid) return;
-            if (form.name.trim().toLowerCase() === "error") {
-              setShowError(true);
-            } else {
-              setShowSuccess(true);
-            }
-          }}
-          className="border border-[#33C5E03D] px-6 py-3 rounded-[24px] text-[#33C5E0] text-[15px] flex items-center gap-2 hover:bg-[#33C5E0] hover:text-[#161E22] duration-500 cursor-pointer hover-raise clickable"
-        >
+        <button className="border border-[#33C5E03D] px-6 py-3 rounded-[24px] text-[#33C5E0] text-[15px] flex items-center gap-2 hover:bg-[#33C5E0] hover:text-[#161E22] duration-500 cursor-pointer">
           <Image
             src="/assets/icons/plus.svg"
             alt="plus"
@@ -138,7 +139,7 @@ const BeneficiaryPage = () => {
             onChange={(e) => setForm({ ...form, name: e.target.value })}
             onBlur={() => setTouched({ ...touched, name: true })}
             placeholder="John Doe"
-            className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[16px] outline-none input-transition"
+            className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[16px] outline-none"
           />
           {!isNameValid && touched.name && (
             <span className="text-red-500 text-xs mt-1">
@@ -150,20 +151,14 @@ const BeneficiaryPage = () => {
           <label className="block text-[#FCFFFF] text-[15px] mb-2">
             Relationship
           </label>
-          <select
+          <input
+            type="text"
             value={form.relationship}
             onChange={(e) => setForm({ ...form, relationship: e.target.value })}
             onBlur={() => setTouched({ ...touched, relationship: true })}
-            className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] text-[16px] outline-none input-transition"
-          >
-            <option value="">Select Relationship</option>
-            <option value="Child">Child</option>
-            <option value="Spouse">Spouse</option>
-            <option value="Spouse">Sibling</option>
-            <option value="Spouse">Friend</option>
-            <option value="Parent">Parent</option>
-            <option value="Other">Other</option>
-          </select>
+            placeholder="Child"
+            className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[16px] outline-none"
+          />
           {!isRelationshipValid && touched.relationship && (
             <span className="text-red-500 text-xs mt-1">
               Relationship is required
@@ -178,7 +173,7 @@ const BeneficiaryPage = () => {
             onChange={(e) => setForm({ ...form, email: e.target.value })}
             onBlur={() => setTouched({ ...touched, email: true })}
             placeholder="johndoe@gmail.com"
-            className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[16px] outline-none input-transition"
+            className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[16px] outline-none"
           />
           {!isEmailValid && touched.email && (
             <span className="text-red-500 text-xs mt-1">
@@ -186,32 +181,45 @@ const BeneficiaryPage = () => {
             </span>
           )}
         </div>
+
+        <div>
+          <label className="block text-[#FCFFFF] text-[15px] mb-2">
+            Beneficiary Address
+          </label>
+          <input
+            type="email"
+            value={form.address}
+            onChange={(e) => setForm({ ...form, address: e.target.value })}
+            onBlur={() => setTouched({ ...touched, beneficiaryAddress: true })}
+            placeholder="0x013..."
+            className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[16px] outline-none"
+          />
+          {!isBeneficiaryAddressValid && touched.beneficiaryAddress && (
+            <span className="text-red-500 text-xs mt-1">
+              Enter a valid Address
+            </span>
+          )}
+        </div>
         <div className="flex flex-col md:flex-row gap-4 mt-8 w-full">
           <button
             type="button"
-            className="bg-[#1C252A] cursor-pointer text-[#FCFFFF] px-8 py-3 rounded-t-[8px] rounded-b-[24px] font-medium text-[15px] w-full flex items-center justify-center gap-2 border border-[#232B36] hover-raise clickable"
-            onClick={() => {}}
-          >
-            SAVE AS DRAFT
-            <svg width="18" height="18" fill="none" viewBox="0 0 24 24">
-              <path
-                d="M5 12h14m-7-7l7 7-7 7"
-                stroke="#33C5E0"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </button>
-          <button
-            type="button"
             disabled={!isFormValid}
-            className={`bg-[#33C5E0] text-[#161E22] px-8 py-3 rounded-t-[8px] rounded-b-[24px] font-medium text-[15px] w-full flex items-center justify-center gap-2 border border-[#232B36] transition-colors hover:bg-[#33C5E0]/90 disabled:bg-[#1C252A] disabled:text-[#FCFFFF] disabled:cursor-not-allowed hover-raise clickable`}
+            className={`bg-[#33C5E0] text-[#161E22] px-8 py-3 rounded-t-[8px] rounded-b-[24px] font-medium text-[15px] w-full flex items-center justify-center gap-2 border border-[#232B36] transition-colors hover:bg-[#33C5E0]/90 disabled:bg-[#1C252A] disabled:text-[#FCFFFF] disabled:cursor-not-allowed`}
             onClick={() => {
               if (!isFormValid) return;
               if (form.name.trim().toLowerCase() === "error") {
                 setShowError(true);
               } else {
+                // Add beneficiary to context
+                console.log("=== ADDING BENEFICIARY ===");
+                console.log("Form data:", form);
+                addBeneficiary({
+                  name: form.name,
+                  relationship: form.relationship,
+                  email: form.email,
+                  address: form.address,
+                });
+                console.log("Beneficiary added to context");
                 setShowSuccess(true);
               }
             }}
@@ -238,13 +246,7 @@ const BeneficiaryPage = () => {
         }}
         onNext={() => {
           setShowSuccess(false);
-          router.push(
-            `/dashboard/plans/create?name=${encodeURIComponent(
-              form.name
-            )}&relationship=${encodeURIComponent(
-              form.relationship
-            )}&email=${encodeURIComponent(form.email)}`
-          );
+          router.push("/dashboard/plans/create");
         }}
       />
       <BeneficiaryErrorModal
@@ -252,26 +254,6 @@ const BeneficiaryPage = () => {
         onCancel={() => setShowError(false)}
         onRetry={() => setShowError(false)}
       />
-      <style jsx>{`
-        .hover-raise {
-          transition: transform 220ms ease, box-shadow 220ms ease;
-        }
-        .hover-raise:hover {
-          transform: translateY(-6px);
-          box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
-        }
-        .clickable {
-          cursor: pointer;
-        }
-        .input-transition {
-          transition: box-shadow 180ms ease, border-color 180ms ease;
-        }
-        .input-transition:focus {
-          box-shadow: 0 8px 20px rgba(51, 197, 224, 0.08);
-          border-color: #33c5e0;
-          outline: none;
-        }
-      `}</style>
     </main>
   );
 };

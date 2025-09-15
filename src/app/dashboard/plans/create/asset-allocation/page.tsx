@@ -4,20 +4,21 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
+import { useCreatePlan } from "@/contexts/CreatePlanContext";
 
 // Type for asset
 interface Asset {
+  type: number;
   label: string;
   icon: string;
   amount: number;
 }
 
 const assetOptions: Omit<Asset, "amount">[] = [
-  { label: "ETH", icon: "/assets/icons/eth.svg" },
-  { label: "NFT", icon: "/assets/icons/nft1.svg" },
-  { label: "STRK", icon: "/assets/icons/strk.svg" },
-  { label: "USDC", icon: "/assets/icons/usdc.png" },
-  { label: "USDT", icon: "/assets/icons/usdt.png" },
+  { type: 0, label: "STRK", icon: "/assets/icons/strk.svg" },
+  { type: 1, label: "USDT", icon: "/assets/icons/usdt.png" },
+  { type: 2, label: "USDC", icon: "/assets/icons/usdc.png" },
+  { type: 3, label: "NFT", icon: "/assets/icons/nft1.svg" },
 ];
 
 const PieChart = dynamic(
@@ -25,28 +26,46 @@ const PieChart = dynamic(
   { ssr: false }
 );
 
-const AssetAllocationPage = () => {
+const AssetAllocationPageContent = () => {
   const router = useRouter();
+  const { formData, updateFormData, getAssetTypeFromString, removeAsset } =
+    useCreatePlan();
   const [selectedAsset, setSelectedAsset] = useState<Omit<Asset, "amount">>(
     assetOptions[0]
   );
   const [amount, setAmount] = useState<string>("");
-  const [assets, setAssets] = useState<Asset[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   // Calculate total for percentage
-  const totalAmount = assets.reduce((sum, a) => sum + a.amount, 0);
+  const totalAmount = formData.assets.reduce((sum, a) => sum + a.amount, 0);
 
   const handleAddAsset = () => {
     if (
       !selectedAsset ||
       !amount ||
       isNaN(Number(amount)) ||
-      Number(amount) <= 0 ||
-      assets.some((a) => a.label === selectedAsset.label)
+      Number(amount) <= 0
     )
       return;
-    setAssets([...assets, { ...selectedAsset, amount: Number(amount) }]);
+
+    // Update contract fields
+    updateFormData({
+      assetType: getAssetTypeFromString(selectedAsset.label),
+      assetAmount: Number(amount),
+    });
+
+    // Also add to UI assets for display
+    const newAsset: Asset = {
+      type: selectedAsset.type,
+      amount: Number(amount),
+      label: selectedAsset.label,
+      icon: selectedAsset.icon,
+    };
+
+    updateFormData({
+      assets: [...formData.assets, newAsset],
+    });
+
     setAmount("");
     setDropdownOpen(false);
   };
@@ -59,7 +78,7 @@ const AssetAllocationPage = () => {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4 mb-2">
           <button
-            className="text-[#BFC6C8] cursor-pointer text-[15px] flex items-center gap-2 hover-raise clickable"
+            className="text-[#BFC6C8] cursor-pointer text-[15px] flex items-center gap-2"
             onClick={() => router.back()}
           >
             <Image
@@ -77,7 +96,7 @@ const AssetAllocationPage = () => {
           </h2>
         </div>
         <div>
-          <button className="border border-[#33C5E03D] p-[14px] rounded-[24px] text-[#33C5E0] text-[14px] hover:bg-[#33C5E0] hover:text-[#161E22] duration-500 cursor-pointer hover-raise clickable">
+          <button className="border border-[#33C5E03D] p-[14px] rounded-[24px] text-[#33C5E0] text-[14px] hover:bg-[#33C5E0] hover:text-[#161E22] duration-500 cursor-pointer">
             <Image
               src="/assets/icons/plus.svg"
               alt="plus icon"
@@ -139,7 +158,7 @@ const AssetAllocationPage = () => {
                 <label className="text-[#BFC6C8] text-xs mb-1">Asset</label>
                 <div className="relative">
                   <button
-                    className="flex items-center w-full bg-[#182024] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] text-[15px] outline-none justify-between hover-raise clickable"
+                    className="flex items-center w-full bg-[#182024] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] text-[15px] outline-none justify-between"
                     type="button"
                     onClick={() => setDropdownOpen((v) => !v)}
                   >
@@ -168,7 +187,7 @@ const AssetAllocationPage = () => {
                       {assetOptions.map((option) => (
                         <button
                           key={option.label}
-                          className="flex items-center gap-2 w-full px-4 py-2 text-[#FCFFFF] hover:bg-[#232B36] text-[15px] cursor-pointer"
+                          className="flex items-center gap-2 w-full px-4 py-2 text-[#FCFFFF] hover:bg-[#232B36] text-[15px]"
                           onClick={() => {
                             setSelectedAsset(option);
                             setDropdownOpen(false);
@@ -196,12 +215,12 @@ const AssetAllocationPage = () => {
                     step="any"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
-                    className="w-full bg-[#182024] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] text-[15px] outline-none input-transition"
+                    className="w-full bg-[#182024] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] text-[15px] outline-none"
                     placeholder="0.00"
                   />
                   <button
                     type="button"
-                    className="bg-[#232B36] text-[#FCFFFF] px-3 py-1 rounded-full text-xs font-medium hover-raise clickable"
+                    className="bg-[#232B36] text-[#FCFFFF] px-3 py-1 rounded-full text-xs font-medium"
                     onClick={() => setAmount("100")}
                   >
                     MAX
@@ -228,23 +247,23 @@ const AssetAllocationPage = () => {
                         : 0
                     }
                     readOnly
-                    className="w-full bg-[#182024] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] text-[15px] outline-none input-transition"
+                    className="w-full bg-[#182024] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] text-[15px] outline-none"
                   />
                 </div>
               </div>
             </div>
             <button
               type="button"
-              className={`flex cursor-pointer items-center justify-end self-end gap-2 w-full md:w-fit text-[15px] px-8 py-3 font-medium p-[14px] h-[56px] rounded-[24px] float-end border border-[#33C5E03D] transition-colors bg-[#1C252A] text-[#33C5E0] hover:text-[#1C252A] hover:bg-[#33C5E0]/90 ${
+              className={`flex items-center justify-end self-end gap-2 w-full md:w-fit text-[15px] px-8 py-3 font-medium p-[14px] h-[56px] rounded-[24px] float-end border border-[#33C5E03D] transition-colors bg-[#1C252A] text-[#33C5E0] hover:text-[#1C252A] hover:bg-[#33C5E0]/90 ${
                 !isFormValid ||
-                assets.some((a) => a.label === selectedAsset.label)
+                formData.assets.some((a) => a.label === selectedAsset.label)
                   ? "opacity-50 cursor-not-allowed"
                   : ""
               }`}
               onClick={handleAddAsset}
               disabled={
                 !isFormValid ||
-                assets.some((a) => a.label === selectedAsset.label)
+                formData.assets.some((a) => a.label === selectedAsset.label)
               }
             >
               <Image
@@ -256,17 +275,17 @@ const AssetAllocationPage = () => {
               Add Assets
             </button>
             {/* List of added assets */}
-            {assets.length > 0 && (
+            {formData.assets.length > 0 && (
               <div className="mt-6 flex flex-col gap-4">
-                {assets.map((a, idx) => (
+                {formData.assets.map((a, idx) => (
                   <div
                     key={idx}
-                    className="flex flex-row items-center gap-4 bg-[#182024] border border-[#232B36] rounded-[16px] px-4 py-3 hover-raise clickable"
+                    className="flex flex-row items-center gap-4 bg-[#182024] border border-[#232B36] rounded-[16px] px-4 py-3"
                   >
                     <div className="flex items-center gap-2 w-1/3">
                       <Image
                         src={a.icon}
-                        alt={a.label}
+                        alt={a.label.toString()}
                         width={24}
                         height={24}
                       />
@@ -283,6 +302,12 @@ const AssetAllocationPage = () => {
                         : 0}
                       %
                     </div>
+                    <button
+                      onClick={() => removeAsset(idx)}
+                      className="text-red-500 hover:text-red-400 ml-auto"
+                    >
+                      ×
+                    </button>
                   </div>
                 ))}
               </div>
@@ -297,13 +322,13 @@ const AssetAllocationPage = () => {
               <span className="text-[#BFC6C8] text-xs mb-4">
                 Sum Of All Asset Values
               </span>
-              {assets.length === 0 ? (
+              {formData.assets.length === 0 ? (
                 <span className="text-[#BFC6C8] text-[16px]">
                   No Assets Yet
                 </span>
               ) : (
                 <PieChart
-                  data={assets.map((a) => ({
+                  data={formData.assets.map((a) => ({
                     title: a.label,
                     value: a.amount,
                     color:
@@ -339,12 +364,12 @@ const AssetAllocationPage = () => {
                   style={{ height: 180 }}
                 />
               )}
-              {assets.length > 0 && (
+              {formData.assets.length > 0 && (
                 <div className="flex flex-row flex-wrap gap-2 mt-4 justify-center items-center">
-                  {assets.map((a, idx) => (
+                  {formData.assets.map((a, idx) => (
                     <div
                       key={idx}
-                      className="flex items-center gap-1 text-xs text-[#FCFFFF] card-hover clickable"
+                      className="flex items-center gap-1 text-xs text-[#FCFFFF]"
                     >
                       <span
                         className="inline-block w-3 h-3 rounded-full mr-1"
@@ -365,7 +390,8 @@ const AssetAllocationPage = () => {
                               : "#BFC6C8",
                         }}
                       ></span>
-                      {a.label} {totalAmount > 0
+                      {a.label}{" "}
+                      {totalAmount > 0
                         ? ((a.amount / totalAmount) * 100).toFixed(0)
                         : 0}
                       %
@@ -379,10 +405,10 @@ const AssetAllocationPage = () => {
         <div className="flex justify-start mt-8">
           <button
             type="button"
-            className={`bg-[#33C5E0] w-[243px] text-[#161E22] text-center px-8 py-3 font-medium rounded-[16px] h-[56px] rounded-t-[8px] rounded-b-[24px] flex items-center justify-center gap-2 border border-[#232B36] text-[14px] transition-colors hover:bg-[#33C5E0]/90 disabled:bg-[#1C252A] disabled:text-[#425558] disabled:cursor-not-allowed hover-raise clickable`}
-            disabled={assets.length === 0}
+            className={`bg-[#33C5E0] w-[243px] text-[#161E22] text-center px-8 py-3 font-medium rounded-[16px] h-[56px] rounded-t-[8px] rounded-b-[24px] flex items-center justify-center gap-2 border border-[#232B36] text-[14px] transition-colors hover:bg-[#33C5E0]/90 disabled:bg-[#1C252A] disabled:text-[#425558] disabled:cursor-not-allowed`}
+            disabled={formData.assetAmount === 0}
             onClick={() => {
-              if (assets.length > 0)
+              if (formData.assetAmount > 0)
                 router.push("/dashboard/plans/create/rules");
             }}
           >
@@ -397,17 +423,8 @@ const AssetAllocationPage = () => {
           </button>
         </div>
       </div>
-      <style jsx>{`
-        .hover-raise { transition: transform 220ms ease, box-shadow 220ms ease; }
-        .hover-raise:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(0,0,0,0.12); }
-        .card-hover { transition: transform 200ms ease, box-shadow 200ms ease; }
-        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.06); }
-        .clickable { cursor: pointer; }
-        .input-transition { transition: box-shadow 180ms ease, border-color 180ms ease; }
-        .input-transition:focus { box-shadow: 0 8px 20px rgba(51,197,224,0.08); border-color: #33C5E0; outline: none; }
-      `}</style>
     </main>
   );
 };
 
-export default AssetAllocationPage;
+export default AssetAllocationPageContent;
