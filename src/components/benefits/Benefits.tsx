@@ -1,7 +1,6 @@
 import React from "react";
 import Image from "next/image";
 import "./benefits.css";
-import Link from "next/link";
 import useEnsureConnected from "@/hooks/useEnsureConnected";
 
 // Reusable BenefitCard component

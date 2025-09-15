@@ -29,7 +29,7 @@ const AboutPage = () => {
             setTimeout(() => el.classList.add('reveal-active'), 60 * (step + 1));
           }
         });
-      } catch (e) { /* ignore */ }
+      } catch (e) { console.error(e) }
     };
     if (document.readyState === 'complete' || document.readyState === 'interactive') run(); else window.addEventListener('DOMContentLoaded', run);
   }, []);

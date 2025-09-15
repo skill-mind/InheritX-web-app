@@ -187,7 +187,7 @@ export default function FAQsPage() {
             setTimeout(() => el.classList.add('reveal-active'), 60 * (i + 1));
           }
         });
-      } catch (e) { /* ignore */ }
+      } catch (e) { console.error(e) }
     };
     if (document.readyState === 'complete' || document.readyState === 'interactive') run(); else window.addEventListener('DOMContentLoaded', run);
   }, []);
@@ -305,7 +305,7 @@ export default function FAQsPage() {
                 setTimeout(() => el.classList.add('reveal-active'), 60 * (i + 1));
               }
             });
-          } catch (e) { /* ignore */ }
+          } catch (e) { console.error(e) }
         };
         if (document.readyState === 'complete' || document.readyState === 'interactive') run(); else window.addEventListener('DOMContentLoaded', run);
       }})();` }} />

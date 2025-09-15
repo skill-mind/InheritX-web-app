@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
+
 import { useRouter } from "next/navigation";
 
 import Image from "next/image";
@@ -69,7 +70,7 @@ export default function DashboardHome() {
           }
         });
       } catch (e) {
-        /* ignore */
+        console.error(e);
       }
     };
     if (

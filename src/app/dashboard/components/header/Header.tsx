@@ -1,15 +1,34 @@
 "use client";
 
-import { Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 import NotificationModal from "./NotificationModal";
+import { useAccount, useDisconnect } from "@starknet-react/core";
+import { truncateAddress } from "@/lib/utils";
+import { useState } from "react";
+import ConnectWalletModal from "@/components/connect-wallet";
 
 export default function AdminHeader() {
   const router = useRouter();
   const [showNotifModal, setShowNotifModal] = React.useState(false);
+  const { address, isConnected } = useAccount();
+  const { disconnect } = useDisconnect();
+  const [showWalletModal, setShowWalletModal] = useState(false);
+
+  // Debug logging
+  console.log("Dashboard Header - Wallet Status:", { address, isConnected });
+
+  const handleWalletClick = () => {
+    if (isConnected && address) {
+      // If connected, disconnect immediately
+      disconnect();
+    } else {
+      // If not connected, show wallet modal
+      setShowWalletModal(true);
+    }
+  };
 
   return (
     <section className="sticky top-0 left-0 right-0 z-50 w-full bg-[#161E22]/80 backdrop-blur-md  flex justify-center border-b border-[#1C252A] h-[92px] md:h-[124px]">
@@ -27,15 +46,14 @@ export default function AdminHeader() {
           </Link>
         </div>
         <div className="flex items-center justify-between space-x-4 #1C252A">
-          {/* Search Bar */}
-          <div className="hidden md:flex items-center bg-transparent rounded-[24px] px-[20px] py-[8px] w-[320px] h-[60px] border border-[#2A3338] mr-[4rem] transition-shadow duration-200 focus-within:shadow-lg hover:shadow-md hover:border-[#33C5E0]">
-            <Search className="text-gray-400 mr-2 w-[20px] h-[20px] group-hover:text-[#33C5E0] transition-colors duration-200" />
-            <input
-              type="text"
-              placeholder="Search user, ticket ID, plans, & admins..."
-              className="bg-transparent outline-none text-[12px] text-sm text-[#92A5A8] w-full placeholder-[#92A5A8] focus:placeholder-[#33C5E0] transition-colors duration-200"
-            />
-          </div>
+          <button
+            className="px-4 py-2 bg-[#259BA6] hover:bg-[#1E7F88] text-white rounded-md transition-colors duration-200"
+            onClick={handleWalletClick}
+          >
+            {isConnected && address
+              ? `Disconnect (${truncateAddress(address)})`
+              : "Connect Wallet"}
+          </button>
 
           {/* KYC Verification */}
           <div
@@ -76,13 +94,19 @@ export default function AdminHeader() {
               className="rounded-full group-hover:ring-2 group-hover:ring-[#33C5E0] transition-all duration-200"
             />
             <span className="text-[#92A5A8] text-[12px] md:text-[14px] font-medium bg-transparent group-hover:text-[#33C5E0] transition-colors duration-200">
-              0x231f...5678
+              {isConnected && address
+                ? truncateAddress(address)
+                : "Not Connected"}
             </span>
           </div>
 
           {/* More */}
           <div
-            className={`bg-[#1C252A] h-[48px] w-[48px] md:h-[60px] md:w-[60px] rounded-[8px] flex items-center justify-center transition-all duration-200 hover:bg-[#232D33] cursor-pointer group border-2 ${showNotifModal ? 'border-[#33C5E0] bg-[#232D33]' : 'border-transparent'}`}
+            className={`bg-[#1C252A] h-[48px] w-[48px] md:h-[60px] md:w-[60px] rounded-[8px] flex items-center justify-center transition-all duration-200 hover:bg-[#232D33] cursor-pointer group border-2 ${
+              showNotifModal
+                ? "border-[#33C5E0] bg-[#232D33]"
+                : "border-transparent"
+            }`}
             onClick={() => setShowNotifModal((v) => !v)}
           >
             <Image
@@ -90,7 +114,9 @@ export default function AdminHeader() {
               alt="more icon"
               width={2.5}
               height={15}
-              className={`rounded-full group-hover:scale-125 group-hover:rotate-90 transition-all duration-200 ${showNotifModal ? 'scale-125 rotate-90' : ''}`}
+              className={`rounded-full group-hover:scale-125 group-hover:rotate-90 transition-all duration-200 ${
+                showNotifModal ? "scale-125 rotate-90" : ""
+              }`}
             />
           </div>
         </div>
@@ -98,6 +124,11 @@ export default function AdminHeader() {
       <NotificationModal
         open={showNotifModal}
         onClose={() => setShowNotifModal(false)}
+      />
+
+      <ConnectWalletModal
+        isOpen={showWalletModal}
+        onClose={() => setShowWalletModal(false)}
       />
     </section>
   );

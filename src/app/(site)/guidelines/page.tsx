@@ -34,7 +34,7 @@ const GuidelinesPage = () => {
           }
         });
       } catch (e) {
-        /* ignore */
+        console.error(e)
       }
     };
 

@@ -106,7 +106,7 @@ const PlansPage = () => {
           }
         });
       } catch (e) {
-        /* ignore */
+        console.error(e);
       }
     };
 
