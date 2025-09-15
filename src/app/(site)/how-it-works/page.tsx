@@ -221,7 +221,7 @@ export default function HowItWorksPage() {
                 role="tab"
                 className={`px-4 py-2 rounded-md text-[13px] transition-all duration-150 cursor-pointer ${
                   activeTab === "plans"
-                    ? "bg-[#1C252A#1C252A] text-[#33C5E0] border border-[#1C252A] rounded-b-[24px] py-[12px] px-[32px]"
+                    ? "bg-[#1C252A] text-[#33C5E0] border border-[#1C252A] rounded-b-[24px] py-[12px] px-[32px]"
                     : "text-[#92A5A8]"
                 }`}
               >

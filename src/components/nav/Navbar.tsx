@@ -8,7 +8,6 @@ import { connect } from "starknetkit";
 
 const Navbar = () => {
   const [showWalletModal, setShowWalletModal] = useState(false);
-  console.log(showWalletModal);
   const pathname = usePathname();
   const router = useRouter();
 
@@ -27,8 +26,8 @@ const Navbar = () => {
       });
       if (wallet) {
         setShowWalletModal(false);
-        // Redirect to asset-owner dashboard
-        router.push("/dashboard");
+        // navigate to the centralized unlock route which will run the transition
+        router.push(`/unlock?next=${encodeURIComponent("/dashboard")}`);
       }
     } catch (err) {
       setShowWalletModal(false);
@@ -62,7 +61,7 @@ const Navbar = () => {
                     <Link
                       key={item.name}
                       href={item.href}
-                      className={`px-3 py-2 text-sm font-medium tracking-wide transition-colors duration-200 relative group ${
+                      className={`px-3 py-2 text-sm font-medium tracking-wide transition-colors duration-200 relative group whitespace-nowrap ${
                         pathname === item.href
                           ? "text-cyan-400 font-bold"
                           : "text-gray-300 hover:text-cyan-400"

@@ -2,9 +2,9 @@
 
 import React, { useEffect } from "react";
 import Image from "next/image";
-import { Headphones } from "lucide-react";
+import Link from "next/link";
 
-import useEnsureConnected from '../../../hooks/useEnsureConnected';
+import useEnsureConnected from "../../../hooks/useEnsureConnected";
 
 import "./about.css";
 
@@ -14,24 +14,38 @@ const AboutPage = () => {
   useEffect(() => {
     const run = () => {
       try {
-        const els = Array.from(document.querySelectorAll('.reveal'));
-        const obs = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) entry.target.classList.add('reveal-active');
-          });
-        }, { threshold: 0.12 });
+        const els = Array.from(document.querySelectorAll(".reveal"));
+        const obs = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting)
+                entry.target.classList.add("reveal-active");
+            });
+          },
+          { threshold: 0.12 }
+        );
         els.forEach((el, i) => {
-          (el as HTMLElement).style.willChange = 'transform, opacity';
+          (el as HTMLElement).style.willChange = "transform, opacity";
           obs.observe(el);
           const rect = el.getBoundingClientRect();
-          const step = parseInt(el.getAttribute('data-step') || String(i));
+          const step = parseInt(el.getAttribute("data-step") || String(i));
           if (rect.top < window.innerHeight * 0.9) {
-            setTimeout(() => el.classList.add('reveal-active'), 60 * (step + 1));
+            setTimeout(
+              () => el.classList.add("reveal-active"),
+              60 * (step + 1)
+            );
           }
         });
-      } catch (e) { console.error(e) }
+      } catch (e) {
+        console.error(e);
+      }
     };
-    if (document.readyState === 'complete' || document.readyState === 'interactive') run(); else window.addEventListener('DOMContentLoaded', run);
+    if (
+      document.readyState === "complete" ||
+      document.readyState === "interactive"
+    )
+      run();
+    else window.addEventListener("DOMContentLoaded", run);
   }, []);
 
   return (
@@ -77,10 +91,18 @@ const AboutPage = () => {
       <div className="max-w-6xl mx-auto">
         {/* About InheritX Section */}
         <div className="mb-12">
-          <h1 className="text-xl md:text-[32px] text-[#FCFFFF] font-bold mb-2 reveal" data-step={0} style={{ transitionDelay: '80ms' }}>
+          <h1
+            className="text-xl md:text-[32px] text-[#FCFFFF] font-bold mb-2 reveal"
+            data-step={0}
+            style={{ transitionDelay: "80ms" }}
+          >
             About InheritX
           </h1>
-          <div className="space-y-4 sm:space-y-6 text-[#92A5A8] text-[12px] md:text-[14px] leading-relaxed max-w-[716px] reveal" data-step={1} style={{ transitionDelay: '140ms' }}>
+          <div
+            className="space-y-4 sm:space-y-6 text-[#92A5A8] text-[12px] md:text-[14px] leading-relaxed max-w-[716px] reveal"
+            data-step={1}
+            style={{ transitionDelay: "140ms" }}
+          >
             <p>
               InheritX is a cutting-edge blockchain platform dedicated to
               revolutionizing how digital assets are secured and passed down. We
@@ -98,7 +120,11 @@ const AboutPage = () => {
         {/* Vision and Mission Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 mb-6">
           {/* Our Vision */}
-          <div className="bg-[#1C252A] rounded-[48px] p-[48px] sm:p-8 flex flex-col item-center justify-center reveal hover-raise" data-step={2} style={{ transitionDelay: '180ms' }}>
+          <div
+            className="bg-[#1C252A] rounded-[48px] p-[48px] sm:p-8 flex flex-col item-center justify-center reveal hover-raise"
+            data-step={2}
+            style={{ transitionDelay: "180ms" }}
+          >
             <h2 className="text-2xl sm:text-3xl md:text-[24px] text-[#FCFFFF] font-medium mb-2">
               Our Vision
             </h2>
@@ -114,7 +140,11 @@ const AboutPage = () => {
           </div>
 
           {/* Our Mission */}
-          <div className="bg-[#1C252A] rounded-[48px] p-[48px] sm:p-8 flex flex-col item-center justify-center reveal hover-raise" data-step={3} style={{ transitionDelay: '220ms' }}>
+          <div
+            className="bg-[#1C252A] rounded-[48px] p-[48px] sm:p-8 flex flex-col item-center justify-center reveal hover-raise"
+            data-step={3}
+            style={{ transitionDelay: "220ms" }}
+          >
             <h2 className="text-2xl sm:text-3xl md:text-[24px] text-[#FCFFFF] font-medium mb-2">
               Our Mission
             </h2>
@@ -133,7 +163,11 @@ const AboutPage = () => {
         <div className="bg-[#1C252A] h-[12px] w-full rounded-[12px] mb-12"></div>
 
         {/* Core Values Section */}
-        <div className="about-box rounded-[8px] rounded-r-[48px] py-[32px] px-[48px] mb-4 reveal hover-raise" data-step={4} style={{ transitionDelay: '260ms' }}>
+        <div
+          className="about-box rounded-[8px] rounded-r-[48px] py-[32px] px-[48px] mb-4 reveal hover-raise"
+          data-step={4}
+          style={{ transitionDelay: "260ms" }}
+        >
           <h2 className="text-2xl sm:text-3xl md:text-[18px] font-medium mb-6 sm:mb-8 text-[#33C5E0]">
             Our Core Values
           </h2>
@@ -147,8 +181,16 @@ const AboutPage = () => {
         </div>
 
         {/* Launch App Button */}
-        <div className="pt-4 reveal" data-step={5} style={{ transitionDelay: '320ms' }}>
-          <button type="button" onClick={async () => await ensureConnected('/dashboard')} className="group cursor-pointer bg-[#33C5E0] hover:bg-cyan-300 space-x-4 text-[#161E22] text-[14px] font-medium px-8 py-4 rounded-b-[24px] rounded-t-[8px] transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-cyan-400/25 flex items-center hover-raise">
+        <div
+          className="pt-4 reveal"
+          data-step={5}
+          style={{ transitionDelay: "320ms" }}
+        >
+          <button
+            type="button"
+            onClick={async () => await ensureConnected()}
+            className="group cursor-pointer bg-[#33C5E0] hover:bg-cyan-300 space-x-4 text-[#161E22] text-[14px] font-medium px-8 py-4 rounded-b-[24px] rounded-t-[8px] transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-cyan-400/25 flex items-center hover-raise"
+          >
             <span>LAUNCH APP</span>
             <Image
               src="/assets/icons/arrowup.svg"
@@ -160,16 +202,37 @@ const AboutPage = () => {
         </div>
 
         {/* Contact Support */}
-        <div className="flex absolute right-[10%] top-[65%] items-center gap-3 text-[#92A5A8] text-[14px] bg-[#182024] hover:text-white transition-colors duration-200 cursor-pointer group reveal hover-raise" data-step={6} style={{ transitionDelay: '360ms' }}>
-           <Headphones className="w-[16px] h-[16px] group-hover:text-cyan-400 transition-colors duration-200" />
-           <span className="text-[14px] font-medium">Contact Support</span>
-         </div>
-       </div>
+        <Link
+          href="/contact"
+          className="absolute top-2/3 right-0 p-4 items-center space-x-4 h-[48px] w-[200px] bg-[#182024] rounded-l-[24px] rounded-r-[8px] hover:border-cyan-400 transition-all duration-200 hover:shadow-lg hover:shadow-cyan-400/20 hidden md:flex"
+        >
+          <Image
+            src="/assets/icons/contact.svg"
+            alt="contact icon"
+            width={14}
+            height={14}
+          />
+          <span className="text-[#92A5A8]">Contact Support</span>
+        </Link>
+      </div>
       <style jsx>{`
-        .reveal { opacity: 0; transform: translateY(18px); transition: opacity 520ms cubic-bezier(.2,.9,.3,1), transform 520ms cubic-bezier(.2,.9,.3,1); }
-        .reveal.reveal-active { opacity: 1; transform: translateY(0); }
-        .hover-raise { transition: transform 260ms ease, box-shadow 260ms ease; }
-        .hover-raise:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(0,0,0,0.28); }
+        .reveal {
+          opacity: 0;
+          transform: translateY(18px);
+          transition: opacity 520ms cubic-bezier(0.2, 0.9, 0.3, 1),
+            transform 520ms cubic-bezier(0.2, 0.9, 0.3, 1);
+        }
+        .reveal.reveal-active {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        .hover-raise {
+          transition: transform 260ms ease, box-shadow 260ms ease;
+        }
+        .hover-raise:hover {
+          transform: translateY(-6px);
+          box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+        }
       `}</style>
     </div>
   );

@@ -75,7 +75,7 @@ const Footer: React.FC<FooterProps> = ({ logo, socialIcons = [] }) => {
   ];
 
   return (
-    <footer className="bg-[#182024] md:rounded-[60px] py-12 px-4 sm:px-6 lg:px-8 max-w-[100rem] mx-auto mt-[10rem] mb-[10rem]">
+    <footer className="bg-[#182024] rounded-[32px] md:rounded-[60px] py-12 px-4 sm:px-6 lg:px-8 w-[80%] max-w-[100rem] mx-auto mt-[10rem] mb-[10rem]">
       <div className="max-w-7xl mx-auto">
         {/* Main Footer Content */}
         <div className="flex flex-col lg:flex-row justify-between items-center lg:items-start gap-8 lg:gap-4">

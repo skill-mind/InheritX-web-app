@@ -70,8 +70,8 @@ export const metadata: Metadata = {
     description:
       "Automated, secure, and trustless digital asset inheritance using StarkNet blockchain technology.",
     images: ["https://www.inheritx.org/twitter-image.png"],
-    creator: "@inheritx",
-    site: "@inheritx",
+    creator: "@projectInheritX",
+    site: "@projectInheritX",
   },
   robots: {
     index: true,

@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import "./benefits.css";
 import useEnsureConnected from "@/hooks/useEnsureConnected";
+import { useRouter } from "next/navigation";
 
 // Reusable BenefitCard component
 interface BenefitCardProps {
@@ -32,9 +33,14 @@ const BenefitCard: React.FC<BenefitCardProps> = ({
 
 const Benefits = () => {
   const ensureConnectedAndNavigate = useEnsureConnected();
+  const router = useRouter();
 
   const handleCreatePlan = async () => {
-    await ensureConnectedAndNavigate("/dashboard/plans");
+    const result = await ensureConnectedAndNavigate();
+    if (result?.connected) {
+      // navigate to centralized unlock transition page which will redirect to dashboard/plans
+      router.push(`/unlock?next=${encodeURIComponent("/dashboard/plans")}`);
+    }
   };
 
   const benefitsData = [

@@ -20,7 +20,7 @@ export default function KYCIdUploadPage() {
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const selectedFiles = Array.from(e.target.files || []);
     setFiles(selectedFiles);
-    setPreviews(selectedFiles.map(f => URL.createObjectURL(f)));
+    setPreviews(selectedFiles.map((f) => URL.createObjectURL(f)));
   }
 
   function handleUploadClick() {
@@ -35,11 +35,22 @@ export default function KYCIdUploadPage() {
   return (
     <main className="flex flex-col gap-6 p-4 md:p-8 w-full overflow-x-hidden max-w-full min-h-screen bg-transparent">
       <div className="flex items-center gap-4 mb-2">
-        <button className="text-[#BFC6C8] text-[15px] flex items-center gap-2 cursor-pointer transition-colors duration-150 hover:text-white" onClick={() => router.back()}>
-          <Image src="/assets/icons/back.svg" alt="back" width={18} height={15} />
+        <button
+          className="text-[#BFC6C8] text-[15px] flex items-center gap-2"
+          onClick={() => router.back()}
+        >
+          <Image
+            src="/assets/icons/back.svg"
+            alt="back"
+            width={18}
+            height={15}
+          />
         </button>
         <h2 className="text-lg md:text-2xl font-medium text-[#FCFFFF]">
-          KYC <span className="text-[#92A5A8] font-normal text-[14px] ml-2 mb-[4px]">| Please Verify Your Identity</span>
+          KYC{" "}
+          <span className="text-[#92A5A8] font-normal text-[14px] ml-2 mb-[4px]">
+            | Please Verify Your Identity
+          </span>
         </h2>
       </div>
       <div className="w-full flex flex-col gap-8 max-w-full">
@@ -57,7 +68,16 @@ export default function KYCIdUploadPage() {
                 } hover:scale-105 cursor-pointer`}
               >
                 {idx < 1 ? (
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="10" fill="#33C5E0"/><path d="M6 10.5L9 13.5L14 8.5" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <circle cx="10" cy="10" r="10" fill="#33C5E0" />
+                    <path
+                      d="M6 10.5L9 13.5L14 8.5"
+                      stroke="#fff"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
                 ) : (
                   <span
                     className={`text-[15px] font-semibold transition-colors duration-150 ${
@@ -82,21 +102,36 @@ export default function KYCIdUploadPage() {
         <p className="text-center text-[#BFC6C8] text-[15px] mb-4">
           Upload your government issued ID card to continue
         </p>
-        <form className="flex flex-col gap-6 w-full max-w-2xl mx-auto" autoComplete="off" onSubmit={e => e.preventDefault()}>
+        <form
+          className="flex flex-col gap-6 w-full max-w-2xl mx-auto"
+          autoComplete="off"
+          onSubmit={(e) => e.preventDefault()}
+        >
           <label className="block text-[#FCFFFF] text-[13px] mb-2">
-            Upload ID <span className="text-[#92A5A8] text-xs">(e.g Passport, Driver&apos;s License or National ID)</span>
+            Upload ID{" "}
+            <span className="text-[#92A5A8] text-xs">
+              (e.g Passport, Driver&apos;s License or National ID)
+            </span>
             <div className="mt-4 w-full flex justify-center">
               <div className="border-2 border-dashed border-[#33C5E0] rounded-[16px] w-full max-w-xl min-h-[220px] flex flex-col items-center justify-center bg-[#161E22] p-6 relative transition duration-150 hover:shadow-md">
                 {previews.length > 0 ? (
                   <div className="flex flex-row flex-wrap gap-4 justify-center items-center w-full">
                     {previews.map((src, idx) => (
-                      <div key={idx} className="flex-shrink-0 transition-transform duration-150 hover:scale-105 cursor-pointer">
-                        <Image src={src} alt={`ID Preview ${idx + 1}`} width={260} height={160} className="object-contain rounded-[12px]" />
+                      <div key={idx} className="flex-shrink-0">
+                        <Image
+                          src={src}
+                          alt={`ID Preview ${idx + 1}`}
+                          width={260}
+                          height={160}
+                          className="object-contain rounded-[12px]"
+                        />
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <span className="text-[#425558] text-[15px] mb-4 text-center">Upload pictures of your government issued ID card</span>
+                  <span className="text-[#425558] text-[15px] mb-4 text-center">
+                    Upload pictures of your government issued ID card
+                  </span>
                 )}
                 <input
                   type="file"
@@ -111,8 +146,25 @@ export default function KYCIdUploadPage() {
                   className="flex items-center gap-2 px-6 py-2 rounded-[12px] border border-[#33C5E0] text-[#33C5E0] bg-[#10171d] hover:bg-[#181f25] transition duration-150 hover:scale-105 mt-4 cursor-pointer"
                   onClick={handleUploadClick}
                 >
-                  <svg width="20" height="20" fill="none"><path d="M10 14V6M10 6L7 9M10 6l3 3" stroke="#33C5E0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><rect x="3" y="3" width="14" height="14" rx="7" stroke="#33C5E0" strokeWidth="2"/></svg>
-                  Upload Image
+                  <svg width="20" height="20" fill="none">
+                    <path
+                      d="M10 14V6M10 6L7 9M10 6l3 3"
+                      stroke="#33C5E0"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <rect
+                      x="3"
+                      y="3"
+                      width="14"
+                      height="14"
+                      rx="7"
+                      stroke="#33C5E0"
+                      strokeWidth="2"
+                    />
+                  </svg>
+                  Upload File
                 </button>
               </div>
             </div>
@@ -125,7 +177,13 @@ export default function KYCIdUploadPage() {
               onClick={handleContinue}
             >
               CONTINUE
-              <Image src="/assets/icons/grey_arrowdown.svg" alt="arrow icon" width={13.5} height={13.5} className="inline-block" />
+              <Image
+                src="/assets/icons/grey_arrowdown.svg"
+                alt="arrow icon"
+                width={13.5}
+                height={13.5}
+                className="inline-block"
+              />
             </button>
           </div>
         </form>

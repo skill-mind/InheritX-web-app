@@ -1,10 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Headphones } from "lucide-react";
-
+import Link from "next/link";
 import Image from "next/image";
-import useEnsureConnected from '@/hooks/useEnsureConnected';
+import useEnsureConnected from "@/hooks/useEnsureConnected";
 
 import "./faqs.css";
 
@@ -134,9 +133,7 @@ const faqData: FAQItem[] = [
   {
     id: 7,
     question: "7. What types of Inheritance Plans can I create?",
-    answer: (
-      `<span>You Can Choose Between Two Types Of Inheritance Plans:</span><ul class='list-disc pl-6 mt-2'><li><b>Standard Plan</b> – You Set Up A One-Time Transfer Of Assets To Your Chosen Beneficiaries. Once Triggered, All Designated Assets Are Released At Once.</li><li><b>Monthly Disbursement Plan</b> – Instead Of A One-Time Release, You Can Schedule Periodic (E.G., Monthly) Transfers To Your Beneficiaries. This Ensures Steady, Ongoing Support Rather Than A Single Payout.</li></ul>`
-    ),
+    answer: `<span>You Can Choose Between Two Types Of Inheritance Plans:</span><ul class='list-disc pl-6 mt-2'><li><b>Standard Plan</b> – You Set Up A One-Time Transfer Of Assets To Your Chosen Beneficiaries. Once Triggered, All Designated Assets Are Released At Once.</li><li><b>Monthly Disbursement Plan</b> – Instead Of A One-Time Release, You Can Schedule Periodic (E.G., Monthly) Transfers To Your Beneficiaries. This Ensures Steady, Ongoing Support Rather Than A Single Payout.</li></ul>`,
     isExpandable: true,
   },
 ];
@@ -152,7 +149,7 @@ export default function FAQsPage() {
   const handleLaunch = async () => {
     try {
       setLaunching(true);
-      await ensureConnectedAndNavigate('/dashboard');
+      await ensureConnectedAndNavigate();
     } finally {
       setLaunching(false);
     }
@@ -174,22 +171,33 @@ export default function FAQsPage() {
   useEffect(() => {
     const run = () => {
       try {
-        const els = Array.from(document.querySelectorAll('.reveal'));
-        const obs = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) entry.target.classList.add('reveal-active');
-          });
-        }, { threshold: 0.12 });
+        const els = Array.from(document.querySelectorAll(".reveal"));
+        const obs = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting)
+                entry.target.classList.add("reveal-active");
+            });
+          },
+          { threshold: 0.12 }
+        );
         els.forEach((el, i) => {
           obs.observe(el);
           const rect = el.getBoundingClientRect();
           if (rect.top < window.innerHeight * 0.9) {
-            setTimeout(() => el.classList.add('reveal-active'), 60 * (i + 1));
+            setTimeout(() => el.classList.add("reveal-active"), 60 * (i + 1));
           }
         });
-      } catch (e) { console.error(e) }
+      } catch (e) {
+        console.error(e);
+      }
     };
-    if (document.readyState === 'complete' || document.readyState === 'interactive') run(); else window.addEventListener('DOMContentLoaded', run);
+    if (
+      document.readyState === "complete" ||
+      document.readyState === "interactive"
+    )
+      run();
+    else window.addEventListener("DOMContentLoaded", run);
   }, []);
 
   return (
@@ -227,10 +235,18 @@ export default function FAQsPage() {
       <div className="max-w-[110rem] mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
         {/* Header Section */}
         <div className="mb-4">
-          <h1 className="text-[24px] md:text-[32px] font-bold text-[#FCFFFF] mb-2 reveal" data-step={0} style={{transitionDelay: '80ms'}}>
+          <h1
+            className="text-[24px] md:text-[32px] font-bold text-[#FCFFFF] mb-2 reveal"
+            data-step={0}
+            style={{ transitionDelay: "80ms" }}
+          >
             FAQs
           </h1>
-          <p className="text-[12px] md:text-[14px] text-[#92A5A8] max-w-2xl reveal" data-step={1} style={{transitionDelay: '160ms'}}>
+          <p
+            className="text-[12px] md:text-[14px] text-[#92A5A8] max-w-2xl reveal"
+            data-step={1}
+            style={{ transitionDelay: "160ms" }}
+          >
             Here are some frequently asked questions about InheritX
           </p>
         </div>
@@ -257,7 +273,11 @@ export default function FAQsPage() {
         </div>
 
         {/* Bottom Section */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-8 reveal" data-step={999} style={{transitionDelay: '360ms'}}>
+        <div
+          className="flex flex-col sm:flex-row items-center justify-between gap-8 reveal"
+          data-step={999}
+          style={{ transitionDelay: "360ms" }}
+        >
           {/* Launch App Button */}
           <div className="pt-4">
             <button
@@ -265,7 +285,7 @@ export default function FAQsPage() {
               disabled={launching}
               className="group cursor-pointer bg-[#33C5E0] disabled:opacity-60 hover:bg-cyan-300 space-x-4 text-[#161E22] text-[14px] font-medium px-8 py-4 rounded-b-[24px] rounded-t-[8px] transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-cyan-400/25 flex items-center"
             >
-              <span>{launching ? 'Connecting...' : 'LAUNCH APP'}</span>
+              <span>{launching ? "Connecting..." : "LAUNCH APP"}</span>
               <Image
                 src="/assets/icons/arrowup.svg"
                 alt="arrow up icon"
@@ -276,39 +296,75 @@ export default function FAQsPage() {
           </div>
 
           {/* Contact Support */}
-          <div className="flex md:mt-[-45rem] items-center gap-3 text-[#92A5A8] text-[14px] bg-[#182024] hover:text-white transition-colors duration-200 cursor-pointer group reveal" data-step={1000} style={{transitionDelay: '420ms'}}>
-             <Headphones className="w-[16px] h-[16px] group-hover:text-cyan-400 transition-colors duration-200" />
-             <span className="text-[14px] font-medium">Contact Support</span>
-           </div>
-         </div>
-       </div>
+          <Link
+            href="/contact"
+            className="absolute top-2/3 right-0 p-4 items-center space-x-4 h-[48px] w-[200px] bg-[#182024] rounded-l-[24px] rounded-r-[8px] hover:border-cyan-400 transition-all duration-200 hover:shadow-lg hover:shadow-cyan-400/20 hidden md:flex"
+          >
+            <Image
+              src="/assets/icons/contact.svg"
+              alt="contact icon"
+              width={14}
+              height={14}
+            />
+            <span className="text-[#92A5A8]">Contact Support</span>
+          </Link>
+        </div>
+      </div>
 
       <style jsx>{`
-        .reveal { opacity: 0; transform: translateY(18px); transition: opacity 520ms cubic-bezier(.2,.9,.3,1), transform 520ms cubic-bezier(.2,.9,.3,1); }
-        .reveal.reveal-active { opacity: 1; transform: translateY(0); }
-        .faqs-box.reveal { will-change: transform, opacity; }
+        .reveal {
+          opacity: 0;
+          transform: translateY(18px);
+          transition: opacity 520ms cubic-bezier(0.2, 0.9, 0.3, 1),
+            transform 520ms cubic-bezier(0.2, 0.9, 0.3, 1);
+        }
+        .reveal.reveal-active {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        .faqs-box.reveal {
+          will-change: transform, opacity;
+        }
       `}</style>
 
-      <script dangerouslySetInnerHTML={{ __html: `(${() => {
-        const run = () => {
-          try {
-            const els = Array.from(document.querySelectorAll('.reveal'));
-            const obs = new IntersectionObserver((entries) => {
-              entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('reveal-active');
-              });
-            }, { threshold: 0.12 });
-            els.forEach((el, i) => {
-              obs.observe(el);
-              const rect = el.getBoundingClientRect();
-              if (rect.top < window.innerHeight * 0.9) {
-                setTimeout(() => el.classList.add('reveal-active'), 60 * (i + 1));
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `(${() => {
+            const run = () => {
+              try {
+                const els = Array.from(document.querySelectorAll(".reveal"));
+                const obs = new IntersectionObserver(
+                  (entries) => {
+                    entries.forEach((entry) => {
+                      if (entry.isIntersecting)
+                        entry.target.classList.add("reveal-active");
+                    });
+                  },
+                  { threshold: 0.12 }
+                );
+                els.forEach((el, i) => {
+                  obs.observe(el);
+                  const rect = el.getBoundingClientRect();
+                  if (rect.top < window.innerHeight * 0.9) {
+                    setTimeout(
+                      () => el.classList.add("reveal-active"),
+                      60 * (i + 1)
+                    );
+                  }
+                });
+              } catch (e) {
+                console.error(e);
               }
-            });
-          } catch (e) { console.error(e) }
-        };
-        if (document.readyState === 'complete' || document.readyState === 'interactive') run(); else window.addEventListener('DOMContentLoaded', run);
-      }})();` }} />
-     </div>
-   );
- }
+            };
+            if (
+              document.readyState === "complete" ||
+              document.readyState === "interactive"
+            )
+              run();
+            else window.addEventListener("DOMContentLoaded", run);
+          }})();`,
+        }}
+      />
+    </div>
+  );
+}

@@ -38,6 +38,8 @@ export default function Head() {
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content="https://www.inheritx.org/twitter-image.png" />
+      <meta name="twitter:creator" content="@projectInheritX" />
+      <meta name="twitter:site" content="@projectInheritX" />
 
       <link rel="canonical" href={url} />
 
