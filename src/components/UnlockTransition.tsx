@@ -25,11 +25,11 @@ const UnlockTransition: React.FC<UnlockTransitionProps> = ({
       const mq = window.matchMedia?.("(prefers-reduced-motion: reduce)");
       if (mq?.matches) {
         setPhase("complete");
-        const t = setTimeout(() => onComplete && onComplete(), 120);
+        const t = setTimeout(() => onComplete?.(), 120);
         return () => clearTimeout(t);
       }
     } catch (e) {
-      // ignore
+      console.error(e);
     }
   }, [visible, onComplete]);
 
@@ -54,7 +54,7 @@ const UnlockTransition: React.FC<UnlockTransitionProps> = ({
 
     // Complete
     const completeTimer = setTimeout(() => {
-      onComplete && onComplete();
+      onComplete?.();
     }, duration);
 
     return () => {

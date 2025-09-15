@@ -1,13 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import { connect } from "starknetkit";
 
 const Navbar = () => {
-  const [showWalletModal, setShowWalletModal] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
 
@@ -25,12 +24,10 @@ const Navbar = () => {
         dappName: "InheritX - Securin...",
       });
       if (wallet) {
-        setShowWalletModal(false);
         // navigate to the centralized unlock route which will run the transition
         router.push(`/unlock?next=${encodeURIComponent("/dashboard")}`);
       }
     } catch (err) {
-      setShowWalletModal(false);
       console.error("Wallet connection failed", err);
     }
   };
