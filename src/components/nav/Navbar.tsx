@@ -4,7 +4,15 @@ import React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
+import {
+  Connector,
+  useAccount,
+  useConnect,
+  useDisconnect,
+} from "@starknet-react/core";
 import { connect } from "starknetkit";
+import { useStarknetkitConnectModal, StarknetkitConnector } from "starknetkit";
+import { truncateAddress } from "@/lib/utils";
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -17,20 +25,37 @@ const Navbar = () => {
     { name: "CONTACT", href: "/contact", icon: "/assets/icons/contact.svg" },
   ];
 
-  const handleConnectWallet = async () => {
-    try {
-      const { wallet } = await connect({
-        modalMode: "alwaysAsk",
-        dappName: "InheritX - Securin...",
-      });
-      if (wallet) {
-        // navigate to the centralized unlock route which will run the transition
-        router.push(`/unlock?next=${encodeURIComponent("/dashboard")}`);
-      }
-    } catch (err) {
-      console.error("Wallet connection failed", err);
+  const { disconnect } = useDisconnect();
+  const { address, isConnected } = useAccount();
+  const { connect, connectors } = useConnect();
+  const { starknetkitConnectModal } = useStarknetkitConnectModal({
+    connectors: connectors as StarknetkitConnector[],
+  });
+
+  // const handleConnectWallet = async () => {
+  //   try {
+  //     const { wallet } = await connect({
+  //       modalMode: "alwaysAsk",
+  //       dappName: "InheritX - Securin...",
+  //     });
+  //     if (wallet) {
+  //       // navigate to the centralized unlock route which will run the transition
+  //       router.push(`/unlock?next=${encodeURIComponent("/dashboard")}`);
+  //     }
+  //   } catch (err) {
+  //     console.error("Wallet connection failed", err);
+  //   }
+  // };
+
+  async function connectWallet() {
+    const { connector } = await starknetkitConnectModal();
+    if (!connector) {
+      return;
     }
-  };
+    await connect({ connector: connector as Connector });
+
+    router.push(`/unlock?next=${encodeURIComponent("/dashboard")}`);
+  }
 
   return (
     <>
@@ -39,7 +64,7 @@ const Navbar = () => {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center w-1/2 justify-between">
               {/* Logo */}
-              <div className="flex-shrink-0">     
+              <div className="flex-shrink-0">
                 <Link href="/" className="flex items-center">
                   <Image
                     src="/assets/icons/logo.svg"
@@ -80,11 +105,24 @@ const Navbar = () => {
             <div className="flex items-center justify-end space-x-4 z-50 w-full relative">
               <button
                 className="bg-[#161E22] cursor-pointer w-fit text-[#33C5E0] flex items-center space-x-[1rem] rounded-l-full rounded-br-3xl hover:bg-slate-700 px-4 pr-0 md:px-6 py-4 text-sm font-medium border-[0.6px] border-[#33C5E03D] hover:border-cyan-400 transition-all duration-200 hover:shadow-lg hover:shadow-cyan-400/20"
-                onClick={handleConnectWallet}
+                onClick={connectWallet}
               >
-                <span className="text-[#FCFFFF] md:text-[#33C5E0] font-medium">
+                {/* <span className="text-[#FCFFFF] md:text-[#33C5E0] font-medium">
                   Connect Wallet
-                </span>
+                </span> */}
+
+                {isConnected && address ? (
+                  <span
+                    onClick={() => disconnect()}
+                    className="text-[#FCFFFF] md:text-[#33C5E0] font-medium"
+                  >
+                    {truncateAddress(address)}
+                  </span>
+                ) : (
+                  <span className="text-[#FCFFFF] md:text-[#33C5E0] font-medium">
+                    Connect Wallet
+                  </span>
+                )}
 
                 {/* Mobile icon only */}
                 <Image

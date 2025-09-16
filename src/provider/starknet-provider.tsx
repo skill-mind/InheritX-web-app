@@ -6,7 +6,7 @@ import { WebWalletConnector } from "starknetkit/webwallet";
 import { StarknetConfig } from "@starknet-react/core";
 import { publicProvider } from "@starknet-react/core";
 import { Connector, voyager } from "@starknet-react/core";
-import { mainnet, sepolia } from "@starknet-react/chains";
+import { sepolia } from "@starknet-react/chains";
 import { ArgentMobileConnector } from "starknetkit/argentMobile";
 
 interface StarknetProviderProps {
@@ -41,7 +41,7 @@ const StarknetProvider: React.FC<StarknetProviderProps> = ({ children }) => {
 
   return (
     <StarknetConfig
-      chains={[mainnet, sepolia]}
+      chains={[sepolia]}
       provider={publicProvider()}
       connectors={connectors as Connector[]}
       explorer={voyager}
