@@ -13,10 +13,14 @@ import { useState } from "react";
 export default function AdminHeader() {
   const router = useRouter();
   const [showNotifModal, setShowNotifModal] = React.useState(false);
-  const { address, isConnected } = useAccount();
+  const { address, isConnected, account } = useAccount();
 
   // Debug logging
-  console.log("Dashboard Header - Wallet Status:", { address, isConnected });
+  console.log("Dashboard Header - Wallet Status:", {
+    address,
+    isConnected,
+    account,
+  });
 
   return (
     <section className="sticky top-0 left-0 right-0 z-50 w-full bg-[#161E22]/80 backdrop-blur-md  flex justify-center border-b border-[#1C252A] h-[92px] md:h-[124px]">
