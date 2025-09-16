@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import SuccessModal from "../SuccessModal";
 import { useCreatePlan } from "@/contexts/CreatePlanContext";
 import { useAccount } from "@starknet-react/core";
-import { truncateAddress } from "@/lib/utils";
 import { CallData, PaymasterDetails } from "starknet";
 import { myProvider } from "@/lib/utils";
 import { INHERITX_CONTRACT_ADDRESS } from "@/constant/ca_address";

@@ -10,7 +10,6 @@ import {
   useConnect,
   useDisconnect,
 } from "@starknet-react/core";
-import { connect } from "starknetkit";
 import { useStarknetkitConnectModal, StarknetkitConnector } from "starknetkit";
 import { truncateAddress } from "@/lib/utils";
 

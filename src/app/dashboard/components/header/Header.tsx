@@ -7,7 +7,6 @@ import React from "react";
 import NotificationModal from "./NotificationModal";
 import { useAccount } from "@starknet-react/core";
 import { truncateAddress } from "@/lib/utils";
-import { useState } from "react";
 // import ConnectWalletModal from "@/components/connect-wallet";
 
 export default function AdminHeader() {
