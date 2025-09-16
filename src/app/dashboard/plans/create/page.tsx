@@ -181,9 +181,6 @@ function CreatePlanPageContent() {
                     <span className="text-[#33C5E0] text-[12px] underline mb-1">
                       {b.email}
                     </span>
-                    <span className="text-[#BFC6C8] text-[12px] mb-1">
-                      {truncateAddress(b.address) || "No address provided"}
-                    </span>
                     <button
                       type="button"
                       className="absolute bottom-2 right-2 p-1 cursor-pointer"

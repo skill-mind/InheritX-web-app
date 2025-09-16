@@ -111,7 +111,7 @@ const AssetAllocationPageContent = () => {
       <div className="w-full flex flex-col gap-8">
         {/* Progress Steps */}
         <div className="flex flex-row items-center justify-between w-full mb-2">
-          {[1, 2, 3, 4, 5].map((step, idx) => (
+          {[1, 2, 3, 4].map((step, idx) => (
             <div key={step} className="flex flex-col items-center flex-1">
               <div
                 className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${
@@ -134,13 +134,9 @@ const AssetAllocationPageContent = () => {
                 }`}
               >
                 {
-                  [
-                    "Basic Information",
-                    "Asset Allocation",
-                    "Rules",
-                    "Verification",
-                    "Preview",
-                  ][idx]
+                  ["Basic Information", "Asset Allocation", "Rules", "Preview"][
+                    idx
+                  ]
                 }
               </span>
             </div>

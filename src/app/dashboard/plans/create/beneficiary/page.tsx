@@ -15,13 +15,11 @@ const BeneficiaryPage = () => {
     name: "",
     relationship: "",
     email: "",
-    address: "",
   });
   const [touched, setTouched] = useState({
     name: false,
     relationship: false,
     email: false,
-    beneficiaryAddress: false,
   });
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
@@ -30,12 +28,7 @@ const BeneficiaryPage = () => {
   const isNameValid = form.name.trim().length > 0;
   const isRelationshipValid = form.relationship.trim().length > 0;
   const isEmailValid = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email);
-  const isBeneficiaryAddressValid = form.address.trim().length > 0;
-  const isFormValid =
-    isNameValid &&
-    isRelationshipValid &&
-    isEmailValid &&
-    isBeneficiaryAddressValid;
+  const isFormValid = isNameValid && isRelationshipValid && isEmailValid;
 
   // Progress bar style
   const progressPercent = step === 1 ? 0 : 100;
@@ -182,24 +175,6 @@ const BeneficiaryPage = () => {
           )}
         </div>
 
-        <div>
-          <label className="block text-[#FCFFFF] text-[15px] mb-2">
-            Beneficiary Address
-          </label>
-          <input
-            type="email"
-            value={form.address}
-            onChange={(e) => setForm({ ...form, address: e.target.value })}
-            onBlur={() => setTouched({ ...touched, beneficiaryAddress: true })}
-            placeholder="0x013..."
-            className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[16px] outline-none"
-          />
-          {!isBeneficiaryAddressValid && touched.beneficiaryAddress && (
-            <span className="text-red-500 text-xs mt-1">
-              Enter a valid Address
-            </span>
-          )}
-        </div>
         <div className="flex flex-col md:flex-row gap-4 mt-8 w-full">
           <button
             type="button"
@@ -217,7 +192,6 @@ const BeneficiaryPage = () => {
                   name: form.name,
                   relationship: form.relationship,
                   email: form.email,
-                  address: form.address,
                 });
                 console.log("Beneficiary added to context");
                 setShowSuccess(true);

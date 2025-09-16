@@ -9,7 +9,6 @@ interface Beneficiary {
   name: string;
   relationship: string;
   email: string;
-  address: string; // ContractAddress as string
 }
 
 interface Asset {
@@ -45,7 +44,6 @@ interface CreatePlanContextType {
     beneficiaryName: string;
     beneficiaryRelationship: string;
     beneficiaryEmail: string;
-    beneficiaryAddress: string; // ContractAddress
 
     // Step 3: Asset Allocation (single asset for contract)
     assetType: number; // u8: 0=STRK, 1=USDT, 2=USDC, 3=NFT
@@ -59,12 +57,18 @@ interface CreatePlanContextType {
     beneficiaries: Beneficiary[]; // For UI display
     selectedBeneficiaries: number[]; // For UI selection
     assets: Asset[]; // For UI display
-    note: string; // Additional notes
+    additional_note: string; // Additional notes
+
+    lump_sum_date: number;
+    quarterly_percentage: number;
+    yearly_percentage: number;
+    monthly_percentage: number;
 
     // UI-specific fields for backward compatibility
     disbursementType: string; // For UI display
     lumpDate: string; // For UI display
     percentages: { [key: string]: string }; // For UI display
+    note: string; // For UI display
 
     // Contract parameters
     contractParams?: any; // Store prepared contract parameters
@@ -90,6 +94,12 @@ interface CreatePlanContextType {
   // Helper functions for contract integration
   getAssetTypeFromString: (assetString: string) => number;
   getDistributionMethodFromString: (methodString: string) => number;
+  getDistributionParameters: () => {
+    lumpSumDate: number;
+    quarterlyPercentage: number;
+    yearlyPercentage: number;
+    monthlyPercentage: number;
+  };
 }
 
 const CreatePlanContext = createContext<CreatePlanContextType | undefined>(
@@ -103,22 +113,28 @@ const initialFormData: CreatePlanContextType["formData"] = {
   beneficiaryName: "",
   beneficiaryRelationship: "",
   beneficiaryEmail: "",
-  beneficiaryAddress: "",
   assetType: 0, // Default to STRK
   assetAmount: 0,
   distributionMethod: 0, // Default to LumpSum
+
+  lump_sum_date: 0,
+  quarterly_percentage: 0,
+  yearly_percentage: 0,
+  monthly_percentage: 0,
+
   claimCode: "",
+  additional_note: "",
 
   // UI fields
   beneficiaries: [],
   selectedBeneficiaries: [],
   assets: [],
-  note: "",
 
   // UI-specific fields
   disbursementType: "",
   lumpDate: "",
   percentages: {},
+  note: "",
 };
 
 export function CreatePlanProvider({ children }: { children: ReactNode }) {
@@ -128,7 +144,73 @@ export function CreatePlanProvider({ children }: { children: ReactNode }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const updateFormData = (data: Partial<typeof initialFormData>) => {
-    setFormData((prev) => ({ ...prev, ...data }));
+    setFormData((prev) => {
+      const updatedData = { ...prev, ...data };
+
+      // If distribution method is being updated, reset unused parameters
+      if (data.distributionMethod !== undefined) {
+        switch (data.distributionMethod) {
+          case DistributionMethod.LumpSum:
+            // Reset all percentage fields, keep lump_sum_date
+            updatedData.quarterly_percentage = 0;
+            updatedData.yearly_percentage = 0;
+            updatedData.monthly_percentage = 0;
+            break;
+          case DistributionMethod.Quarterly:
+            // Reset lump_sum_date and other percentages, keep quarterly_percentage
+            updatedData.lump_sum_date = 0;
+            updatedData.yearly_percentage = 0;
+            updatedData.monthly_percentage = 0;
+            break;
+          case DistributionMethod.Yearly:
+            // Reset lump_sum_date and other percentages, keep yearly_percentage
+            updatedData.lump_sum_date = 0;
+            updatedData.quarterly_percentage = 0;
+            updatedData.monthly_percentage = 0;
+            break;
+          case DistributionMethod.Monthly:
+            // Reset lump_sum_date and other percentages, keep monthly_percentage
+            updatedData.lump_sum_date = 0;
+            updatedData.quarterly_percentage = 0;
+            updatedData.yearly_percentage = 0;
+            break;
+        }
+      }
+
+      // Map percentage values from UI to specific percentage fields
+      if (data.percentages) {
+        const percentages = { ...prev.percentages, ...data.percentages };
+
+        // Map UI percentage values to specific percentage fields
+        if (percentages["Quarterly Release Of Funds (Disbursement)"]) {
+          updatedData.quarterly_percentage =
+            Number(percentages["Quarterly Release Of Funds (Disbursement)"]) ||
+            0;
+        }
+        if (percentages["Yearly Release Of Funds (Disbursement)"]) {
+          updatedData.yearly_percentage =
+            Number(percentages["Yearly Release Of Funds (Disbursement)"]) || 0;
+        }
+        if (percentages["Monthly Release Of Funds (Disbursement)"]) {
+          updatedData.monthly_percentage =
+            Number(percentages["Monthly Release Of Funds (Disbursement)"]) || 0;
+        }
+      }
+
+      // Map lump sum date from UI to contract field
+      if (data.lumpDate) {
+        // Convert date string to timestamp
+        const date = new Date(data.lumpDate);
+        updatedData.lump_sum_date = Math.floor(date.getTime() / 1000);
+      }
+
+      // Map additional note
+      if (data.note !== undefined) {
+        updatedData.additional_note = data.note;
+      }
+
+      return updatedData;
+    });
   };
 
   const addBeneficiary = (beneficiary: Omit<Beneficiary, "id">) => {
@@ -254,6 +336,36 @@ export function CreatePlanProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const getDistributionParameters = () => {
+    let lumpSumDate = 0;
+    let quarterlyPercentage = 0;
+    let yearlyPercentage = 0;
+    let monthlyPercentage = 0;
+
+    // Set only the relevant parameters based on distribution method
+    switch (formData.distributionMethod) {
+      case DistributionMethod.LumpSum:
+        lumpSumDate = formData.lump_sum_date;
+        break;
+      case DistributionMethod.Quarterly:
+        quarterlyPercentage = formData.quarterly_percentage;
+        break;
+      case DistributionMethod.Yearly:
+        yearlyPercentage = formData.yearly_percentage;
+        break;
+      case DistributionMethod.Monthly:
+        monthlyPercentage = formData.monthly_percentage;
+        break;
+    }
+
+    return {
+      lumpSumDate,
+      quarterlyPercentage,
+      yearlyPercentage,
+      monthlyPercentage,
+    };
+  };
+
   const createPlan = async () => {
     try {
       setIsSubmitting(true);
@@ -279,6 +391,36 @@ export function CreatePlanProvider({ children }: { children: ReactNode }) {
         );
       }
 
+      // Prepare distribution parameters based on selected method
+      let lumpSumDate = 0;
+      let quarterlyPercentage = 0;
+      let yearlyPercentage = 0;
+      let monthlyPercentage = 0;
+
+      // Set only the relevant parameters based on distribution method
+      switch (formData.distributionMethod) {
+        case DistributionMethod.LumpSum:
+          lumpSumDate = formData.lump_sum_date;
+          // All other percentages remain 0
+          break;
+        case DistributionMethod.Quarterly:
+          quarterlyPercentage = formData.quarterly_percentage;
+          // All other parameters remain 0
+          break;
+        case DistributionMethod.Yearly:
+          yearlyPercentage = formData.yearly_percentage;
+          // All other parameters remain 0
+          break;
+        case DistributionMethod.Monthly:
+          monthlyPercentage = formData.monthly_percentage;
+          // All other parameters remain 0
+          break;
+        default:
+          // Default to lump sum if invalid method
+          lumpSumDate = formData.lump_sum_date;
+          break;
+      }
+
       // Prepare contract parameters
       const contractParameters = {
         plan_name: byteArray.byteArrayFromString(formData.planName),
@@ -294,17 +436,26 @@ export function CreatePlanProvider({ children }: { children: ReactNode }) {
         beneficiary_email: byteArray.byteArrayFromString(
           selectedBeneficiary.email
         ),
-        beneficiary_address: selectedBeneficiary.address,
         asset_type: BigInt(formData.assetType),
         asset_amount: cairo.uint256(formData.assetAmount),
         distribution_method: BigInt(formData.distributionMethod),
+        lump_sum_date: BigInt(lumpSumDate),
+        quarterly_percentage: BigInt(quarterlyPercentage),
+        yearly_percentage: BigInt(yearlyPercentage),
+        monthly_percentage: BigInt(monthlyPercentage),
+        additional_note: byteArray.byteArrayFromString(
+          formData.additional_note
+        ),
         claim_code: byteArray.byteArrayFromString(formData.claimCode),
       };
 
-      console.log(
-        "Creating inheritance plan with contract parameters:",
-        contractParameters
-      );
+      console.log("=== CONTRACT PARAMETERS DEBUG ===");
+      console.log("Distribution Method:", formData.distributionMethod);
+      console.log("Yearly Percentage:", yearlyPercentage);
+      console.log("Quarterly Percentage:", quarterlyPercentage);
+      console.log("Monthly Percentage:", monthlyPercentage);
+      console.log("Lump Sum Date:", lumpSumDate);
+      console.log("Full contract parameters:", contractParameters);
 
       // Store contract parameters for the component to use
       setFormData((prev) => ({
@@ -345,6 +496,7 @@ export function CreatePlanProvider({ children }: { children: ReactNode }) {
     createPlan,
     getAssetTypeFromString,
     getDistributionMethodFromString,
+    getDistributionParameters,
   };
 
   return (
