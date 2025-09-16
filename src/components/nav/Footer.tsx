@@ -28,39 +28,59 @@ const Footer: React.FC<FooterProps> = ({ logo, socialIcons = [] }) => {
 
   const defaultSocialIcons = [
     {
-      icon: (
-        <Image
-          src="/assets/icons/github.svg"
-          alt="GitHub"
-          width={24}
-          height={24}
-        />
-      ),
-      href: "https://github.com/skill-mind/InheritX-web-app",
-      label: "GitHub",
-    },
+     {
+  icon: (
+    <a 
+      href="https://github.com/skill-mind/InheritX-web-app" 
+      target="_blank" 
+      rel="noopener noreferrer"
+    >
+      <Image
+        src="/assets/icons/github.svg"
+        alt="GitHub"
+        width={24}
+        height={24}
+      />
+    </a>
+  ),
+  href: "https://github.com/skill-mind/InheritX-web-app",
+  label: "GitHub",
+},
+{
+  icon: (
+    <a 
+      href="https://x.com/projectInheritX" 
+      target="_blank" 
+      rel="noopener noreferrer"
+    >
+      <Image
+        src="/assets/icons/x.svg"
+        alt="X (Twitter)"
+        width={24}
+        height={24}
+      />
+    </a>
+  ),
+  href: "https://x.com/projectInheritX",
+  label: "X (Twitter)",
+},
+
     {
       icon: (
-        <Image
-          src="/assets/icons/x.svg"
-          alt="X (Twitter)"
-          width={24}
-          height={24}
-        />
+         <a 
+      href="https://t.me" 
+      target="_blank" 
+      rel="noopener noreferrer"
+    >
+      <Image
+        src="/assets/icons/send.svg"
+        alt="Telegram"
+        width={24}
+        height={24}
+      />
+    </a>
       ),
-      href: "https://x.com/projectInheritX",
-      label: "X (Twitter)",
-    },
-    {
-      icon: (
-        <Image
-          src="/assets/icons/send.svg"
-          alt="Telegram"
-          width={24}
-          height={24}
-        />
-      ),
-      href: "https://t.me/+huJYYdL4PW81MThk",
+      href: "https://t.me",
       label: "Telegram",
     },
   ];
