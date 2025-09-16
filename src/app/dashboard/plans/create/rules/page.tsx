@@ -257,10 +257,11 @@ const RulesPageContent = () => {
           <div className="flex justify-start mt-8">
             <button
               type="button"
-              disabled={!isFormValid}
+              disabled={!isFormValid || !formData.note}
               className={`bg-[#33C5E0] w-[243px] text-[#161E22] text-center px-8 py-3 justify-center font-medium rounded-[16px] h-[56px] rounded-t-[8px] rounded-b-[24px] flex items-center gap-2 border border-[#232B36] text-[14px] transition-colors hover:bg-[#33C5E0]/90 disabled:bg-[#1C252A] disabled:text-[#425558] disabled:cursor-not-allowed`}
               onClick={() => {
-                if (isFormValid) router.push("/dashboard/plans/create/preview");
+                if (isFormValid && formData.note)
+                  router.push("/dashboard/plans/create/preview");
               }}
             >
               PREVIEW

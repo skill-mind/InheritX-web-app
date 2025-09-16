@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { Headphones } from "lucide-react";
 
 import "../faqs/faqs.css";
 
@@ -272,7 +271,7 @@ export default function HowItWorksPage() {
                 />
               </button>
             </div>
-          </div>          
+          </div>
         </div>
       </div>
 

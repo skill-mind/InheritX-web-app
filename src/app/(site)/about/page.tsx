@@ -2,7 +2,6 @@
 
 import React, { useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
 
 import useEnsureConnected from "../../../hooks/useEnsureConnected";
 
@@ -200,8 +199,6 @@ const AboutPage = () => {
             />
           </button>
         </div>
-
-
       </div>
       <style jsx>{`
         .reveal {

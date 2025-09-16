@@ -4,7 +4,6 @@ import React from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCreatePlan } from "@/contexts/CreatePlanContext";
-import { truncateAddress } from "@/lib/utils";
 
 // interface Beneficiary {
 //   id: number;
@@ -180,9 +179,6 @@ function CreatePlanPageContent() {
                     </span>
                     <span className="text-[#33C5E0] text-[12px] underline mb-1">
                       {b.email}
-                    </span>
-                    <span className="text-[#BFC6C8] text-[12px] mb-1">
-                      {truncateAddress(b.address) || "No address provided"}
                     </span>
                     <button
                       type="button"
