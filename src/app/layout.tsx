@@ -43,21 +43,21 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://inheritx.io"),
+  metadataBase: new URL("https://www.inheritx.org"),
   alternates: {
-    canonical: "/",
+    canonical: "https://www.inheritx.org/",
   },
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://inheritx.io",
+    url: "https://www.inheritx.org",
     title: "InheritX - Securing Digital Legacies Through Blockchain Technology",
     description:
       "Automated, secure, and trustless digital asset inheritance using StarkNet blockchain technology.",
     siteName: "InheritX",
     images: [
       {
-        url: "/og-image.png",
+        url: "https://www.inheritx.org/og-image.png",
         width: 1200,
         height: 630,
         alt: "InheritX - Securing Digital Legacies Through Blockchain Technology",
@@ -69,9 +69,9 @@ export const metadata: Metadata = {
     title: "InheritX - Securing Digital Legacies Through Blockchain Technology",
     description:
       "Automated, secure, and trustless digital asset inheritance using StarkNet blockchain technology.",
-    images: ["/twitter-image.png"],
-    creator: "@inheritx",
-    site: "@inheritx",
+    images: ["https://www.inheritx.org/twitter-image.png"],
+    creator: "@projectInheritX",
+    site: "@projectInheritX",
   },
   robots: {
     index: true,

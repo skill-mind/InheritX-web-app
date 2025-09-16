@@ -67,7 +67,7 @@ export default function KYCSelfiePage() {
     <main className="flex flex-col gap-6 p-4 md:p-8 w-full overflow-x-hidden max-w-full min-h-screen bg-transparent">
       <div className="flex items-center gap-4 mb-2">
         <button
-          className="text-[#BFC6C8] text-[15px] flex items-center gap-2"
+          className="text-[#BFC6C8] text-[15px] flex items-center gap-2 cursor-pointer transition-colors duration-150 hover:text-white"
           onClick={() => router.back()}
         >
           <Image
@@ -90,13 +90,13 @@ export default function KYCSelfiePage() {
           {steps.map((step, idx) => (
             <div key={step.label} className="flex flex-col items-center flex-1">
               <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${
+                className={`w-8 h-8 rounded-full flex items-center justify-center border-2 transition duration-150 transform ${
                   idx === 2
                     ? "border-cyan-400 bg-[#161E22]"
                     : idx < 2
                     ? "border-cyan-400 bg-[#33C5E0]"
                     : "border-[#232B36] bg-[#232B36]"
-                }`}
+                } hover:scale-105 cursor-pointer`}
               >
                 {idx < 2 ? (
                   <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -111,7 +111,7 @@ export default function KYCSelfiePage() {
                   </svg>
                 ) : (
                   <span
-                    className={`text-[15px] font-semibold ${
+                    className={`text-[15px] font-semibold transition-colors duration-150 ${
                       idx === 2 ? "text-cyan-400" : "text-[#BFC6C8]"
                     }`}
                   >
@@ -121,7 +121,7 @@ export default function KYCSelfiePage() {
               </div>
               {idx < steps.length - 1 && <div className="kyc-step-bar" />}
               <div
-                className={`mt-2 text-xs font-medium ${
+                className={`mt-2 text-xs font-medium transition-colors duration-150 ${
                   idx === 2 ? "text-cyan-400" : "text-[#BFC6C8]"
                 }`}
               >
@@ -141,7 +141,7 @@ export default function KYCSelfiePage() {
             </span>
           </p>
           <div className="flex flex-col items-center justify-center mt-4">
-            <div className="border-2 border-dashed border-[#33C5E0] rounded-[50%] w-[220px] h-[320px] flex items-center justify-center bg-[#161E22] relative">
+            <div className="border-2 border-dashed border-[#33C5E0] rounded-[50%] w-[220px] h-[320px] flex items-center justify-center bg-[#161E22] relative transition duration-150 hover:shadow-md">
               {!selfie ? (
                 streaming ? (
                   <video
@@ -150,7 +150,7 @@ export default function KYCSelfiePage() {
                     height={240}
                     autoPlay
                     playsInline
-                    className="rounded-[50%] object-cover"
+                    className="rounded-[50%] object-cover cursor-pointer"
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-[#425558] text-[15px]">
@@ -163,7 +163,7 @@ export default function KYCSelfiePage() {
                   alt="Selfie Preview"
                   width={180}
                   height={240}
-                  className="rounded-[50%] object-cover"
+                  className="rounded-[50%] object-cover cursor-pointer"
                 />
               )}
               <canvas
@@ -175,7 +175,7 @@ export default function KYCSelfiePage() {
             </div>
             <button
               type="button"
-              className="flex items-center gap-2 px-6 py-2 rounded-[12px] border border-[#33C5E0] text-[#33C5E0] bg-[#10171d] hover:bg-[#181f25] transition-colors mt-6"
+              className="flex items-center gap-2 px-6 py-2 rounded-[12px] border border-[#33C5E0] text-[#33C5E0] bg-[#10171d] transition duration-150 hover:bg-[#181f25] hover:scale-105 cursor-pointer mt-6"
               onClick={streaming ? handleCapture : startCamera}
             >
               <svg width="20" height="20" fill="none">
@@ -210,7 +210,7 @@ export default function KYCSelfiePage() {
         <div className="flex justify-start mt-8">
           <button
             type="button"
-            className="bg-[#33C5E0] w-[243px] text-[#161E22] text-center px-8 py-3 font-medium rounded-[16px] h-[56px] rounded-t-[8px] rounded-b-[24px] flex items-center gap-2 border border-[#232B36] text-[14px] transition-colors hover:bg-[#33C5E0]/90 disabled:bg-[#1C252A] disabled:text-[#425558] disabled:cursor-not-allowed"
+            className="bg-[#33C5E0] w-[243px] text-[#161E22] text-center px-8 py-3 font-medium rounded-[16px] h-[56px] rounded-t-[8px] rounded-b-[24px] flex items-center gap-2 border border-[#232B36] text-[14px] transition duration-150 hover:bg-[#33C5E0]/90 hover:scale-105 cursor-pointer"
             onClick={handleContinue}
           >
             CONTINUE
@@ -224,7 +224,7 @@ export default function KYCSelfiePage() {
           </button>
         </div>
       </div>
-      <style jsx>{`
+      {/* <style jsx>{`
         .kyc-step-bar {
           position: absolute;
           top: 20px;
@@ -247,7 +247,7 @@ export default function KYCSelfiePage() {
             height: 180px !important;
           }
         }
-      `}</style>
+      `}</style> */}
     </main>
   );
 }

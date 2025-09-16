@@ -36,7 +36,7 @@ const NotificationModal: React.FC<NotificationModalProps> = ({
   };
 
   return (
-    <div className="fixed w-full float-end inset-0 z-50 flex items-center justify-end bg-red-400 right-0 mt-[16rem] bg-opacity-40">
+    <div className="fixed w-full float-end inset-0 z-[999999] flex items-center justify-end mr-[1rem] md:right-0 mt-[16rem] bg-opacity-40">
       <div className="bg-[#182C31] right-0 rounded-[24px] shadow-lg p-2 w-full max-w-[400px] md:max-w-[420px] flex flex-col items-center border border-[#33C5E03D] relative">
         <div className="w-full mb-4">
           {notifications.map((notif, idx) => (

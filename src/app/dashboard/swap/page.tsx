@@ -81,14 +81,14 @@ const SwapPage = () => {
                 <span> Swap From:</span>
                 <span className="text-[#92A5A8] text-xs">
                   Bal: 0{" "}
-                  <span className="ml-2 text-cyan-400 cursor-pointer w-[46px] h-[23px] text-[10px] rounded-[12px] bg-[#33C5E014] border border-[#33C5E03D] py-[4px] px-[12px]">
+                  <span className="ml-2 text-cyan-400 cursor-pointer w-[46px] h-[23px] text-[10px] rounded-[12px] bg-[#33C5E014] border border-[#33C5E03D] py-[4px] px-[12px] hover-raise clickable button-focus">
                     MAX
                   </span>
                 </span>
               </span>
               <div className="flex items-center justify-between bg-transparent rounded-xl py-3 mt-2">
                 <div
-                  className="flex items-center gap-2 bg-[#1C252A] p-[12px] rounded-[24px] cursor-pointer relative"
+                  className="flex items-center gap-2 bg-[#1C252A] p-[12px] rounded-[24px] cursor-pointer relative hover-raise clickable button-focus"
                   onClick={() => setShowFromDropdown((v) => !v)}
                   ref={fromRef}
                 >
@@ -119,7 +119,7 @@ const SwapPage = () => {
                             fromToken.symbol === token.symbol
                               ? "bg-[#1C252A]"
                               : ""
-                          }`}
+                          } hover-raise clickable`}
                           onClick={(e) => {
                             e.stopPropagation();
                             setFromToken(token);
@@ -164,7 +164,7 @@ const SwapPage = () => {
             </div>
           </div>
           <div className="flex justify-center my-2 absolute left-1/2 -translate-x-1/2 top-[10rem] lg:static lg:translate-x-0">
-            <div className="bg-[#232B36] rounded-full p-2 flex items-center justify-center">
+            <div className="bg-[#232B36] rounded-full p-2 flex items-center justify-center hover-raise clickable button-focus">
               <Image
                 src="/assets/icons/swap.svg"
                 alt="swap"
@@ -181,7 +181,7 @@ const SwapPage = () => {
               </span>
               <div className="flex items-center justify-between bg-transparent rounded-xl py-3 mt-2">
                 <div
-                  className="flex items-center gap-2 bg-[#1C252A] p-[12px] rounded-[24px] cursor-pointer relative"
+                  className="flex items-center gap-2 bg-[#1C252A] p-[12px] rounded-[24px] cursor-pointer relative hover-raise clickable button-focus"
                   onClick={() => setShowToDropdown((v) => !v)}
                   ref={toRef}
                 >
@@ -212,7 +212,7 @@ const SwapPage = () => {
                             toToken.symbol === token.symbol
                               ? "bg-[#1C252A]"
                               : ""
-                          }`}
+                          } hover-raise clickable`}
                           onClick={(e) => {
                             e.stopPropagation();
                             setToToken(token);
@@ -263,7 +263,7 @@ const SwapPage = () => {
           </div>
           <div className="flex flex-col items-center">
             <button
-              className={`w-full py-3 rounded-t-[8px] rounded-b-[24px] font-medium text-[14px] flex items-center justify-center gap-2 mt-2 transition-all duration-200
+              className={`w-full py-3 cursor-pointer rounded-t-[8px] rounded-b-[24px] font-medium text-[14px] flex items-center justify-center gap-2 mt-2 transition-all duration-200
                 ${
                   isSwapActive
                     ? "bg-[#33C5E0] text-[#161E22]"
@@ -272,6 +272,7 @@ const SwapPage = () => {
               `}
               disabled={!isSwapActive}
               onClick={() => isSwapActive && setShowConfirmModal(true)}
+              aria-disabled={!isSwapActive}
             >
               <Image
                 src={
@@ -301,7 +302,7 @@ const SwapPage = () => {
             {[0.24, 0.24, -0.24].map((rate, i) => (
               <div
                 key={i}
-                className="flex flex-col items-center justify-between gap-2 bg-[#182024] rounded-[16px] py-[20px] px-[12px] min-h-[118px] min-w-0 w-full sm:min-w-[180px]"
+                className="flex flex-col items-center justify-between gap-2 bg-[#182024] rounded-[16px] py-[20px] px-[12px] min-h-[118px] min-w-0 w-full sm:min-w-[180px] hover-raise clickable"
               >
                 <div className="flex items-center w-full gap-2 justify-between">
                   <div className="flex items-center gap-2">
@@ -357,7 +358,7 @@ const SwapPage = () => {
           <span className="text-[#99A9A2] text-[12px] font-normal mb-8 text-center">
             Swap assets and add to a plan to see your transaction history
           </span>
-          <button className="flex items-center gap-2 w-fit text-[14px] px-6 py-3 font-medium rounded-[24px] border border-[#33C5E03D] bg-[#33C5E014] text-[#33C5E0] hover:bg-cyan-900/30 transition-colors">
+          <button className="flex items-center gap-2 w-fit text-[14px] px-6 py-3 font-medium rounded-[24px] border border-[#33C5E03D] bg-[#33C5E014] text-[#33C5E0] hover:bg-cyan-900/30 transition-colors hover-raise clickable button-focus">
             <Image
               src="/assets/icons/arrowdown.svg"
               alt="arrowdown icon"
@@ -393,6 +394,12 @@ const SwapPage = () => {
           onContinue={() => setShowSuccessModal(false)}
         />
       )}
+      <style jsx>{`
+        .hover-raise { transition: transform .16s cubic-bezier(.2,.9,.2,1), box-shadow .16s ease; }
+        .hover-raise:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(3,10,14,0.36); }
+        .clickable { cursor: pointer; }
+        .button-focus:focus-visible { outline: 2px solid rgba(51,197,224,0.12); outline-offset: 2px; border-radius: 8px; }
+      `}</style>
     </main>
   );
 };

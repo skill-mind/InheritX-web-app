@@ -27,7 +27,7 @@ const ConfirmSwapModal: React.FC<ConfirmSwapModalProps> = ({
   <div className="fixed inset-0 z-[99999] flex items-center justify-center" style={{background: '#161E22CC', backdropFilter: 'blur(8px)'}}>
     <div className="w-full max-w-[480px] mx-2 sm:mx-0 bg-[#161E22] rounded-2xl shadow-2xl p-6 relative flex flex-col" style={{minWidth: '320px'}}>
       <button
-        className="absolute left-6 top-6 text-[#BFC6C8] text-lg font-bold"
+        className="absolute left-6 top-6 text-[#BFC6C8] text-lg font-bold cursor-pointer hover-raise clickable button-focus"
         onClick={onCancel}
         aria-label="Back"
       >
@@ -36,7 +36,7 @@ const ConfirmSwapModal: React.FC<ConfirmSwapModalProps> = ({
       <h3 className="text-[#BFC6C8] text-[15px] font-medium mb-6 text-center">CONFIRM SWAP</h3>
       <div className="flex flex-col gap-6 mb-6">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2 bg-[#232B36] rounded-full px-4 py-3 min-w-[120px] w-full sm:w-auto">
+          <div className="flex items-center gap-2 bg-[#232B36] rounded-full px-4 py-3 min-w-[120px] w-full sm:w-auto hover-raise clickable">
             <Image src={fromToken.icon} alt={fromToken.symbol} width={24} height={24} />
             <span className="text-[#FCFFFF] font-semibold text-[16px]">{fromToken.symbol}</span>
             <Image src="/assets/icons/dropdown.svg" alt="dropdown" width={16} height={16} />
@@ -44,7 +44,7 @@ const ConfirmSwapModal: React.FC<ConfirmSwapModalProps> = ({
           <div className="text-[#FCFFFF] text-[22px] font-bold">{fromAmount}</div>
         </div>
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2 bg-[#232B36] rounded-full px-4 py-3 min-w-[120px] w-full sm:w-auto">
+          <div className="flex items-center gap-2 bg-[#232B36] rounded-full px-4 py-3 min-w-[120px] w-full sm:w-auto hover-raise clickable">
             <Image src={toToken.icon} alt={toToken.symbol} width={24} height={24} />
             <span className="text-[#FCFFFF] font-semibold text-[16px]">{toToken.symbol}</span>
             <Image src="/assets/icons/dropdown.svg" alt="dropdown" width={16} height={16} />
@@ -66,18 +66,24 @@ const ConfirmSwapModal: React.FC<ConfirmSwapModalProps> = ({
       </div>
       <div className="flex flex-col sm:flex-row gap-4 w-full mt-auto">
         <button
-          className="w-full py-3 rounded-[24px] bg-[#232B36] text-[#BFC6C8] font-medium text-[15px]"
+          className="w-full py-3 rounded-[24px] bg-[#232B36] text-[#BFC6C8] font-medium text-[15px] hover-raise clickable button-focus"
           onClick={onCancel}
         >
           Cancel
         </button>
         <button
-          className="w-full py-3 rounded-[24px] bg-[#33C5E0] text-[#161E22] font-medium text-[15px]"
+          className="w-full py-3 rounded-[24px] bg-[#33C5E0] text-[#161E22] font-medium text-[15px] hover-raise clickable button-focus"
           onClick={onConfirm}
         >
           Confirm Swap
         </button>
       </div>
+      <style jsx>{`
+        .hover-raise { transition: transform .16s cubic-bezier(.2,.9,.2,1), box-shadow .16s ease; }
+        .hover-raise:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(3,10,14,0.36); }
+        .clickable { cursor: pointer; }
+        .button-focus:focus-visible { outline: 2px solid rgba(51,197,224,0.12); outline-offset: 2px; border-radius: 8px; }
+      `}</style>
     </div>
   </div>
 );

@@ -31,7 +31,7 @@ const FaceIDModal: React.FC<FaceIDModalProps> = ({ open, onClose, onContinue }) 
           </div>
         </div>
         <button
-          className="w-full md:w-[340px] bg-[#33C5E0] text-[#161E22] py-3 rounded-full font-medium text-base transition-colors hover:bg-[#33C5E0]/90"
+          className="w-full cursor-pointer md:w-[340px] bg-[#33C5E0] text-[#161E22] py-3 rounded-full font-medium text-base transition-colors hover:bg-[#33C5E0]/90"
           onClick={onContinue}
         >
           Continue

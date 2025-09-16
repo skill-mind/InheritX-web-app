@@ -46,7 +46,7 @@ export default function ClaimWithdrawPage() {
       <div className="flex items-center gap-2 mb-2">
         <button
           onClick={() => window.history.back()}
-          className="text-[#FCFFFF] cursor-pointer text-lg mr-2"
+          className="text-[#FCFFFF] text-lg mr-2 cursor-pointer hover-raise clickable button-focus"
         >
           <Image
             src="/assets/icons/back.svg"
@@ -59,7 +59,8 @@ export default function ClaimWithdrawPage() {
           Claim Plan
         </h2>
         <span className="text-[#92A5A8] text-[12px] md:text-[14px] ml-2">
-          To transfer inheritance to your wallet, click on the &apos;Withdraw&apos; button
+          To transfer inheritance to your wallet, click on the
+          &apos;Withdraw&apos; button
         </span>
       </div>
       <section className="bg-transparent">
@@ -68,7 +69,10 @@ export default function ClaimWithdrawPage() {
             <span className="text-[16px] md:text-[18px] font-medium text-[#FCFFFF]">
               Plan Summary
             </span>
-            <button className="px-6 py-2 rounded-[24px] bg-[#33C5E014] border border-[#33C5E03D] text-[#33C5E0] text-[12px] font-semibold hover:bg-cyan-400 hover:text-black cursor-pointer transition-colors" onClick={() => setShowSuccess(true)}>
+            <button
+              className="px-6 py-2 rounded-[24px] bg-[#33C5E014] border border-[#33C5E03D] text-[#33C5E0] text-[12px] font-semibold hover:bg-cyan-400 hover:text-black cursor-pointer transition-colors hover-raise clickable"
+              onClick={() => setShowSuccess(true)}
+            >
               WITHDRAW
             </button>
           </div>
@@ -142,7 +146,7 @@ export default function ClaimWithdrawPage() {
         {/* Assets */}
         <div className="bg-[#161E22] rounded-[16px]">
           <button
-            className="w-full flex justify-between items-center px-4 py-4 text-[#33C5E0] text-[14px] font-normal focus:outline-none"
+            className="w-full flex justify-between items-center px-4 py-4 text-[#33C5E0] text-[14px] font-normal focus:outline-none hover-raise clickable button-focus"
             onClick={() =>
               setOpenSection(openSection === "assets" ? null : "assets")
             }
@@ -157,7 +161,7 @@ export default function ClaimWithdrawPage() {
                 <div className="text-[#92A5A8] text-[12px] font-normal mb-2">
                   Tokens
                 </div>
-                <div className="bg-[#182024] rounded-[12px] p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div className="bg-[#182024] rounded-[12px] p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 hover-raise clickable">
                   <div className="flex items-center gap-3">
                     <Image
                       src="/assets/icons/eth.svg"
@@ -180,7 +184,10 @@ export default function ClaimWithdrawPage() {
                   <span className="text-[#FCFFFF] font-normal text-[14px]">
                     10%
                   </span>
-                  <button className="cursor-pointer px-6 py-2 rounded-[24px] bg-[#33C5E0] text-[#161E22] text-[13px] font-semibold hover:bg-cyan-400 transition-colors" onClick={() => setShowSuccess(true)}>
+                  <button
+                    className="cursor-pointer px-6 py-2 rounded-[24px] bg-[#33C5E0] text-[#161E22] text-[13px] font-semibold hover:bg-cyan-400 transition-colors hover-raise clickable"
+                    onClick={() => setShowSuccess(true)}
+                  >
                     WITHDRAW
                   </button>
                 </div>
@@ -190,7 +197,7 @@ export default function ClaimWithdrawPage() {
                 <div className="text-[#92A5A8] text-[12px] font-normal mb-2">
                   NFTs
                 </div>
-                <div className="bg-[#182024] rounded-[12px] p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div className="bg-[#182024] rounded-[12px] p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 hover-raise clickable">
                   <div className="flex items-center gap-3">
                     <Image
                       src="/assets/icons/nft1.svg"
@@ -211,7 +218,10 @@ export default function ClaimWithdrawPage() {
                   <span className="text-[#FCFFFF] font-normal text-[14px]">
                     30%
                   </span>
-                  <button className="cursor-pointer px-6 py-2 rounded-[24px] bg-[#33C5E0] text-[#161E22] text-[13px] font-semibold hover:bg-cyan-400 transition-colors" onClick={() => setShowSuccess(true)}>
+                  <button
+                    className="cursor-pointer px-6 py-2 rounded-[24px] bg-[#33C5E0] text-[#161E22] text-[13px] font-semibold hover:bg-cyan-400 transition-colors hover-raise clickable"
+                    onClick={() => setShowSuccess(true)}
+                  >
                     WITHDRAW
                   </button>
                 </div>
@@ -221,7 +231,7 @@ export default function ClaimWithdrawPage() {
                 <div className="text-[#92A5A8] text-[12px] font-normal mb-2">
                   RWA
                 </div>
-                <div className="bg-[#182024] rounded-[12px] p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div className="bg-[#182024] rounded-[12px] p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 hover-raise clickable">
                   <div className="flex items-center gap-3">
                     <Image
                       src="/assets/icons/rwa.svg"
@@ -245,7 +255,10 @@ export default function ClaimWithdrawPage() {
                   <span className="text-[#FCFFFF] font-normal text-[14px]">
                     60%
                   </span>
-                  <button className="cursor-pointer px-6 py-2 rounded-[24px] bg-[#33C5E0] text-[#161E22] text-[13px] font-semibold hover:bg-cyan-400 transition-colors" onClick={() => setShowSuccess(true)}>
+                  <button
+                    className="cursor-pointer px-6 py-2 rounded-[24px] bg-[#33C5E0] text-[#161E22] text-[13px] font-semibold hover:bg-cyan-400 transition-colors hover-raise clickable"
+                    onClick={() => setShowSuccess(true)}
+                  >
                     WITHDRAW
                   </button>
                 </div>
@@ -256,7 +269,7 @@ export default function ClaimWithdrawPage() {
         {/* Rules & Conditions */}
         <div className="bg-[#161E22] rounded-[16px]">
           <button
-            className="w-full flex justify-between items-center px-4 py-4 text-[#33C5E0] text-[14px] font-normal focus:outline-none"
+            className="w-full flex justify-between items-center px-4 py-4 text-[#33C5E0] text-[14px] font-normal focus:outline-none hover-raise clickable button-focus"
             onClick={() =>
               setOpenSection(openSection === "rules" ? null : "rules")
             }
@@ -288,7 +301,7 @@ export default function ClaimWithdrawPage() {
         {/* Legal Settings */}
         <div className="bg-[#161E22] rounded-[16px]">
           <button
-            className="w-full flex justify-between items-center px-4 py-4 text-[#33C5E0] text-[14px] font-normal focus:outline-none"
+            className="w-full flex justify-between items-center px-4 py-4 text-[#33C5E0] text-[14px] font-normal focus:outline-none hover-raise clickable button-focus"
             onClick={() =>
               setOpenSection(openSection === "legal" ? null : "legal")
             }
@@ -342,7 +355,7 @@ export default function ClaimWithdrawPage() {
         {/* Notes */}
         <div className="bg-[#161E22] rounded-[16px]">
           <button
-            className="w-full flex justify-between items-center px-4 py-4 text-[#33C5E0] text-[14px] font-normal focus:outline-none"
+            className="w-full flex justify-between items-center px-4 py-4 text-[#33C5E0] text-[14px] font-normal focus:outline-none hover-raise clickable button-focus"
             onClick={() =>
               setOpenSection(openSection === "notes" ? null : "notes")
             }
@@ -359,7 +372,24 @@ export default function ClaimWithdrawPage() {
           )}
         </div>
       </section>
-      <ClaimSuccessModal open={showSuccess} onCancel={() => setShowSuccess(false)} onContinue={() => setShowSuccess(false)} />
+      <ClaimSuccessModal
+        open={showSuccess}
+        onCancel={() => setShowSuccess(false)}
+        onContinue={() => setShowSuccess(false)}
+      />
+      <style jsx>{`
+        .hover-raise {
+          transition: transform .16s cubic-bezier(.2,.9,.2,1), box-shadow .16s ease;
+        }
+        .hover-raise:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 8px 24px rgba(3,10,14,0.36);
+        }
+        .image-tile { transition: transform .18s ease, box-shadow .18s ease; }
+        .image-tile:hover { transform: scale(1.03); box-shadow: 0 10px 30px rgba(0,0,0,0.28); }
+        .clickable { cursor: pointer; }
+        .button-focus:focus-visible { outline: 2px solid rgba(51,197,224,0.12); outline-offset: 2px; border-radius: 8px; }
+      `}</style>
     </main>
   );
 }

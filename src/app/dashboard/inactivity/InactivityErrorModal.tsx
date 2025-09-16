@@ -26,13 +26,13 @@ const InactivityErrorModal: React.FC<InactivityErrorModalProps> = ({ onCancel, o
         </div>
         <div className="flex w-full gap-4 mt-2">
           <button
-            className="flex-1 bg-[#232B36] text-white py-3 rounded-full font-medium text-base transition-colors hover:bg-[#232B36]/80"
+            className="flex-1 cursor-pointer bg-[#232B36] text-white py-3 rounded-full font-medium text-base transition-colors hover:bg-[#232B36]/80"
             onClick={onCancel}
           >
             Cancel
           </button>
           <button
-            className="flex-1 bg-[#33C5E0] text-[#161E22] py-3 rounded-full font-medium text-base transition-colors hover:bg-cyan-400"
+            className="flex-1 cursor-pointer bg-[#33C5E0] text-[#161E22] py-3 rounded-full font-medium text-base transition-colors hover:bg-cyan-400"
             onClick={onRetry}
           >
             Try Again

@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import "./about.css";
 
 const About = () => {
@@ -53,7 +54,7 @@ const About = () => {
             alt="steps"
             width={800}
             height={200}
-            className="hidden md:block w-full"
+            className="hidden md:block w-full hover:scale-95 duration-500"
           />
           {/* Mobile steps image */}
           <Image
@@ -61,13 +62,13 @@ const About = () => {
             alt="steps mobile"
             width={320}
             height={200}
-            className="block md:hidden w-full max-w-xs"
+            className="block md:hidden w-full max-w-xs hover:scale-95 duration-500"
           />
         </div>
 
         {/* Why This Works Section */}
         <div className="hidden md:flex items-end flex-col absolute bottom-0 right-0">
-          <div className="about-shadow w-fit p-10 mt-20 lg:mt-32 space-y-2">
+          <div className="about-shadow w-fit p-10 mt-20 lg:mt-32 space-y-2 hover:scale-95 duration-500">
             <h3 className="text-[18px] font-medium text-[#FCFFFF]">
               Why this works:
             </h3>
@@ -101,7 +102,10 @@ const About = () => {
           </div>
           {/* CTA Button */}
           <div className="pt-4 mr-12">
-            <button className="group bg-[#33C5E0] hover:bg-cyan-300 space-x-4 text-[#161E22] text-[14px] font-medium px-8 py-4 rounded-b-[24px] rounded-t-[8px] transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-cyan-400/25 flex items-center">
+            <Link
+              href="/how-it-works"
+              className="group bg-[#33C5E0] hover:bg-cyan-300 space-x-4 text-[#161E22] text-[14px] font-medium px-8 py-4 rounded-b-[24px] rounded-t-[8px] transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-cyan-400/25 flex items-center"
+            >
               <span>GET STARTED</span>
               <Image
                 src="/assets/icons/arrowup.svg"
@@ -109,7 +113,7 @@ const About = () => {
                 width={12}
                 height={12}
               />
-            </button>
+            </Link>
           </div>
         </div>
       </div>

@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
-import { Headphones } from "lucide-react";
-
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import Image from "next/image";
+import useEnsureConnected from "@/hooks/useEnsureConnected";
 
 import "./faqs.css";
 
@@ -35,7 +35,7 @@ const FAQItemComponent: React.FC<FAQItemProps> = ({
   };
 
   return (
-    <div className="border-b border-gray-700 last:border-b-0 p-[32px] bg-transparent max-w-[883px]">
+    <div className="border-b border-gray-700 last:border-b-0 p-[32px] bg-transparent max-w-[883px] cursor-pointer">
       <button
         onClick={handleClick}
         className="w-full py-6 px-0 flex items-center justify-between text-left transition-colors duration-200 group"
@@ -50,7 +50,7 @@ const FAQItemComponent: React.FC<FAQItemProps> = ({
             alt="arrow down icon"
             width={14}
             height={14}
-            className={`transition-transform duration-200 flex-shrink-0 ${
+            className={`transition-transform duration-200 flex-shrink-0 cursor-pointer ${
               isExpanded ? "-rotate-90" : "rotate-0"
             }`}
           />
@@ -60,7 +60,7 @@ const FAQItemComponent: React.FC<FAQItemProps> = ({
             alt="arrow down icon"
             width={24}
             height={24}
-            className="transition-transform duration-200 flex-shrink-0 rotate-0 opacity-50"
+            className="transition-transform duration-200 flex-shrink-0 rotate-0 opacity-50 cursor-pointer"
           />
         )}
       </button>
@@ -133,9 +133,7 @@ const faqData: FAQItem[] = [
   {
     id: 7,
     question: "7. What types of Inheritance Plans can I create?",
-    answer: (
-      `<span>You Can Choose Between Two Types Of Inheritance Plans:</span><ul class='list-disc pl-6 mt-2'><li><b>Standard Plan</b> – You Set Up A One-Time Transfer Of Assets To Your Chosen Beneficiaries. Once Triggered, All Designated Assets Are Released At Once.</li><li><b>Monthly Disbursement Plan</b> – Instead Of A One-Time Release, You Can Schedule Periodic (E.G., Monthly) Transfers To Your Beneficiaries. This Ensures Steady, Ongoing Support Rather Than A Single Payout.</li></ul>`
-    ),
+    answer: `<span>You Can Choose Between Two Types Of Inheritance Plans:</span><ul class='list-disc pl-6 mt-2'><li><b>Standard Plan</b> – You Set Up A One-Time Transfer Of Assets To Your Chosen Beneficiaries. Once Triggered, All Designated Assets Are Released At Once.</li><li><b>Monthly Disbursement Plan</b> – Instead Of A One-Time Release, You Can Schedule Periodic (E.G., Monthly) Transfers To Your Beneficiaries. This Ensures Steady, Ongoing Support Rather Than A Single Payout.</li></ul>`,
     isExpandable: true,
   },
 ];
@@ -145,6 +143,17 @@ export default function FAQsPage() {
   const [expandedItems, setExpandedItems] = useState<Set<number>>(
     new Set([1, 2])
   );
+  const ensureConnectedAndNavigate = useEnsureConnected();
+  const [launching, setLaunching] = useState(false);
+
+  const handleLaunch = async () => {
+    try {
+      setLaunching(true);
+      await ensureConnectedAndNavigate();
+    } finally {
+      setLaunching(false);
+    }
+  };
 
   // Handle FAQ item toggle
   const handleToggle = (id: number) => {
@@ -158,6 +167,38 @@ export default function FAQsPage() {
       return newSet;
     });
   };
+
+  useEffect(() => {
+    const run = () => {
+      try {
+        const els = Array.from(document.querySelectorAll(".reveal"));
+        const obs = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting)
+                entry.target.classList.add("reveal-active");
+            });
+          },
+          { threshold: 0.12 }
+        );
+        els.forEach((el, i) => {
+          obs.observe(el);
+          const rect = el.getBoundingClientRect();
+          if (rect.top < window.innerHeight * 0.9) {
+            setTimeout(() => el.classList.add("reveal-active"), 60 * (i + 1));
+          }
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    if (
+      document.readyState === "complete" ||
+      document.readyState === "interactive"
+    )
+      run();
+    else window.addEventListener("DOMContentLoaded", run);
+  }, []);
 
   return (
     <div className="w-full min-h-screen relative mt-[5rem] mb-[20rem]">
@@ -194,10 +235,18 @@ export default function FAQsPage() {
       <div className="max-w-[110rem] mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
         {/* Header Section */}
         <div className="mb-4">
-          <h1 className="text-[24px] md:text-[32px] font-bold text-[#FCFFFF] mb-2">
+          <h1
+            className="text-[24px] md:text-[32px] font-bold text-[#FCFFFF] mb-2 reveal"
+            data-step={0}
+            style={{ transitionDelay: "80ms" }}
+          >
             FAQs
           </h1>
-          <p className="text-[12px] md:text-[14px] text-[#92A5A8] max-w-2xl">
+          <p
+            className="text-[12px] md:text-[14px] text-[#92A5A8] max-w-2xl reveal"
+            data-step={1}
+            style={{ transitionDelay: "160ms" }}
+          >
             Here are some frequently asked questions about InheritX
           </p>
         </div>
@@ -208,7 +257,9 @@ export default function FAQsPage() {
             {faqData.map((faq, index) => (
               <div
                 key={index}
-                className="faqs-box rounded-l-[8px] rounded-r-[48px]"
+                className="faqs-box rounded-l-[8px] rounded-r-[48px] reveal"
+                data-step={index + 2}
+                style={{ transitionDelay: `${index * 80 + 200}ms` }}
               >
                 <FAQItemComponent
                   key={faq.id}
@@ -222,11 +273,19 @@ export default function FAQsPage() {
         </div>
 
         {/* Bottom Section */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-8">
+        <div
+          className="flex flex-col sm:flex-row items-center justify-between gap-8 reveal"
+          data-step={999}
+          style={{ transitionDelay: "360ms" }}
+        >
           {/* Launch App Button */}
           <div className="pt-4">
-            <button className="group bg-[#33C5E0] hover:bg-cyan-300 space-x-4 text-[#161E22] text-[14px] font-medium px-8 py-4 rounded-b-[24px] rounded-t-[8px] transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-cyan-400/25 flex items-center">
-              <span>LAUNCH APP</span>
+            <button
+              onClick={handleLaunch}
+              disabled={launching}
+              className="group cursor-pointer bg-[#33C5E0] disabled:opacity-60 hover:bg-cyan-300 space-x-4 text-[#161E22] text-[14px] font-medium px-8 py-4 rounded-b-[24px] rounded-t-[8px] transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-cyan-400/25 flex items-center"
+            >
+              <span>{launching ? "Connecting..." : "LAUNCH APP"}</span>
               <Image
                 src="/assets/icons/arrowup.svg"
                 alt="arrow up icon"
@@ -236,13 +295,64 @@ export default function FAQsPage() {
             </button>
           </div>
 
-          {/* Contact Support */}
-          <div className="flex md:mt-[-45rem] items-center gap-3 text-[#92A5A8] text-[14px] bg-[#182024] hover:text-white transition-colors duration-200 cursor-pointer group">
-            <Headphones className="w-[16px] h-[16px] group-hover:text-cyan-400 transition-colors duration-200" />
-            <span className="text-[14px] font-medium">Contact Support</span>
-          </div>
+          
         </div>
       </div>
+
+      <style jsx>{`
+        .reveal {
+          opacity: 0;
+          transform: translateY(18px);
+          transition: opacity 520ms cubic-bezier(0.2, 0.9, 0.3, 1),
+            transform 520ms cubic-bezier(0.2, 0.9, 0.3, 1);
+        }
+        .reveal.reveal-active {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        .faqs-box.reveal {
+          will-change: transform, opacity;
+        }
+      `}</style>
+
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `(${() => {
+            const run = () => {
+              try {
+                const els = Array.from(document.querySelectorAll(".reveal"));
+                const obs = new IntersectionObserver(
+                  (entries) => {
+                    entries.forEach((entry) => {
+                      if (entry.isIntersecting)
+                        entry.target.classList.add("reveal-active");
+                    });
+                  },
+                  { threshold: 0.12 }
+                );
+                els.forEach((el, i) => {
+                  obs.observe(el);
+                  const rect = el.getBoundingClientRect();
+                  if (rect.top < window.innerHeight * 0.9) {
+                    setTimeout(
+                      () => el.classList.add("reveal-active"),
+                      60 * (i + 1)
+                    );
+                  }
+                });
+              } catch (e) {
+                console.error(e);
+              }
+            };
+            if (
+              document.readyState === "complete" ||
+              document.readyState === "interactive"
+            )
+              run();
+            else window.addEventListener("DOMContentLoaded", run);
+          }})();`,
+        }}
+      />
     </div>
   );
 }

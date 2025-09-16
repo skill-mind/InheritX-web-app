@@ -1,14 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import { connect } from "starknetkit";
 
 const Navbar = () => {
-  const [showWalletModal, setShowWalletModal] = useState(false);
-  console.log(showWalletModal);
   const pathname = usePathname();
   const router = useRouter();
 
@@ -26,12 +24,10 @@ const Navbar = () => {
         dappName: "InheritX - Securin...",
       });
       if (wallet) {
-        setShowWalletModal(false);
-        // Redirect to asset-owner dashboard
-        router.push("/dashboard");
+        // navigate to the centralized unlock route which will run the transition
+        router.push(`/unlock?next=${encodeURIComponent("/dashboard")}`);
       }
     } catch (err) {
-      setShowWalletModal(false);
       console.error("Wallet connection failed", err);
     }
   };
@@ -43,7 +39,7 @@ const Navbar = () => {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center w-1/2 justify-between">
               {/* Logo */}
-              <div className="flex-shrink-0">
+              <div className="flex-shrink-0">     
                 <Link href="/" className="flex items-center">
                   <Image
                     src="/assets/icons/logo.svg"
@@ -62,7 +58,7 @@ const Navbar = () => {
                     <Link
                       key={item.name}
                       href={item.href}
-                      className={`px-3 py-2 text-sm font-medium tracking-wide transition-colors duration-200 relative group ${
+                      className={`px-3 py-2 text-sm font-medium tracking-wide transition-colors duration-200 relative group whitespace-nowrap ${
                         pathname === item.href
                           ? "text-cyan-400 font-bold"
                           : "text-gray-300 hover:text-cyan-400"
@@ -115,7 +111,7 @@ const Navbar = () => {
       </nav>
 
       {/* Mobile Navigation - always visible, row at bottom */}
-      <div className="fixed bottom-0 md:hidden left-0 w-full z-50">
+      <div className="fixed bottom-0 md:hidden left-0 w-full z-50 bg-[#161E22]">
         <div className="w-full flex justify-center items-center bg-transparent border-slate-700 z-50 py-2">
           <div className="flex flex-row justify-center items-center w-full">
             {navItems

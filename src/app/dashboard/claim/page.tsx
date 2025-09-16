@@ -59,7 +59,7 @@ const ClaimPage = () => {
   const [showClaimModal, setShowClaimModal] = useState(false);
 
   return (
-    <main className="flex flex-col gap-6 p-2 md:p-8 w-full">
+    <main className="flex flex-col gap-6 p-0 md:p-8 w-full">
       <section className="">
         <h2 className="text-lg md:text-2xl font-medium text-[#FCFFFF] mb-1">
           Claim Plan
@@ -73,7 +73,7 @@ const ClaimPage = () => {
         {summaryCards.map((card) => (
           <div
             key={card.label}
-            className="bg-[#182024] w-full h-[212px] rounded-xl py-[32px] px-[20px] flex flex-col items-center shadow-md"
+            className="bg-[#182024] w-full h-[212px] rounded-xl py-[32px] px-[20px] flex flex-col items-center shadow-md hover-raise clickable"
           >
             <span className="text-3xl md:text-4xl font-semibold text-[#FCFFFF] mb-2">
               {card.value}
@@ -82,7 +82,7 @@ const ClaimPage = () => {
               {card.label}
             </span>
             <button
-              className="w-fit text-[14px] p-[14px] cursor-pointer font-medium rounded-[24px] border border-[#33C5E03D] bg-[#33C5E014] text-[#33C5E0] transition-all duration-200 hover:bg-[#33C5E0] hover:text-[#161E22] hover:scale-105 focus:outline-none"
+              className="w-fit text-[14px] p-[14px] cursor-pointer font-medium rounded-[24px] border border-[#33C5E03D] bg-[#33C5E014] text-[#33C5E0] transition-all duration-200 hover:bg-[#33C5E0] hover:text-[#161E22] hover:scale-105 focus:outline-none hover-raise clickable"
               onClick={() => {
                 if (card.action === "Set Guardian") {
                   router.push("/dashboard/guardian");
@@ -129,7 +129,7 @@ const ClaimPage = () => {
               </button>
             ))}
           </div>
-          <button className="flex items-center text-[12px] font-normal gap-1 text-[#92A5A8] hover:underline w-fit md:w-auto">
+          <button className="flex items-center text-[12px] font-normal gap-1 text-[#92A5A8] hover:underline w-fit md:w-auto cursor-pointer clickable hover-raise">
             <Image
               src="/assets/icons/filter.svg"
               alt="filter icon"
@@ -141,7 +141,7 @@ const ClaimPage = () => {
           </button>
         </div>
         {activeTab === 0 ? (
-          <div className="flex flex-col bg-[#182024] rounded-[24px] py-[16px] md:py-[32px] px-[6px] xs:px-[8px] sm:px-[12px] md:px-[24px] min-h-[224px] items-center justify-center flex-1 w-full overflow-x-auto">
+          <div className="flex  md:max-w-full flex-col bg-[#182024] rounded-[24px] py-[16px] md:py-[32px] px-[6px] xs:px-[8px] sm:px-[12px] md:px-[24px] min-h-[224px] items-center justify-center flex-1 w-full">
             <div className="w-full">
               <table className="w-full min-w-[600px] md:min-w-[800px]">
                 <thead>
@@ -155,7 +155,7 @@ const ClaimPage = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="border-t border-[#232B36] text-[#FCFFFF] text-[12px] md:text-[14px]">
+                  <tr className="border-t border-[#232B36] text-[#FCFFFF] text-[12px] md:text-[14px] hover-raise clickable">
                     <td className="py-4 px-2">
                       <div className="flex flex-col">
                         <span className="font-normal text-[12px] md:text-[14px]">
@@ -180,7 +180,7 @@ const ClaimPage = () => {
                     </td>
                     <td className="py-4 px-2">
                       <button
-                        className="w-full cursor-pointer text-[12px] md:w-[160px] py-2 rounded-full bg-[#33C5E0] text-[#161E22] font-semibold hover:bg-cyan-400 transition-colors"
+                        className="w-full cursor-pointer text-[12px] md:w-[160px] py-2 rounded-full bg-[#33C5E0] text-[#161E22] font-semibold hover:bg-cyan-400 transition-colors hover-raise clickable"
                         onClick={() => setShowClaimModal(true)}
                       >
                         CLAIM PLAN
@@ -205,7 +205,7 @@ const ClaimPage = () => {
                   {activities.map((item, idx) => (
                     <tr
                       key={idx}
-                      className="border-none text-[#FCFFFF] text-[12px] md:text-[14px]"
+                      className="border-none text-[#FCFFFF] text-[12px] md:text-[14px] hover-raise clickable"
                     >
                       <td className="py-4 px-2">
                         <span className="text-[12px] md:text-[14px]">
@@ -223,7 +223,22 @@ const ClaimPage = () => {
           </div>
         )}
       </section>
-      <ClaimPlanModal open={showClaimModal} onClose={() => setShowClaimModal(false)} />
+      <ClaimPlanModal
+        open={showClaimModal}
+        onClose={() => setShowClaimModal(false)}
+      />
+
+      <style jsx>{`
+        .hover-raise {
+          transition: transform .18s cubic-bezier(.2,.9,.2,1), box-shadow .18s ease;
+        }
+        .hover-raise:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 6px 20px rgba(3,10,14,0.36);
+        }
+        .clickable { cursor: pointer; }
+        .button-focus:focus-visible { outline: 2px solid rgba(51,197,224,0.18); outline-offset: 2px; border-radius: 8px; }
+      `}</style>
     </main>
   );
 };

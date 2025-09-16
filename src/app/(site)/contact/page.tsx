@@ -6,7 +6,7 @@ import "./contact.css";
 
 const subjectOptions = [
   { value: "", label: "Select A Subject", disabled: true },
-  { value: "legal-issue", label: "Legal",},
+  { value: "legal-issue", label: "Legal" },
   { value: "general-inquiry", label: "Compliance Issue" },
   { value: "technical-support", label: "Technical Problem" },
   { value: "other", label: "Other" },

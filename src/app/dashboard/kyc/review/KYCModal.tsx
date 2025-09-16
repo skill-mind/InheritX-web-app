@@ -10,7 +10,7 @@ export function KYCModal({ type, open, onClose, onContinue }: {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
       <div className="bg-[#10171d] rounded-[32px] max-w-lg w-full mx-4 p-8 flex flex-col items-center shadow-xl border border-[#232B36]">
-        <div className="mb-8 mt-2 text-center text-[18px] text-[#FCFFFF] font-medium">
+        <div className="mb-[5rem] mt-2 text-center text-[18px] text-[#FCFFFF] font-medium">
           {type === "success"
             ? "Your KYC submission is successful"
             : "Oops! Looks like something went wrong. Try again"}
@@ -36,15 +36,15 @@ export function KYCModal({ type, open, onClose, onContinue }: {
             </div>
           )}
         </div>
-        <div className="flex flex-row gap-4 w-full mt-2">
+        <div className="flex flex-row gap-4 w-full mt-[5rem]">
           <button
-            className="flex-1 bg-[#181f25] text-[#FCFFFF] rounded-[16px] py-3 font-medium text-[16px] transition-colors hover:bg-[#232B36]"
+            className="flex-1 bg-[#181f25] cursor-pointer text-[#FCFFFF] rounded-[16px] py-3 font-medium text-[16px] transition-colors hover:bg-[#232B36]"
             onClick={onClose}
           >
             Cancel
           </button>
           <button
-            className="flex-1 bg-[#33C5E0] text-[#10171d] rounded-[16px] py-3 font-medium text-[16px] transition-colors hover:bg-[#33C5E0]/90"
+            className="flex-1 bg-[#33C5E0] cursor-pointer text-[#10171d] rounded-[16px] py-3 font-medium text-[16px] transition-colors hover:bg-[#33C5E0]/90"
             onClick={onContinue}
           >
             {type === "success" ? "Continue" : "Try Again"}

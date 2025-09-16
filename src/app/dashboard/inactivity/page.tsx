@@ -84,7 +84,7 @@ const InactivityPage = () => {
           <div className="flex items-center justify-between mb-4">
             <span className="text-white text-lg font-semibold">Plan Summary</span>
             <button
-              className="flex bg-[#33C5E014] items-center gap-2 px-5 py-2 rounded-full border border-[#33C5E03D] text-[#33C5E0] hover:bg-[#33C5E014] font-medium text-[12px] transition-colors"
+              className="flex bg-[#33C5E014] items-center gap-2 px-5 py-2 rounded-full border border-[#33C5E03D] text-[#33C5E0] hover:bg-[#33C5E014] font-medium text-[12px] transition-colors transition-transform duration-150 hover:scale-105 cursor-pointer"
               onClick={handleEdit}
             >
               <Image src="/assets/icons/edit.svg" alt="edit" width={15} height={15} />
@@ -100,7 +100,7 @@ const InactivityPage = () => {
                 </tr>
                 <tr className="border-b border-[#232B36]">
                   <td className="py-3 pr-4 text-[#92A5A8] text-xs font-semibold uppercase">Beneficiary Email</td>
-                  <td className="py-3 text-[#33C5E0] text-sm underline cursor-pointer">{beneficiaryEmail}</td>
+                  <td className="py-3 text-[#33C5E0] text-sm underline cursor-pointer transition-colors duration-150 hover:text-[#4FE27A]">{beneficiaryEmail}</td>
                 </tr>
                 <tr className="border-b border-[#232B36]">
                   <td className="py-3 pr-4 text-[#92A5A8] text-xs font-semibold uppercase">Claim Code</td>
@@ -124,7 +124,7 @@ const InactivityPage = () => {
               {inactivityOptions.map((option) => (
                 <label
                   key={option}
-                  className="flex items-center gap-3 cursor-pointer"
+                  className="flex items-center gap-3 cursor-pointer transition-colors duration-150 hover:bg-[#1C252A] rounded-md px-2 py-1"
                 >
                   <input
                     type="radio"
@@ -132,7 +132,7 @@ const InactivityPage = () => {
                     value={option}
                     checked={selected === option}
                     onChange={() => setSelected(option)}
-                    className="accent-cyan-400 w-4 h-[40px] rounded-[12px] border border-[#1C252A] py-[8px] px-[16px]"
+                    className="accent-cyan-400 w-4 h-[40px] rounded-[12px] border border-[#1C252A] py-[8px] px-[16px] transition-transform duration-150 cursor-pointer"
                   />
                   <span className="text-[#BFC6C8] text-[14px]">{option}</span>
                 </label>
@@ -149,7 +149,7 @@ const InactivityPage = () => {
               onChange={e => setBeneficiaryName(e.target.value)}
               onBlur={() => setTouched(t => ({ ...t, name: true }))}
               placeholder="e.g. Juliet Johnson"
-              className={`w-full bg-[#181F28] border border-[#1C252A] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[14px] placeholder:text-[#425558] text-[14px] outline-none ${touched.name && !isNameValid ? 'border-red-500' : ''}`}
+              className={`w-full bg-[#181F28] border border-[#1C252A] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[14px] placeholder:text-[#425558] text-[14px] outline-none transition-shadow duration-150 focus:shadow-[0_0_0_3px_rgba(51,197,224,0.08)] ${touched.name && !isNameValid ? 'border-red-500' : ''}`}
             />
             {touched.name && !isNameValid && <span className="text-red-500 text-xs">Name is required</span>}
           </div>
@@ -163,7 +163,7 @@ const InactivityPage = () => {
               onChange={e => setBeneficiaryEmail(e.target.value)}
               onBlur={() => setTouched(t => ({ ...t, email: true }))}
               placeholder="e.g. thejulietjohnson@gmail.com"
-              className={`w-full bg-[#181F28] border border-[#1C252A] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[14px] placeholder:text-[#425558] text-[14px] outline-none ${touched.email && !isEmailValid ? 'border-red-500' : ''}`}
+              className={`w-full bg-[#181F28] border border-[#1C252A] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[14px] placeholder:text-[#425558] text-[14px] outline-none transition-shadow duration-150 focus:shadow-[0_0_0_3px_rgba(51,197,224,0.08)] ${touched.email && !isEmailValid ? 'border-red-500' : ''}`}
             />
             {touched.email && !isEmailValid && <span className="text-red-500 text-xs">Enter a valid email</span>}
           </div>
@@ -177,14 +177,14 @@ const InactivityPage = () => {
               onChange={e => setClaimCode(e.target.value)}
               onBlur={() => setTouched(t => ({ ...t, code: true }))}
               placeholder="e.g. 123456"
-              className={`w-full bg-[#181F28] border border-[#1C252A] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[14px] placeholder:text-[#425558] text-[14px] outline-none ${touched.code && !isCodeValid ? 'border-red-500' : ''}`}
+              className={`w-full bg-[#181F28] border border-[#1C252A] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[14px] placeholder:text-[#425558] text-[14px] outline-none transition-shadow duration-150 focus:shadow-[0_0_0_3px_rgba(51,197,224,0.08)] ${touched.code && !isCodeValid ? 'border-red-500' : ''}`}
             />
             {touched.code && !isCodeValid && <span className="text-red-500 text-xs">Claim code is required</span>}
           </div>
           <span className="border border-none mb-[-1rem] text-[#33C5E0] text-[12px]">
             Claim Code Mechanism
           </span>
-          <div className="bg-[#182F32] border border-[#33C5E03D] rounded-lg p-4 text-[#33C5E0] text-[12px]">
+          <div className="bg-[#182F32] border border-[#33C5E03D] rounded-lg p-4 text-[#33C5E0] text-[12px] transition-shadow duration-150 hover:shadow-md cursor-default">
             The code would be sent to the email of your beneficiary if you are
             inactive for a set period of time. With the claim code, your
             beneficiary would be able to claim the assets from the inheritance
@@ -193,9 +193,7 @@ const InactivityPage = () => {
           <button
             type="submit"
             disabled={!isFormValid || isSaving}
-            className={`flex items-center gap-2 w-fit text-[14px] px-8 py-3 font-medium rounded-[16px] h-[60px] rounded-t-[8px] rounded-b-[24px] justify-center border border-[#232B36] transition-colors mt-2
-              ${isFormValid ? 'bg-[#33C5E0] text-[#161E22]' : 'bg-[#1C252A] text-[#FCFFFF] hover:bg-cyan-900/30'}
-              ${isSaving ? 'opacity-60 cursor-not-allowed' : ''}`}
+            className={`flex items-center gap-2 w-fit text-[14px] px-8 py-3 font-medium rounded-[16px] h-[60px] rounded-t-[8px] rounded-b-[24px] justify-center border border-[#232B36] transition-colors mt-2 transition-transform duration-150 ${isFormValid ? 'bg-[#33C5E0] text-[#161E22] hover:scale-105 cursor-pointer' : 'bg-[#1C252A] text-[#FCFFFF] hover:bg-cyan-900/30'} ${isSaving ? 'opacity-60 cursor-not-allowed' : ''}`}
           >
             <span>{isSaving ? 'Saving...' : 'SAVE SETTINGS'}</span>
             <Image
@@ -203,7 +201,7 @@ const InactivityPage = () => {
               alt="arrow icon"
               width={13.5}
               height={13.5}
-              className={isFormValid ? "inline-block rotate-0" : "inline-block rotate-[270px]"}
+              className={isFormValid ? "inline-block rotate-0 transition-transform duration-150" : "inline-block rotate-[270px] transition-transform duration-150"}
             />
           </button>
         </form>
