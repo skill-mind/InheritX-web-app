@@ -27,7 +27,7 @@ const Footer: React.FC<FooterProps> = ({ logo, socialIcons = [] }) => {
   ];
 
   const defaultSocialIcons = [
-    {
+    
      {
   icon: (
     <a 
