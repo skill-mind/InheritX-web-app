@@ -7,7 +7,7 @@ import SuccessModal from "../SuccessModal";
 import { useCreatePlan } from "@/contexts/CreatePlanContext";
 import { useAccount } from "@starknet-react/core";
 import { truncateAddress } from "@/lib/utils";
-import { CallData } from "starknet";
+import { CallData, PaymasterDetails } from "starknet";
 import { myProvider } from "@/lib/utils";
 import { INHERITX_CONTRACT_ADDRESS } from "@/constant/ca_address";
 
@@ -61,19 +61,39 @@ const PreviewPageContent = () => {
       if (contractParams) {
         console.log("Using contract parameters:", contractParams);
 
-        // Execute the transaction directly using account.execute
-        const result = await account.execute({
+        const inheritXCall = {
           contractAddress: INHERITX_CONTRACT_ADDRESS,
           entrypoint: "create_inheritance_plan",
           calldata: CallData.compile(contractParams),
-        });
+        };
 
-        console.log("Transaction submitted:", result);
+        // Execute the transaction directly using account.execute
+        const result = await account.execute(inheritXCall);
+
+        // const multicallData = [inheritXCall];
+
+        // const feeDetails: PaymasterDetails = {
+        //   feeMode: {
+        //     mode: "sponsored",
+        //   },
+        // };
+
+        // const feeEstimation = await account?.estimatePaymasterTransactionFee(
+        //   [...multicallData],
+        //   feeDetails
+        // );
+
+        // const result = await account?.executePaymasterTransaction(
+        //   [inheritXCall],
+        //   feeDetails,
+        //   feeEstimation?.suggested_max_fee_in_gas_token
+        // );
 
         // Wait for transaction to be confirmed
         const status = await myProvider.waitForTransaction(
-          result.transaction_hash
+          result?.transaction_hash as string
         );
+        console.log("Transaction submitted:", result);
 
         if (status.isSuccess()) {
           console.log("Success! 🎉 Your inheritance plan has been created.");

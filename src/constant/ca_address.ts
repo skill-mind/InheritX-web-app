@@ -1,2 +1,2 @@
 export const INHERITX_CONTRACT_ADDRESS =
-  "0x0662d959db45ae38f8727be36cc1bfee7a5b0cbcd808eff0ef0690d86ed62642";
+  "0x03fc2ffd3cc8460dcd982381b7ae96aa33b301b27ba525f4737abe8d94e0ac86";

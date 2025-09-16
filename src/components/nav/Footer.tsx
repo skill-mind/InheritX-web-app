@@ -27,58 +27,38 @@ const Footer: React.FC<FooterProps> = ({ logo, socialIcons = [] }) => {
   ];
 
   const defaultSocialIcons = [
-    
-     {
-  icon: (
-    <a 
-      href="https://github.com/skill-mind/InheritX-web-app" 
-      target="_blank" 
-      rel="noopener noreferrer"
-    >
-      <Image
-        src="/assets/icons/github.svg"
-        alt="GitHub"
-        width={24}
-        height={24}
-      />
-    </a>
-  ),
-  href: "https://github.com/skill-mind/InheritX-web-app",
-  label: "GitHub",
-},
-{
-  icon: (
-    <a 
-      href="https://x.com/projectInheritX" 
-      target="_blank" 
-      rel="noopener noreferrer"
-    >
-      <Image
-        src="/assets/icons/x.svg"
-        alt="X (Twitter)"
-        width={24}
-        height={24}
-      />
-    </a>
-  ),
-  href: "https://x.com/projectInheritX",
-  label: "X (Twitter)",
-},
-
     {
       icon: (
-         <a 
-      href="https://t.me" 
-      target="_blank" 
-      rel="noopener noreferrer"
-    >
-      <Image
-        src="/assets/icons/send.svg"
-        alt="Telegram"
-        width={24}
-        height={24}
-      />
-    </a>
+        <Image
+          src="/assets/icons/github.svg"
+          alt="GitHub"
+          width={24}
+          height={24}
+        />
+      ),
+      href: "https://github.com/skill-mind/InheritX-web-app",
+      label: "GitHub",
+    },
+    {
+      icon: (
+        <Image
+          src="/assets/icons/x.svg"
+          alt="X (Twitter)"
+          width={24}
+          height={24}
+        />
+      ),
+      href: "https://x.com/projectInheritX",
+      label: "X (Twitter)",
+    },
+    {
+      icon: (
+        <Image
+          src="/assets/icons/send.svg"
+          alt="Telegram"
+          width={24}
+          height={24}
+        />
       ),
       href: "https://t.me",
       label: "Telegram",
@@ -180,7 +160,6 @@ const Footer: React.FC<FooterProps> = ({ logo, socialIcons = [] }) => {
                   }`}
                   prefetch={false}
                   scroll={false}
-                  passHref
                 >
                   {link.label}
                 </Link>

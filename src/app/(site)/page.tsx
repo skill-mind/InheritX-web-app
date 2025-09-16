@@ -21,7 +21,9 @@ export default function Home() {
       { threshold: 0.08 }
     );
 
-    document.querySelectorAll(".reveal-on-scroll").forEach((el) => observer.observe(el));
+    document
+      .querySelectorAll(".reveal-on-scroll")
+      .forEach((el) => observer.observe(el));
 
     return () => observer.disconnect();
   }, []);
