@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
 
 import React, { useState } from "react";
@@ -10,8 +12,6 @@ import {
   useContractFetch,
 } from "@/hooks/useBlockchain";
 import { InheritXAbi } from "@/abi/abi";
-import { useEffect } from "react";
-import { useAccount } from "@starknet-react/core";
 
 const tabs = ["Plans", "Activities"];
 

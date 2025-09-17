@@ -93,7 +93,7 @@ export function useAddressCreatedPlans() {
       // If it's an object (e.g. { USDC: {}, STRK: undefined, ... })
       if (v && typeof v === "object") {
         const found = Object.entries(v).find(
-          ([k, val]) => val !== undefined && val !== null
+          ([val]) => val !== undefined && val !== null
         );
         console.log("Found inside variant:", found);
         if (found) return found[0];
@@ -103,7 +103,7 @@ export function useAddressCreatedPlans() {
     // Fallback: scan top-level keys
     console.log("Falling back to top-level scan", type);
     const foundTop = Object.entries(type).find(
-      ([k, val]) => val !== undefined && val !== null
+      ([val]) => val !== undefined && val !== null
     );
     console.log("FoundTop:", foundTop);
 
