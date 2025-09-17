@@ -16,9 +16,18 @@ export function bigintToHexAddress(value: bigint): `0x${string}` {
 }
 
 // For converting date to epoch time
-export function toEpochTime(date: string | Date): number {
-  const d = typeof date === "string" ? new Date(date) : date;
-  return Math.floor(d.getTime() / 1000);
+// export function toEpochTime(date: string | Date): number {
+//   const d = typeof date === "string" ? new Date(date) : date;
+//   return Math.floor(d.getTime() / 1000);
+// }
+
+// For converting epoch time to date
+export function toEpochTime(time: string) {
+  const epochSeconds = String(time).replace("n", "");
+
+  const date = new Date(+epochSeconds * 1000); // multiply by 1000 to convert to milliseconds
+
+  return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
 }
 
 // For creating a cairo enum
