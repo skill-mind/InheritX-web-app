@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
 
 import React, { useState } from "react";
@@ -5,6 +7,11 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import DeletePlanModal from "./DeletePlanModal";
 import FilterModal from "./FilterModal";
+import {
+  useAddressCreatedPlans,
+  useContractFetch,
+} from "@/hooks/useBlockchain";
+import { InheritXAbi } from "@/abi/abi";
 
 const tabs = ["Plans", "Activities"];
 
@@ -67,12 +74,25 @@ const plans = [
 const PlansPage = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [activeActionsIdx, setActiveActionsIdx] = useState<number | null>(null);
-  const [plansData, setPlansData] = useState(plans);
+
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteIdx, setDeleteIdx] = useState<number | null>(null);
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [filter, setFilter] = useState("All");
   const router = useRouter();
+  const { readData: planSummary } = useContractFetch(
+    InheritXAbi,
+    "get_plan_summary",
+    [2]
+  );
+
+  const [plansData, setPlansData] = useState<any[]>([]);
+
+  console.log("planSummary data xxxxxxxxx", planSummary);
+
+  const { transaction: getCreatedPlan } = useAddressCreatedPlans();
+
+  console.log("transaction XXXXXXXXXXXXXXX", getCreatedPlan);
 
   const handleEdit = (idx: number) => {
     // Navigate to edit page with plan id
@@ -90,7 +110,7 @@ const PlansPage = () => {
 
   const confirmDelete = () => {
     if (deleteIdx !== null) {
-      setPlansData(plansData.filter((_, i) => i !== deleteIdx));
+      setPlansData(plansData.filter((_: any, i: number) => i !== deleteIdx));
       setShowDeleteModal(false);
       setDeleteIdx(null);
     }
@@ -164,8 +184,8 @@ const PlansPage = () => {
             <span> Filter</span>
           </button>
         </div>
-        {activeTab === 0 ? (
-          plansData.length === 0 ? (
+        {activeTab == 0 ? (
+          getCreatedPlan?.length == 0 ? (
             <div className="flex flex-col bg-[#182024] rounded-[24px] py-[64px] px-[24px] min-h-[320px] items-center justify-center flex-1">
               <span className="text-[#FCFFFF] mb-2 text-center text-[16px] md:text-[18px] font-normal">
                 You haven’t created any inheritance plans yet.
@@ -200,11 +220,11 @@ const PlansPage = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {plansData
-                    .filter(plan =>
-                      filter === "All" ? true : plan.status === filter
+                  {getCreatedPlan
+                    ?.filter((plan: any) =>
+                      filter == "All" ? true : plan.status == filter
                     )
-                    .map((plan, idx) => (
+                    .map((plan: any, idx: number) => (
                       <tr
                         key={idx}
                         className="border-t border-[#232B36] text-[#FCFFFF] text-[15px]"
@@ -215,16 +235,16 @@ const PlansPage = () => {
                               <span className="text-[#425558] text-[14px] w-4 inline-block">
                                 {idx + 1}.
                               </span>
-                              {plan.name}
+                              {plan.plan_name}
                             </span>
                             <span className="text-[#92A5A8] text-[12px]">
-                              {plan.id}
+                              {getCreatedPlan.length * 507 * 7191}
                             </span>
                           </div>
                         </td>
                         <td className="py-4 px-2 min-w-[120px]">
-                          <div className="flex items-center gap-2">
-                            <span>{plan.assets.label}</span>
+                          {/* <div className="flex items-center gap-2">
+                              <span>{plan.assets.value}</span>
                             {plan.assets.avatars && (
                               <div className="flex -space-x-2">
                                 {plan.assets.avatars.map((src, i) => (
@@ -244,30 +264,34 @@ const PlansPage = () => {
                                 )}
                               </div>
                             )}
-                          </div>
+                          </div> */}
+                          <span>{plan.plan_asset_amount}</span>{" "}
+                          <span>{plan.plan_asset_type}</span>
                         </td>
                         <td className="hidden sm:table-cell py-4 px-2 min-w-[80px]">
-                          {plan.beneficiary}
+                          {plan.plan_beneficiary_count}
                         </td>
                         {/* Hide on mobile: Trigger and Status */}
                         <td className="hidden sm:table-cell py-4 px-2 min-w-[160px]">
                           <span className="bg-[#232B2F] text-[#BFC6C8] text-[12px] px-3 py-1 rounded-[16px] border border-[#425558]">
-                            {plan.trigger}
+                            {plan.plan_status == "Active"
+                              ? "inactivity (6 months)"
+                              : "Time-Locked"}
                           </span>
                         </td>
                         <td className="hidden sm:table-cell py-4 px-2 min-w-[100px]">
                           <span
                             className={
-                              plan.status === "ACTIVE"
+                              plan.plan_status == "Active"
                                 ? "bg-[#1C252A] text-[#33C5E0] px-3 py-1 rounded-[16px] text-[12px] font-semibold border border-[#33C5E0]"
-                                : plan.status === "COMPLETED"
+                                : plan.status == "COMPLETED"
                                 ? "bg-[#1C252A] text-[#0DA314] px-3 py-1 rounded-[16px] text-[12px] font-semibold border border-[#0DA314]"
-                                : plan.status === "PENDING"
+                                : plan.status == "PENDING"
                                 ? "bg-[#1C252A] text-[#EAB308] px-3 py-1 rounded-[16px] text-[12px] font-semibold border border-[#EAB308]"
                                 : "bg-[#232B2F] text-[#92A5A8] px-3 py-1 rounded-[16px] text-[12px] font-semibold border border-[#425558]"
                             }
                           >
-                            {plan.status}
+                            {plan.plan_status}
                           </span>
                         </td>
                         <td className="py-4 px-2 min-w-[80px] relative">
@@ -289,8 +313,18 @@ const PlansPage = () => {
                                 viewBox="0 0 24 24"
                               >
                                 <circle cx="12" cy="5" r="1.5" fill="#BFC6C8" />
-                                <circle cx="12" cy="12" r="1.5" fill="#BFC6C8" />
-                                <circle cx="12" cy="19" r="1.5" fill="#BFC6C8" />
+                                <circle
+                                  cx="12"
+                                  cy="12"
+                                  r="1.5"
+                                  fill="#BFC6C8"
+                                />
+                                <circle
+                                  cx="12"
+                                  cy="19"
+                                  r="1.5"
+                                  fill="#BFC6C8"
+                                />
                               </svg>
                             </button>
                             {activeActionsIdx === idx && (
