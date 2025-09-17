@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { myProvider } from "@/lib/utils";
+import { myProvider, toEpochTime } from "@/lib/utils";
 import {
+  useAccount,
   useBlockNumber,
   useContract,
   useReadContract,
@@ -10,6 +11,7 @@ import {
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Abi, Account, CallData, Contract, RpcProvider } from "starknet";
 import { INHERITX_CONTRACT_ADDRESS } from "@/constant/ca_address";
+import { InheritXAbi } from "@/abi/abi";
 
 // const BEARER_TOKEN = process.env.NEXT_PUBLIC_BEARER_TOKEN || "";
 
@@ -17,7 +19,8 @@ import { INHERITX_CONTRACT_ADDRESS } from "@/constant/ca_address";
 export function useContractFetch(
   abi: Abi,
   functionName: string,
-  args: any[] = []
+  args: (string | number)[],
+  contract_address: string = INHERITX_CONTRACT_ADDRESS
 ) {
   const {
     data: readData,
@@ -29,7 +32,8 @@ export function useContractFetch(
   } = useReadContract({
     abi: abi,
     functionName: functionName,
-    address: INHERITX_CONTRACT_ADDRESS,
+    // @ts-expect-error 0x0 error
+    address: contract_address,
     args: args,
     refetchInterval: 600000,
   });
@@ -42,6 +46,97 @@ export function useContractFetch(
     readError,
     readRefetching,
   };
+}
+
+export function useAddressCreatedPlans() {
+  const { address } = useAccount();
+
+  interface ContractGroupData {
+    plan_name: string;
+    plan_description?: string;
+    plan_asset_amount: number;
+    plan_asset_type: number | void | string;
+    plan_created_at: number | string;
+    owner_address?: string;
+    plan_beneficiary_count: number;
+    plan_status: number | string | void;
+  }
+
+  const [transaction, setTransaction] = useState<
+    ContractGroupData[] | undefined
+  >(undefined);
+
+  /// list of group an address has shares in
+  const { readData: planSummaryList } = useContractFetch(
+    InheritXAbi,
+    "get_plan_summary",
+    [3]
+  );
+
+  function getPlanType(type: any): string {
+    if (!type) {
+      console.log("Type is empty/undefined");
+      return "Unknown";
+    }
+
+    // If there's a 'variant' wrapper (CairoCustomEnum format)
+    if ("variant" in type) {
+      const v = type.variant;
+      console.log("Checking variant", v);
+
+      // If it's already a string
+      if (typeof v === "string") {
+        console.log("Variant is string:", v);
+        return v;
+      }
+
+      // If it's an object (e.g. { USDC: {}, STRK: undefined, ... })
+      if (v && typeof v === "object") {
+        const found = Object.entries(v).find(
+          ([k, val]) => val !== undefined && val !== null
+        );
+        console.log("Found inside variant:", found);
+        if (found) return found[0];
+      }
+    }
+
+    // Fallback: scan top-level keys
+    console.log("Falling back to top-level scan", type);
+    const foundTop = Object.entries(type).find(
+      ([k, val]) => val !== undefined && val !== null
+    );
+    console.log("FoundTop:", foundTop);
+
+    return foundTop ? foundTop[0] : "Unknown";
+  }
+
+  // getPlanType(planSummaryList[3]);
+
+  useEffect(() => {
+    if (!planSummaryList || !address) return; //
+    const planSummary: ContractGroupData[] = [];
+    console.log("planSummaryList", planSummaryList);
+
+    planSummary.push({
+      plan_name: planSummaryList[0]?.toString(),
+      plan_description: planSummaryList[1]?.toString(),
+      plan_asset_amount: Number(planSummaryList[2]),
+      plan_asset_type: getPlanType(planSummaryList[3]),
+      plan_created_at: toEpochTime(planSummaryList[4]) || 0,
+      owner_address: planSummaryList[5]
+        ? `0x0${planSummaryList[5].toString(16)}`
+        : "",
+      plan_beneficiary_count: Number(planSummaryList[6]),
+      plan_status: getPlanType(planSummaryList[7]),
+    });
+
+    setTransaction(planSummary);
+  }, [planSummaryList, address]);
+
+  console.log("address XXXXXXXXXXXXXXX", address);
+  console.log("planSummaryList XXXXXXXXXXXXXXX", planSummaryList);
+
+  return { transaction };
 }
 
 // Utility function to perform contract write operations

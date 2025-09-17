@@ -20,7 +20,7 @@ const RulesPageContent = () => {
     useState(false);
 
   const isFormValid =
-    formData.claimCode.trim().length > 0 &&
+    /^\d{6}$/.test(formData.claimCode.trim()) &&
     formData.disbursementType &&
     ((formData.disbursementType === "Lump Sum (All At Once)" &&
       formData.lumpDate.trim().length > 0) ||
@@ -121,11 +121,33 @@ const RulesPageContent = () => {
             </label>
             <input
               type="text"
+              inputMode="numeric"
+              maxLength={6}
+              pattern="\\d{6}"
               value={formData.claimCode}
-              onChange={(e) => updateFormData({ claimCode: e.target.value })}
-              placeholder="This is the code that your beneficiary would use to access the inheritance"
-              className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[15px] outline-none"
+              onChange={(e) => {
+                // Allow only digits
+                const digitsOnly = e.target.value.replace(/[^0-9]/g, "");
+                updateFormData({ claimCode: digitsOnly.slice(0, 6) });
+              }}
+              placeholder="6-digit code your beneficiary will use to claim"
+              className={`w-full bg-[#161E22] border rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[15px] outline-none ${
+                /^\d{6}$/.test(formData.claimCode)
+                  ? "border-[#232B36]"
+                  : "border-red-600"
+              }`}
             />
+            <div className="mt-2 text-xs">
+              <span
+                className={`${
+                  /^\d{6}$/.test(formData.claimCode)
+                    ? "text-[#425558]"
+                    : "text-red-500"
+                }`}
+              >
+                Claim code must be 6 digits long.
+              </span>
+            </div>
           </div>
           <div>
             <label className="block text-[#FCFFFF] text-[13px] md:text-[16px] mb-2">
