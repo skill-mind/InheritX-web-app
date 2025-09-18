@@ -52,6 +52,7 @@ export function useAddressCreatedPlans() {
   const { address } = useAccount();
 
   interface ContractGroupData {
+    plan_id: number;
     plan_name: string;
     plan_description?: string;
     plan_asset_amount: number;
@@ -70,7 +71,7 @@ export function useAddressCreatedPlans() {
   const { readData: planSummaryList } = useContractFetch(
     InheritXAbi,
     "get_plan_summary",
-    [3]
+    address ? [address] : ["0x0"]
   );
 
   function getPlanType(type: any): string {
@@ -115,19 +116,20 @@ export function useAddressCreatedPlans() {
   useEffect(() => {
     if (!planSummaryList || !address) return; //
     const planSummary: ContractGroupData[] = [];
-    console.log("planSummaryList", planSummaryList);
+    console.log("planSummaryList XXXXXXXXXXXXXX", planSummaryList);
 
-    planSummary.push({
-      plan_name: planSummaryList[0]?.toString(),
-      plan_description: planSummaryList[1]?.toString(),
-      plan_asset_amount: Number(planSummaryList[2]),
-      plan_asset_type: getPlanType(planSummaryList[3]),
-      plan_created_at: toEpochTime(planSummaryList[4]) || 0,
-      owner_address: planSummaryList[5]
-        ? `0x0${planSummaryList[5].toString(16)}`
-        : "",
-      plan_beneficiary_count: Number(planSummaryList[6]),
-      plan_status: getPlanType(planSummaryList[7]),
+    planSummaryList.forEach((data: any) => {
+      planSummary.push({
+        plan_id: Number(data[0]),
+        plan_name: data[1]?.toString(),
+        plan_description: data[2]?.toString(),
+        plan_asset_amount: Number(data[3]),
+        plan_asset_type: getPlanType(data[4]),
+        plan_created_at: toEpochTime(data[5]) || 0,
+        owner_address: data[6] ? `0x0${data[6].toString(16)}` : "",
+        plan_beneficiary_count: Number(data[7]),
+        plan_status: getPlanType(data[8]),
+      });
     });
 
     setTransaction(planSummary);
@@ -135,6 +137,120 @@ export function useAddressCreatedPlans() {
 
   console.log("address XXXXXXXXXXXXXXX", address);
   console.log("planSummaryList XXXXXXXXXXXXXXX", planSummaryList);
+
+  return { transaction };
+}
+
+export function usePlanDetails(plan_id: number) {
+  const { address } = useAccount();
+
+  interface ContractSummaryData {
+    additional_note: string;
+    asset_amount: number;
+    asset_type: number | void | string;
+    beneficiary_count: number;
+    beneficiary_email: string;
+    beneficiary_name: string;
+    beneficiary_relationship: string;
+    claim_code_hash: string;
+    created_at: Number | string;
+    distribution_method: Number;
+    lump_sum_date: Number;
+    monthly_percentage: Number;
+    owner: string;
+    plan_description?: string;
+    plan_name: string;
+    quarterly_percentage: Number;
+    plan_status: number | string | void;
+    yearly_percentage: Number;
+    plan_id?: number;
+  }
+
+  const [transaction, setTransaction] = useState<
+    ContractSummaryData | undefined
+  >(undefined);
+
+  /// list of group an address has shares in
+  const { readData: planDetailsList } = useContractFetch(
+    InheritXAbi,
+    "get_plan_by_id",
+    [address ?? "0x0", plan_id]
+  );
+
+  function getPlanType(type: any): string {
+    if (!type) {
+      console.log("Type is empty/undefined");
+      return "Unknown";
+    }
+
+    // If there's a 'variant' wrapper (CairoCustomEnum format)
+    if ("variant" in type) {
+      const v = type.variant;
+      console.log("Checking variant", v);
+
+      // If it's already a string
+      if (typeof v === "string") {
+        console.log("Variant is string:", v);
+        return v;
+      }
+
+      // If it's an object (e.g. { USDC: {}, STRK: undefined, ... })
+      if (v && typeof v === "object") {
+        const found = Object.entries(v).find(
+          ([val]) => val !== undefined && val !== null
+        );
+        console.log("Found inside variant:", found);
+        if (found) return found[0];
+      }
+    }
+
+    // Fallback: scan top-level keys
+    console.log("Falling back to top-level scan", type);
+    const foundTop = Object.entries(type).find(
+      ([val]) => val !== undefined && val !== null
+    );
+    console.log("FoundTop:", foundTop);
+
+    return foundTop ? foundTop[0] : "Unknown";
+  }
+
+  // getPlanType(planSummaryList[3]);
+
+  useEffect(() => {
+    if (!planDetailsList || !address) return; //
+    const planSummary: ContractSummaryData[] = [];
+
+    planSummary.push({
+      additional_note: planDetailsList?.additional_note?.toString(),
+      asset_amount: Number(planDetailsList?.asset_amount),
+      asset_type: getPlanType(planDetailsList?.asset_type),
+      beneficiary_count: Number(planDetailsList?.beneficiary_count),
+      beneficiary_email: planDetailsList?.beneficiary_email?.toString(),
+      beneficiary_name: planDetailsList?.beneficiary_name?.toString(),
+      beneficiary_relationship:
+        planDetailsList?.beneficiary_relationship?.toString(),
+      claim_code_hash: planDetailsList?.claim_code_hash?.toString(),
+      created_at: toEpochTime(planDetailsList?.created_at) || 0,
+      distribution_method: Number(planDetailsList?.distribution_method),
+      lump_sum_date: Number(planDetailsList?.lump_sum_date),
+      monthly_percentage: Number(planDetailsList?.monthly_percentage),
+      owner: planDetailsList?.owner
+        ? `0x0${planDetailsList?.owner?.toString(16)}`
+        : "",
+      plan_description: planDetailsList?.plan_description?.toString(),
+      plan_name: planDetailsList?.plan_name?.toString(),
+      quarterly_percentage: Number(planDetailsList?.quarterly_percentage),
+      plan_status: getPlanType(planDetailsList?.plan_status),
+      yearly_percentage: Number(planDetailsList?.yearly_percentage),
+      // plan_id: Number(planDetailsList[18]),
+    });
+
+    console.log("SUMMARY SSSSSSSSSSSSSSSSSSSS", planSummary);
+    setTransaction(planSummary);
+  }, [planDetailsList, address]);
+
+  console.log("TRANSACTION TTTTTTTTTTTTTTTTTT", planDetailsList);
+  console.log("address XXXXXXXXXXXXXXX", address);
 
   return { transaction };
 }

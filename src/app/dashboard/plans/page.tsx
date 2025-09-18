@@ -12,6 +12,7 @@ import {
   useContractFetch,
 } from "@/hooks/useBlockchain";
 import { InheritXAbi } from "@/abi/abi";
+import Link from "next/link";
 
 const tabs = ["Plans", "Activities"];
 
@@ -94,13 +95,8 @@ const PlansPage = () => {
 
   console.log("transaction XXXXXXXXXXXXXXX", getCreatedPlan);
 
-  const handleEdit = (idx: number) => {
-    // Navigate to edit page with plan id
-    router.push(`/dashboard/plans/create?id=${plansData[idx].id}&edit=true`);
-  };
-
   const handleView = (idx: number) => {
-    router.push(`/dashboard/plans/create/preview?id=${plansData[idx].id}`);
+    router.push(`/dashboard/plans/view/${idx}`);
   };
 
   const handleDelete = (idx: number) => {
@@ -233,7 +229,7 @@ const PlansPage = () => {
                           <div className="flex flex-col gap-1">
                             <span className="font-semibold flex items-center gap-2">
                               <span className="text-[#425558] text-[14px] w-4 inline-block">
-                                {idx + 1}.
+                                {plan.plan_id}
                               </span>
                               {plan.plan_name}
                             </span>
@@ -327,7 +323,7 @@ const PlansPage = () => {
                                 />
                               </svg>
                             </button>
-                            {activeActionsIdx === idx && (
+                            {/* {activeActionsIdx === idx && (
                               <div className="absolute z-10 top-10 right-0 bg-[#232B2F] border border-[#425558] rounded-xl shadow-lg flex flex-col w-32 animate-fade-in">
                                 <button
                                   className="bg-[#232B2F] border-b cursor-pointer border-[#425558] text-[#BFC6C8] px-4 py-2 rounded-t-xl text-[12px] font-medium hover:bg-[#232B2F]/80 w-full text-left"
@@ -348,22 +344,17 @@ const PlansPage = () => {
                                   DELETE
                                 </button>
                               </div>
-                            )}
+                            )} */}
                           </div>
                           {/* Desktop: show buttons inline */}
+                          {/* src/app/dashboard/plans/view[id] */}
                           <div className="hidden sm:flex gap-2 items-center">
-                            <button
-                              className="bg-[#232B2F] cursor-pointer border border-[#425558] text-[#BFC6C8] px-4 py-2 rounded-[16px] text-[12px] font-medium hover:bg-[#232B2F]/80"
-                              onClick={() => handleEdit(idx)}
-                            >
-                              EDIT
-                            </button>
-                            <button
+                            <Link
+                              href={`/dashboard/plans/view/${plan.plan_id}`}
                               className="bg-[#33C5E0] cursor-pointer text-[#161E22] px-4 py-2 rounded-[16px] text-[12px] font-semibold hover:bg-cyan-400"
-                              onClick={() => handleView(idx)}
                             >
                               VIEW
-                            </button>
+                            </Link>
                             <button
                               className="p-2 rounded-full hover:bg-[#E53E3E]"
                               onClick={() => handleDelete(idx)}
