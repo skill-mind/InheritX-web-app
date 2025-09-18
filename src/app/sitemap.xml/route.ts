@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic"; // 👈 prevents prerendering at build
+
 export async function GET() {
   const baseUrl = "https://www.inheritx.org";
   const pages = [
@@ -19,7 +21,8 @@ export async function GET() {
 
   const urls = pages
     .map(
-      (p) => `  <url>\n    <loc>${baseUrl}${p}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.7</priority>\n  </url>`
+      (p) =>
+        `  <url>\n    <loc>${baseUrl}${p}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.7</priority>\n  </url>`
     )
     .join("\n");
 
