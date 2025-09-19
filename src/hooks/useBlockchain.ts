@@ -153,21 +153,21 @@ export function usePlanDetails(plan_id: number) {
     beneficiary_name: string;
     beneficiary_relationship: string;
     claim_code_hash: string;
-    created_at: Number | string;
-    distribution_method: Number;
-    lump_sum_date: Number;
-    monthly_percentage: Number;
+    created_at: number | string;
+    distribution_method: number;
+    lump_sum_date: number;
+    monthly_percentage: number;
     owner: string;
     plan_description?: string;
     plan_name: string;
-    quarterly_percentage: Number;
+    quarterly_percentage: number;
     plan_status: number | string | void;
-    yearly_percentage: Number;
+    yearly_percentage: number;
     plan_id?: number;
   }
 
   const [transaction, setTransaction] = useState<
-    ContractSummaryData | undefined
+    ContractSummaryData[] | undefined
   >(undefined);
 
   /// list of group an address has shares in

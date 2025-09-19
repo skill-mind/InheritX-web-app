@@ -29,49 +29,6 @@ const activities = [
   { activity: "1 NFC Converted", timestamp: "12th August, 2025" },
 ];
 
-const plans = [
-  {
-    name: "Plan Name",
-    id: "Unique ID",
-    assets: { label: "2 ETH" },
-    beneficiary: 3,
-    trigger: "INACTIVITY (6 MONTHS)",
-    status: "ACTIVE",
-  },
-  {
-    name: "Plan Name",
-    id: "Unique ID",
-    assets: {
-      label: "7 NFTs",
-      avatars: [
-        "/assets/icons/nft1.svg",
-        "/assets/icons/nft2.svg",
-        "/assets/icons/nft3.svg",
-      ],
-      extra: 3,
-    },
-    beneficiary: 1,
-    trigger: "TIME-LOCKED",
-    status: "COMPLETED",
-  },
-  {
-    name: "Plan Name",
-    id: "Unique ID",
-    assets: { label: "1 NFT", avatars: ["/assets/icons/nft1.svg"] },
-    beneficiary: 2,
-    trigger: "INACTIVITY (6 MONTHS)",
-    status: "PENDING",
-  },
-  {
-    name: "Plan Name",
-    id: "Unique ID",
-    assets: { label: "1 BTC" },
-    beneficiary: 1,
-    trigger: "INACTIVITY (6 MONTHS)",
-    status: "EXPIRED",
-  },
-];
-
 const PlansPage = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [activeActionsIdx, setActiveActionsIdx] = useState<number | null>(null);
@@ -94,10 +51,6 @@ const PlansPage = () => {
   const { transaction: getCreatedPlan } = useAddressCreatedPlans();
 
   console.log("transaction XXXXXXXXXXXXXXX", getCreatedPlan);
-
-  const handleView = (idx: number) => {
-    router.push(`/dashboard/plans/view/${idx}`);
-  };
 
   const handleDelete = (idx: number) => {
     setDeleteIdx(idx);

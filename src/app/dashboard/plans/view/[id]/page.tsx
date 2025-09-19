@@ -1,26 +1,38 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
 import { useRouter, useParams } from "next/navigation";
-import { useAccount } from "@starknet-react/core";
 import { usePlanDetails } from "@/hooks/useBlockchain";
+import { truncateAddress } from "@/lib/utils";
 
 const ViewPageContent = () => {
   const router = useRouter();
-  const { account } = useAccount();
-  const [showSuccess, setShowSuccess] = useState(false);
-  const [isCreatingPlan, setIsCreatingPlan] = useState(false);
+  // const [showSuccess, setShowSuccess] = useState(false);
+  // const [isEditingPlan, setisEditingPlan] = useState(false);
   const params = useParams();
 
   const planId = params?.id ? Number(params.id) : 0;
   const { transaction } = usePlanDetails(planId);
 
   console.log("TRANSACTION TTTTTTTTTTTTTTTTTT", transaction);
-  console.log("TRANSACTION TTTTTTTTTTTTTTTTTT", transaction?.plan_name);
+  // console.log("TRANSACTION TTTTTTTTTTTTTTTTTT", transaction[0]?.plan_name);
   console.log(params.id);
 
-  const planDetails = transaction?.[0];
+  const planDetails =
+    transaction && transaction.length > 0 ? transaction[0] : undefined;
+
+  function showDistribution(dist: number): string | undefined {
+    if (dist == 0) {
+      return "Lump Sum (All at once)";
+    } else if (dist == 1) {
+      return "Quartely Release of Funds (Disbursement)";
+    } else if (dist == 2) {
+      return "Yearly Release of Funds (Disbursement)";
+    } else if (dist == 3) {
+      return "Monthly Release of Funds (Disbursement)";
+    }
+  }
 
   // Edit button handlers
   const handleEditPlan = () => router.push("/dashboard/plans/create");
@@ -29,6 +41,37 @@ const ViewPageContent = () => {
   const handleEditRules = () => router.push("/dashboard/plans/create/rules");
   // const handleEditLegal = () =>
   //   router.push("/dashboard/plans/create/rules-verification");
+
+  if (!planDetails) {
+    return (
+      <main className="flex flex-col gap-6 p-4 md:p-8 w-full">
+        <div className="flex items-center">
+          <div className="flex items-center gap-4 mb-2">
+            <button
+              className="text-[#BFC6C8] cursor-pointer text-[15px] flex items-center gap-2"
+              onClick={() => router.back()}
+            >
+              <Image
+                src="/assets/icons/back.svg"
+                alt="back"
+                width={18}
+                height={15}
+              />
+            </button>
+            <h2 className="text-lg md:text-xl font-medium text-[#92A5A8]">
+              View Plan
+              <span className="text-[#FCFFFF] border-1 rounded-full px-2 py-1 font-normal text-[14px] ml-2 mb-[4px]">
+                {params.id}
+              </span>
+            </h2>
+          </div>
+        </div>
+        <p className="text-center mt-8 text-[#BFC6C8] text-[15px]">
+          No plan details found.
+        </p>
+      </main>
+    );
+  }
 
   return (
     <main className="flex flex-col gap-6 p-4 md:p-8 w-full">
@@ -120,25 +163,32 @@ const ViewPageContent = () => {
               </button>
             </div>
             <div className="flex flex-col gap-2 text-[#BFC6C8] text-[15px]">
-              <div>
-                <span className="font-semibold text-[#FCFFFF]">PLAN NAME:</span>{" "}
-                <span>{planDetails?.plan_name}</span>
+              <div className="grid grid-cols-2 space-x-2 items-center">
+                <span className="font-semibold text-[#92A5A8]">PLAN NAME:</span>{" "}
+                <span className="text-[#FCFFFF] capitalize">
+                  {planDetails?.plan_name}
+                </span>
               </div>
-              <div>
-                <span className="font-semibold text-[#FCFFFF]">
+
+              <div className="grid grid-cols-2 space-x-2 items-center">
+                <span className="font-semibold text-[#92A5A8]">
                   DESCRIPTION:
                 </span>{" "}
-                {planDetails?.plan_description || "No description"}
+                <span className="text-[#FCFFFF] capitalize">
+                  {planDetails?.plan_description || "No description"}
+                </span>
               </div>
-              <div>
-                <span className="font-semibold text-[#FCFFFF]">
+              <div className="grid grid-cols-2 space-x-2 items-center">
+                <span className="font-semibold text-[#92A5A8]">
                   BENEFICIARIES:
                 </span>{" "}
-                {planDetails?.beneficiary_count ?? 0} selected
+                <span className="text-[#FCFFFF] capitalize">
+                  {planDetails?.beneficiary_count ?? 0} selected
+                </span>
               </div>
 
               <div className="ml-4">
-                <span className="inline-flex items-center gap-2">
+                <span className="inline-flex items-center gap-2 text-[#FCFFFF]">
                   <Image
                     src="/assets/images/beneficiary1.svg"
                     alt="beneficiary"
@@ -157,7 +207,7 @@ const ViewPageContent = () => {
           {/* Assets */}
           <div className="bg-[#161E22] border border-[#232B36] rounded-[18px] p-6 mb-4">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-[#FCFFFF] text-lg font-medium">Assets</h3>
+              <h3 className="text-[#92A5A8] text-lg font-medium">Assets</h3>
               <button
                 className="flex items-center gap-2 text-[#33C5E0] border border-[#33C5E03D] px-4 py-2 rounded-[24px] text-[14px] hover:bg-[#33C5E0] hover:text-[#161E22]"
                 onClick={handleEditAssets}
@@ -174,12 +224,17 @@ const ViewPageContent = () => {
             <div className="flex flex-col gap-2 text-[#BFC6C8] text-[15px]">
               {planDetails ? (
                 <div className="flex items-center gap-4">
-                  <span className="font-semibold text-[#FCFFFF]">
+                  <span className="font-semibold text-[#BFC6C8]">
                     ASSET TYPE:
                   </span>
-                  <span>{planDetails?.asset_type}</span>
-                  <span className="ml-auto">
-                    Amount: {planDetails.asset_amount}
+                  <span className="text-[#FCFFFF] capitalize">
+                    {planDetails?.asset_type?.toString() || "Unknown"}
+                  </span>
+                  <span className="ml-auto text-[#FCFFFF]">
+                    Amount:{" "}
+                    <span className="font-semibold capitalize">
+                      {planDetails.asset_amount}
+                    </span>
                   </span>
                 </div>
               ) : (
@@ -191,7 +246,7 @@ const ViewPageContent = () => {
           {/* Rules & Conditions */}
           <div className="bg-[#161E22] border border-[#232B36] rounded-[18px] p-6 mb-4">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-[#FCFFFF] text-lg font-medium">
+              <h3 className="text-[#BFC6C8] text-lg font-medium">
                 Rules & Conditions
               </h3>
               <button
@@ -208,24 +263,49 @@ const ViewPageContent = () => {
               </button>
             </div>
             <div className="flex flex-col gap-2 text-[#BFC6C8] text-[15px]">
-              <div>
-                <span className="font-semibold text-[#FCFFFF]">
+              <div className="grid grid-cols-2 space-x-2 items-center">
+                <span className="font-semibold text-[#BFC6C8]">
                   CLAIM CODE:
                 </span>{" "}
-                {planDetails?.claim_code_hash || "Not specified"}
+                <span className="text-[#FCFFFF] capitalize">
+                  {planDetails?.claim_code_hash || "Not specified"}
+                </span>
               </div>
-              <div>
-                <span className="font-semibold text-[#FCFFFF]">
+
+              <div className="grid grid-cols-2 space-x-2 items-center">
+                <span className="font-semibold text-[#BFC6C8]">
                   DISTRIBUTION:
                 </span>{" "}
-                {planDetails?.distribution_method ?? "Not specified"}
+                <span className="text-[#FCFFFF] capitalize">
+                  {showDistribution(planDetails?.distribution_method) ??
+                    "Not specified"}
+                </span>
               </div>
               {planDetails?.additional_note && (
-                <div>
-                  <span className="font-semibold text-[#FCFFFF]">NOTE:</span>{" "}
-                  {planDetails.additional_note}
+                <div className="grid grid-cols-2 space-x-2 items-center">
+                  <span className="font-semibold text-[#BFC6C8]">NOTE:</span>{" "}
+                  <span className="text-[#FCFFFF] capitalize">
+                    {planDetails.additional_note}
+                  </span>
                 </div>
               )}
+              <div className="grid grid-cols-2 space-x-2 items-center">
+                <span className="font-semibold text-[#BFC6C8]">
+                  CREATED AT:
+                </span>{" "}
+                <span className="text-[#FCFFFF] capitalize">
+                  {planDetails?.created_at}
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 space-x-2 items-center">
+                <span className="font-semibold text-[#BFC6C8]">
+                  OWNER WALLET ADDRESS:
+                </span>{" "}
+                <span className="text-[#FCFFFF] capitalize">
+                  {truncateAddress(planDetails?.owner)}
+                </span>
+              </div>
             </div>
           </div>
 
@@ -236,11 +316,7 @@ const ViewPageContent = () => {
             </button>
 
             <button
-              className={`bg-[#33C5E0] text-[#161E22] px-8 py-3 rounded-t-[8px] rounded-b-[24px] font-medium text-[14px] md:min-w-[243px] hover:bg-[#33C5E0]/90 transition-colors cursor-pointer flex items-center justify-center gap-2 ${
-                isCreatingPlan ? "opacity-50 cursor-not-allowed" : ""
-              }`}
-              onClick={() => {}}
-              disabled={isCreatingPlan}
+              className={`bg-[#33C5E0] text-[#161E22] px-8 py-3 rounded-t-[8px] rounded-b-[24px] font-medium text-[14px] md:min-w-[243px] hover:bg-[#33C5E0]/90 transition-colors cursor-pointer flex items-center justify-center gap-2`}
             >
               SAVE & PUBLISH PLAN
               <Image
