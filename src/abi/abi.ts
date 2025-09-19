@@ -524,6 +524,84 @@ export const InheritXAbi: Abi = [
   },
   {
     type: "struct",
+    name: "inheritx_contracts::base::types::PlanDetailsWithCreation",
+    members: [
+      {
+        name: "plan_name",
+        type: "core::byte_array::ByteArray",
+      },
+      {
+        name: "plan_description",
+        type: "core::byte_array::ByteArray",
+      },
+      {
+        name: "asset_amount",
+        type: "core::integer::u256",
+      },
+      {
+        name: "asset_type",
+        type: "inheritx_contracts::base::types::AssetType",
+      },
+      {
+        name: "created_at",
+        type: "core::integer::u64",
+      },
+      {
+        name: "owner",
+        type: "core::starknet::contract_address::ContractAddress",
+      },
+      {
+        name: "beneficiary_count",
+        type: "core::integer::u8",
+      },
+      {
+        name: "status",
+        type: "inheritx_contracts::base::types::PlanStatus",
+      },
+      {
+        name: "beneficiary_name",
+        type: "core::byte_array::ByteArray",
+      },
+      {
+        name: "beneficiary_relationship",
+        type: "core::byte_array::ByteArray",
+      },
+      {
+        name: "beneficiary_email",
+        type: "core::byte_array::ByteArray",
+      },
+      {
+        name: "distribution_method",
+        type: "core::integer::u8",
+      },
+      {
+        name: "lump_sum_date",
+        type: "core::integer::u64",
+      },
+      {
+        name: "quarterly_percentage",
+        type: "core::integer::u8",
+      },
+      {
+        name: "yearly_percentage",
+        type: "core::integer::u8",
+      },
+      {
+        name: "monthly_percentage",
+        type: "core::integer::u8",
+      },
+      {
+        name: "additional_note",
+        type: "core::byte_array::ByteArray",
+      },
+      {
+        name: "claim_code_hash",
+        type: "core::byte_array::ByteArray",
+      },
+    ],
+  },
+  {
+    type: "struct",
     name: "inheritx_contracts::base::types::DisbursementBeneficiary",
     members: [
       {
@@ -884,13 +962,13 @@ export const InheritXAbi: Abi = [
         name: "get_plan_summary",
         inputs: [
           {
-            name: "plan_id",
-            type: "core::integer::u256",
+            name: "user_address",
+            type: "core::starknet::contract_address::ContractAddress",
           },
         ],
         outputs: [
           {
-            type: "(core::byte_array::ByteArray, core::byte_array::ByteArray, core::integer::u256, inheritx_contracts::base::types::AssetType, core::integer::u64, core::starknet::contract_address::ContractAddress, core::integer::u8, inheritx_contracts::base::types::PlanStatus)",
+            type: "core::array::Array::<(core::integer::u256, core::byte_array::ByteArray, core::byte_array::ByteArray, core::integer::u256, inheritx_contracts::base::types::AssetType, core::integer::u64, core::starknet::contract_address::ContractAddress, core::integer::u8, inheritx_contracts::base::types::PlanStatus)>",
           },
         ],
         state_mutability: "view",
@@ -907,6 +985,53 @@ export const InheritXAbi: Abi = [
         outputs: [
           {
             type: "(core::byte_array::ByteArray, core::byte_array::ByteArray, core::integer::u256, inheritx_contracts::base::types::AssetType, core::integer::u64, core::starknet::contract_address::ContractAddress, core::integer::u8, inheritx_contracts::base::types::PlanStatus)",
+          },
+        ],
+        state_mutability: "view",
+      },
+      {
+        type: "function",
+        name: "get_plan_by_id",
+        inputs: [
+          {
+            name: "user_address",
+            type: "core::starknet::contract_address::ContractAddress",
+          },
+          {
+            name: "user_plan_id",
+            type: "core::integer::u256",
+          },
+        ],
+        outputs: [
+          {
+            type: "inheritx_contracts::base::types::PlanDetailsWithCreation",
+          },
+        ],
+        state_mutability: "view",
+      },
+      {
+        type: "function",
+        name: "get_summary",
+        inputs: [
+          {
+            name: "user_address",
+            type: "core::starknet::contract_address::ContractAddress",
+          },
+        ],
+        outputs: [
+          {
+            type: "core::array::Array::<(core::integer::u256, core::byte_array::ByteArray, core::byte_array::ByteArray, core::integer::u256, inheritx_contracts::base::types::AssetType, core::integer::u64, core::starknet::contract_address::ContractAddress, core::integer::u8, inheritx_contracts::base::types::PlanStatus)>",
+          },
+        ],
+        state_mutability: "view",
+      },
+      {
+        type: "function",
+        name: "get_all_plans",
+        inputs: [],
+        outputs: [
+          {
+            type: "core::array::Array::<(core::integer::u256, core::byte_array::ByteArray, core::byte_array::ByteArray, core::integer::u256, inheritx_contracts::base::types::AssetType, core::integer::u64, core::starknet::contract_address::ContractAddress, core::integer::u8, inheritx_contracts::base::types::PlanStatus, core::array::Array::<inheritx_contracts::base::types::Beneficiary>)>",
           },
         ],
         state_mutability: "view",
@@ -1189,29 +1314,6 @@ export const InheritXAbi: Abi = [
         ],
         outputs: [],
         state_mutability: "external",
-      },
-      {
-        type: "function",
-        name: "upgrade",
-        inputs: [
-          {
-            name: "new_implementation",
-            type: "core::starknet::class_hash::ClassHash",
-          },
-        ],
-        outputs: [],
-        state_mutability: "external",
-      },
-      {
-        type: "function",
-        name: "get_implementation",
-        inputs: [],
-        outputs: [
-          {
-            type: "core::starknet::contract_address::ContractAddress",
-          },
-        ],
-        state_mutability: "view",
       },
     ],
   },

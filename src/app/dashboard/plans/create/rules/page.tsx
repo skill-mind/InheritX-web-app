@@ -266,7 +266,7 @@ const RulesPageContent = () => {
           </div>
           <div>
             <label className="block text-[#FCFFFF] text-[13px] md:text-[16px] mb-2">
-              Additional Note
+              Additional Note (More details)
             </label>
             <input
               type="text"

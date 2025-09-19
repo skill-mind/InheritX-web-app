@@ -40,6 +40,7 @@ export function copyToClipboard(text: string) {
   navigator.clipboard.writeText(text);
 }
 
-export function truncateAddress(address: string) {
+export function truncateAddress(address?: string) {
+  if (!address) return "";
   return `${address.slice(0, 6)}...${address.slice(-4)}`;
 }
