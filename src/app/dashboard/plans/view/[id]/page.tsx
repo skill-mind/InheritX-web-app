@@ -302,7 +302,7 @@ const ViewPageContent = () => {
                 <span className="font-semibold text-[#BFC6C8]">
                   OWNER WALLET ADDRESS:
                 </span>{" "}
-                <span className="text-[#FCFFFF] capitalize">
+                <span className="text-[#FCFFFF]">
                   {truncateAddress(planDetails?.owner)}
                 </span>
               </div>
