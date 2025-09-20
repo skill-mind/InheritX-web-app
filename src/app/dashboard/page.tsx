@@ -94,7 +94,7 @@ export default function DashboardHome() {
           className="text-[12px] md:text-[14px] text-[#92A5A8] reveal"
           data-step={1}
         >
-          Monitor, protect, and manage the platform.
+          Create, swap, and claim your inherited assets.
         </p>
       </section>
       <section className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">

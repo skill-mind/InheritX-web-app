@@ -311,14 +311,10 @@ const ViewPageContent = () => {
 
           {/* Action Buttons */}
           <div className="flex flex-col md:flex-row gap-4 justify-center mt-8">
-            <button className="bg-[#1C252A] border-none text-[#33C5E0] px-8 py-3 rounded-t-[8px] rounded-b-[24px] font-medium md:w-[243px] text-[14px] hover:bg-[#33C5E0] hover:text-[#161E22] transition-colors cursor-pointer">
-              SAVE
-            </button>
-
             <button
               className={`bg-[#33C5E0] text-[#161E22] px-8 py-3 rounded-t-[8px] rounded-b-[24px] font-medium text-[14px] md:min-w-[243px] hover:bg-[#33C5E0]/90 transition-colors cursor-pointer flex items-center justify-center gap-2`}
             >
-              SAVE & PUBLISH PLAN
+              Edit Plan
               <Image
                 src="/assets/icons/grey_arrowdown.svg"
                 alt="arrow icon"

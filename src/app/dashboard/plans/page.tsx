@@ -7,27 +7,58 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import DeletePlanModal from "./DeletePlanModal";
 import FilterModal from "./FilterModal";
+import ViewPlanDetailsModal from "./ViewPlanDetailsModal";
 import {
   useAddressCreatedPlans,
   useContractFetch,
+  usePlanDetails,
 } from "@/hooks/useBlockchain";
 import { InheritXAbi } from "@/abi/abi";
-import Link from "next/link";
 
-const tabs = ["Plans", "Activities"];
+const tabs = ["Plans"];
 
-const activities = [
-  {
-    activity: "Plan #001 Created (3 Beneficiaries, Inactivity Trigger Set)",
-    timestamp: "12th August, 2025",
-  },
-  { activity: "Guardian Added To Plan #002", timestamp: "12th August, 2025" },
-  {
-    activity: "Plan #001 Status Changed To Active",
-    timestamp: "12th August, 2025",
-  },
-  { activity: "1 NFC Converted", timestamp: "12th August, 2025" },
-];
+// Component to fetch and display distribution method for each plan
+const PlanDistributionCell = ({ planId }: { planId: number }) => {
+  const { transaction: planDetails } = usePlanDetails(planId);
+
+  const showDistribution = (method: number | string | undefined): string => {
+    if (method === undefined || method === null) return "Not specified";
+    const methodNum = typeof method === "string" ? parseInt(method) : method;
+    switch (methodNum) {
+      case 0:
+        return "Lump Sum (All at once)";
+      case 1:
+        return "Quarterly";
+      case 2:
+        return "Yearly";
+      case 3:
+        return "Monthly";
+      default:
+        return "Unknown";
+    }
+  };
+
+  return (
+    <span className="bg-[#232B2F] text-[#BFC6C8] text-[12px] px-3 py-1 rounded-[16px] border border-[#425558]">
+      {planDetails && planDetails.length > 0
+        ? showDistribution(planDetails[0]?.distribution_method)
+        : "Loading..."}
+    </span>
+  );
+};
+
+// const activities = [
+//   {
+//     activity: "Plan #001 Created (3 Beneficiaries, Inactivity Trigger Set)",
+//     timestamp: "12th August, 2025",
+//   },
+//   { activity: "Guardian Added To Plan #002", timestamp: "12th August, 2025" },
+//   {
+//     activity: "Plan #001 Status Changed To Active",
+//     timestamp: "12th August, 2025",
+//   },
+//   { activity: "1 NFC Converted", timestamp: "12th August, 2025" },
+// ];
 
 const PlansPage = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -36,6 +67,8 @@ const PlansPage = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteIdx, setDeleteIdx] = useState<number | null>(null);
   const [showFilterModal, setShowFilterModal] = useState(false);
+  const [showViewModal, setShowViewModal] = useState(false);
+  const [selectedPlanId, setSelectedPlanId] = useState<number | null>(null);
   const [filter, setFilter] = useState("All");
   const router = useRouter();
   const { readData: planSummary } = useContractFetch(
@@ -73,6 +106,16 @@ const PlansPage = () => {
   const handleApplyFilter = (selected: string) => {
     setFilter(selected);
     setShowFilterModal(false);
+  };
+
+  const handleViewPlan = (planId: number) => {
+    setSelectedPlanId(planId);
+    setShowViewModal(true);
+  };
+
+  const closeViewModal = () => {
+    setShowViewModal(false);
+    setSelectedPlanId(null);
   };
 
   return (
@@ -142,7 +185,10 @@ const PlansPage = () => {
               <span className="text-[#99A9A2] text-[12px] font-normal mb-8 text-center">
                 Secure your digital legacy by creating your first plan.
               </span>
-              <button className="flex items-center gap-2 w-fit text-[14px] px-6 py-3 font-medium rounded-[24px] border border-[#33C5E03D] bg-[#33C5E014] text-[#33C5E0] hover:bg-cyan-900/30 transition-colors">
+              <button
+                onClick={() => router.push("/dashboard/plans/create")}
+                className="flex items-center gap-2 w-fit text-[14px] px-6 py-3 font-medium rounded-[24px] border border-[#33C5E03D] bg-[#33C5E014] text-[#33C5E0] hover:bg-cyan-900/30 transition-colors"
+              >
                 <Image
                   src="/assets/icons/arrowdown.svg"
                   alt="arrowdown icon"
@@ -186,9 +232,6 @@ const PlansPage = () => {
                               </span>
                               {plan.plan_name}
                             </span>
-                            <span className="text-[#92A5A8] text-[12px]">
-                              {getCreatedPlan.length * 507 * 7191}
-                            </span>
                           </div>
                         </td>
                         <td className="py-4 px-2 min-w-[120px]">
@@ -222,17 +265,13 @@ const PlansPage = () => {
                         </td>
                         {/* Hide on mobile: Trigger and Status */}
                         <td className="hidden sm:table-cell py-4 px-2 min-w-[160px]">
-                          <span className="bg-[#232B2F] text-[#BFC6C8] text-[12px] px-3 py-1 rounded-[16px] border border-[#425558]">
-                            {plan.plan_status == "Active"
-                              ? "inactivity (6 months)"
-                              : "Time-Locked"}
-                          </span>
+                          <PlanDistributionCell planId={plan.plan_id} />
                         </td>
                         <td className="hidden sm:table-cell py-4 px-2 min-w-[100px]">
                           <span
                             className={
                               plan.plan_status == "Active"
-                                ? "bg-[#1C252A] text-[#33C5E0] px-3 py-1 rounded-[16px] text-[12px] font-semibold border border-[#33C5E0]"
+                                ? "bg-[#1C252A] text-[#33C5E0] px-3 py-1 rounded-[16px] text- [12px] font-semibold border border-[#33C5E0]"
                                 : plan.status == "COMPLETED"
                                 ? "bg-[#1C252A] text-[#0DA314] px-3 py-1 rounded-[16px] text-[12px] font-semibold border border-[#0DA314]"
                                 : plan.status == "PENDING"
@@ -300,39 +339,12 @@ const PlansPage = () => {
                             )} */}
                           </div>
                           {/* Desktop: show buttons inline */}
-                          {/* src/app/dashboard/plans/view[id] */}
                           <div className="hidden sm:flex gap-2 items-center">
-                            <Link
-                              href={`/dashboard/plans/view/${plan.plan_id}`}
+                            <button
+                              onClick={() => handleViewPlan(plan.plan_id)}
                               className="bg-[#33C5E0] cursor-pointer text-[#161E22] px-4 py-2 rounded-[16px] text-[12px] font-semibold hover:bg-cyan-400"
                             >
                               VIEW
-                            </Link>
-                            <button
-                              className="p-2 rounded-full hover:bg-[#E53E3E]"
-                              onClick={() => handleDelete(idx)}
-                            >
-                              <svg
-                                width="18"
-                                height="18"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  d="M6 19C6 20.1046 6.89543 21 8 21H16C17.1046 21 18 20.1046 18 19V7H6V19Z"
-                                  stroke="#BFC6C8"
-                                  strokeWidth="1.5"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                                <path
-                                  d="M9 7V5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7"
-                                  stroke="#BFC6C8"
-                                  strokeWidth="1.5"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                              </svg>
                             </button>
                           </div>
                         </td>
@@ -345,7 +357,7 @@ const PlansPage = () => {
         ) : (
           <div className="flex flex-col bg-[#182024] rounded-[24px] py-[32px] px-[12px] md:px-[24px] min-h-[320px] w-full overflow-x-auto">
             <table className="w-full min-w-[900px]">
-              <thead>
+              {/* <thead>
                 <tr className="text-left text-[#92A5A8] text-[14px] font-normal">
                   <th className="py-3 px-2">Activity</th>
                   <th className="py-3 px-2">Timestamp</th>
@@ -363,7 +375,7 @@ const PlansPage = () => {
                     </td>
                   </tr>
                 ))}
-              </tbody>
+              </tbody> */}
             </table>
           </div>
         )}
@@ -379,6 +391,11 @@ const PlansPage = () => {
         onClose={() => setShowFilterModal(false)}
         onApply={handleApplyFilter}
         currentFilter={filter}
+      />
+      <ViewPlanDetailsModal
+        isOpen={showViewModal}
+        onClose={closeViewModal}
+        planId={selectedPlanId || 0}
       />
     </main>
   );
