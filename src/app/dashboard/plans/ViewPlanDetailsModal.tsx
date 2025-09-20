@@ -85,7 +85,7 @@ const ViewPlanDetailsModal: React.FC<ViewPlanDetailsModalProps> = ({
               {planId}
             </span>
           </h2>
-          <button
+          {/* <button
             onClick={onClose}
             className="text-[#BFC6C8] hover:text-[#FCFFFF] p-2"
           >
@@ -98,7 +98,7 @@ const ViewPlanDetailsModal: React.FC<ViewPlanDetailsModalProps> = ({
                 strokeLinejoin="round"
               />
             </svg>
-          </button>
+          </button> */}
         </div>
 
         <div className="w-full flex flex-col gap-6">
@@ -278,6 +278,19 @@ const ViewPlanDetailsModal: React.FC<ViewPlanDetailsModalProps> = ({
                   </span>{" "}
                   <span className="text-[#FCFFFF]">
                     {truncateAddress(planDetails?.owner)}
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-2 space-x-2 items-center">
+                  <span className="font-semibold text-[#BFC6C8]">
+                    EXECUTION DATE:
+                  </span>{" "}
+                  <span className="text-[#FCFFFF]">
+                    {planDetails?.lump_sum_date
+                      ? new Date(
+                          planDetails?.lump_sum_date * 1000
+                        ).toLocaleDateString()
+                      : "Not specified"}
                   </span>
                 </div>
               </div>

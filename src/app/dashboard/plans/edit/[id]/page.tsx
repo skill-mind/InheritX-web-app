@@ -13,6 +13,8 @@ const EditPlanPage = () => {
 
   const [activeTab, setActiveTab] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
+  const [dateError, setDateError] = useState(false);
+  const [newDate, setNewDate] = useState("");
 
   const planDetails =
     transaction && transaction.length > 0 ? transaction[0] : undefined;
@@ -197,11 +199,16 @@ const EditPlanPage = () => {
                   <label className="block text-[#BFC6C8] text-[14px] font-medium mb-2">
                     Current Release Date
                   </label>
-                  <input
-                    type="date"
-                    disabled
+                  <div
+                    // disabled
                     className="w-full bg-[#232B36] border border-[#425558] rounded-[12px] px-4 py-3 text-[#BFC6C8] cursor-not-allowed"
-                  />
+                  >
+                    {planDetails?.lump_sum_date
+                      ? new Date(
+                          planDetails?.lump_sum_date * 1000
+                        ).toLocaleDateString()
+                      : "Not specified"}
+                  </div>
                 </div>
                 <div>
                   <label className="block text-[#BFC6C8] text-[14px] font-medium mb-2">
@@ -209,8 +216,56 @@ const EditPlanPage = () => {
                   </label>
                   <input
                     type="date"
-                    className="w-full bg-[#232B36] border border-[#425558] rounded-[12px] px-4 py-3 text-[#FCFFFF] focus:border-[#33C5E0] focus:outline-none"
+                    min={new Date().toISOString().split("T")[0]}
+                    value={newDate}
+                    disabled={planDetails?.lump_sum_date ? false : true}
+                    onChange={(e) => {
+                      const selectedDate = e.target.value;
+                      const today = new Date().toISOString().split("T")[0];
+
+                      // Always update the form data to allow typing
+                      setNewDate(selectedDate);
+
+                      // Only show error if the date is complete and in the past
+                      if (selectedDate && selectedDate.length === 10) {
+                        if (selectedDate < today) {
+                          setDateError(true);
+                        } else {
+                          setDateError(false);
+                        }
+                      } else {
+                        setDateError(false);
+                      }
+                    }}
+                    onBlur={(e) => {
+                      const selectedDate = e.target.value;
+                      const today = new Date().toISOString().split("T")[0];
+
+                      // Only validate and reset if the date is complete and in the past
+                      if (
+                        selectedDate &&
+                        selectedDate.length === 10 &&
+                        selectedDate < today
+                      ) {
+                        setNewDate("");
+                        setDateError(false);
+                      }
+                    }}
+                    className={`w-full bg-[#232B36] border border-[#425558] rounded-[12px] px-4 py-3 text-[#BFC6C8]  outline-none text-center ${
+                      dateError ? "border-red-500" : "border-[#232B36]"
+                    }`}
                   />
+                  <div className="mt-2 text-xs">
+                    <span
+                      className={`${
+                        dateError ? "text-red-500" : "text-[#425558]"
+                      }`}
+                    >
+                      {dateError
+                        ? "Please select a future date"
+                        : "Select a future date for distribution"}
+                    </span>
+                  </div>
                 </div>
               </div>
               <div className="bg-[#232B36] border border-[#425558] rounded-[12px] p-4">
@@ -229,55 +284,64 @@ const EditPlanPage = () => {
                 Edit Percentages
               </h3>
               <div className="space-y-4">
-                <div>
-                  <label className="block text-[#BFC6C8] text-[14px] font-medium mb-2">
-                    Monthly Distribution Percentage
-                  </label>
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="number"
-                      placeholder="0"
-                      min="0"
-                      max="100"
-                      className="w-24 bg-[#232B36] border border-[#425558] rounded-[12px] px-4 py-3 text-[#FCFFFF] focus:border-[#33C5E0] focus:outline-none"
-                    />
-                    <span className="text-[#BFC6C8]">%</span>
+                {planDetails?.distribution_method === 1 && (
+                  <div>
+                    <label className="block text-[#BFC6C8] text-[14px] font-medium mb-2">
+                      Quarterly Distribution Percentage
+                    </label>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="number"
+                        placeholder="0"
+                        min="0"
+                        max="100"
+                        className="w-24 bg-[#232B36] border border-[#425558] rounded-[12px] px-4 py-3 text-[#FCFFFF] focus:border-[#33C5E0] focus:outline-none"
+                      />
+                      <span className="text-[#BFC6C8]">%</span>
+                    </div>
                   </div>
-                </div>
-                <div>
-                  <label className="block text-[#BFC6C8] text-[14px] font-medium mb-2">
-                    Quarterly Distribution Percentage
-                  </label>
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="number"
-                      placeholder="0"
-                      min="0"
-                      max="100"
-                      className="w-24 bg-[#232B36] border border-[#425558] rounded-[12px] px-4 py-3 text-[#FCFFFF] focus:border-[#33C5E0] focus:outline-none"
-                    />
-                    <span className="text-[#BFC6C8]">%</span>
+                )}
+
+                {planDetails?.distribution_method === 2 && (
+                  <div>
+                    <label className="block text-[#BFC6C8] text-[14px] font-medium mb-2">
+                      Yearly Distribution Percentage
+                    </label>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="number"
+                        placeholder="0"
+                        min="0"
+                        max="100"
+                        className="w-24 bg-[#232B36] border border-[#425558] rounded-[12px] px-4 py-3 text-[#FCFFFF] focus:border-[#33C5E0] focus:outline-none"
+                      />
+                      <span className="text-[#BFC6C8]">%</span>
+                    </div>
                   </div>
-                </div>
-                <div>
-                  <label className="block text-[#BFC6C8] text-[14px] font-medium mb-2">
-                    Yearly Distribution Percentage
-                  </label>
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="number"
-                      placeholder="0"
-                      min="0"
-                      max="100"
-                      className="w-24 bg-[#232B36] border border-[#425558] rounded-[12px] px-4 py-3 text-[#FCFFFF] focus:border-[#33C5E0] focus:outline-none"
-                    />
-                    <span className="text-[#BFC6C8]">%</span>
+                )}
+
+                {planDetails?.distribution_method === 3 && (
+                  <div>
+                    <label className="block text-[#BFC6C8] text-[14px] font-medium mb-2">
+                      Monthly Distribution Percentage
+                    </label>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="number"
+                        placeholder="0"
+                        min="0"
+                        max="100"
+                        className="w-24 bg-[#232B36] border border-[#425558] rounded-[12px] px-4 py-3 text-[#FCFFFF] focus:border-[#33C5E0] focus:outline-none"
+                      />
+                      <span className="text-[#BFC6C8]">%</span>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
+
               <div className="bg-[#232B36] border border-[#425558] rounded-[12px] p-4">
                 <h4 className="text-[#FCFFFF] font-medium mb-2">
-                  Current Distribution
+                  Current Distribution Method
                 </h4>
                 <p className="text-[#BFC6C8] text-[14px]">
                   {planDetails?.distribution_method === 0

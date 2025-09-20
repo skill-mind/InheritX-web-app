@@ -11,10 +11,41 @@ import ViewPlanDetailsModal from "./ViewPlanDetailsModal";
 import {
   useAddressCreatedPlans,
   useContractFetch,
+  usePlanDetails,
 } from "@/hooks/useBlockchain";
 import { InheritXAbi } from "@/abi/abi";
 
 const tabs = ["Plans"];
+
+// Component to fetch and display distribution method for each plan
+const PlanDistributionCell = ({ planId }: { planId: number }) => {
+  const { transaction: planDetails } = usePlanDetails(planId);
+
+  const showDistribution = (method: number | string | undefined): string => {
+    if (method === undefined || method === null) return "Not specified";
+    const methodNum = typeof method === "string" ? parseInt(method) : method;
+    switch (methodNum) {
+      case 0:
+        return "Lump Sum (All at once)";
+      case 1:
+        return "Quarterly";
+      case 2:
+        return "Yearly";
+      case 3:
+        return "Monthly";
+      default:
+        return "Unknown";
+    }
+  };
+
+  return (
+    <span className="bg-[#232B2F] text-[#BFC6C8] text-[12px] px-3 py-1 rounded-[16px] border border-[#425558]">
+      {planDetails && planDetails.length > 0
+        ? showDistribution(planDetails[0]?.distribution_method)
+        : "Loading..."}
+    </span>
+  );
+};
 
 // const activities = [
 //   {
@@ -201,9 +232,6 @@ const PlansPage = () => {
                               </span>
                               {plan.plan_name}
                             </span>
-                            <span className="text-[#92A5A8] text-[12px]">
-                              {getCreatedPlan.length * 507 * 7191}
-                            </span>
                           </div>
                         </td>
                         <td className="py-4 px-2 min-w-[120px]">
@@ -237,17 +265,13 @@ const PlansPage = () => {
                         </td>
                         {/* Hide on mobile: Trigger and Status */}
                         <td className="hidden sm:table-cell py-4 px-2 min-w-[160px]">
-                          <span className="bg-[#232B2F] text-[#BFC6C8] text-[12px] px-3 py-1 rounded-[16px] border border-[#425558]">
-                            {plan.plan_status == "Active"
-                              ? "inactivity (6 months)"
-                              : "Time-Locked"}
-                          </span>
+                          <PlanDistributionCell planId={plan.plan_id} />
                         </td>
                         <td className="hidden sm:table-cell py-4 px-2 min-w-[100px]">
                           <span
                             className={
                               plan.plan_status == "Active"
-                                ? "bg-[#1C252A] text-[#33C5E0] px-3 py-1 rounded-[16px] text-[12px] font-semibold border border-[#33C5E0]"
+                                ? "bg-[#1C252A] text-[#33C5E0] px-3 py-1 rounded-[16px] text- [12px] font-semibold border border-[#33C5E0]"
                                 : plan.status == "COMPLETED"
                                 ? "bg-[#1C252A] text-[#0DA314] px-3 py-1 rounded-[16px] text-[12px] font-semibold border border-[#0DA314]"
                                 : plan.status == "PENDING"
@@ -321,32 +345,6 @@ const PlansPage = () => {
                               className="bg-[#33C5E0] cursor-pointer text-[#161E22] px-4 py-2 rounded-[16px] text-[12px] font-semibold hover:bg-cyan-400"
                             >
                               VIEW
-                            </button>
-                            <button
-                              className="p-2 rounded-full hover:bg-[#E53E3E]"
-                              onClick={() => handleDelete(idx)}
-                            >
-                              <svg
-                                width="18"
-                                height="18"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  d="M6 19C6 20.1046 6.89543 21 8 21H16C17.1046 21 18 20.1046 18 19V7H6V19Z"
-                                  stroke="#BFC6C8"
-                                  strokeWidth="1.5"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                                <path
-                                  d="M9 7V5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7"
-                                  stroke="#BFC6C8"
-                                  strokeWidth="1.5"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                              </svg>
                             </button>
                           </div>
                         </td>

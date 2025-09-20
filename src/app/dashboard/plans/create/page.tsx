@@ -118,11 +118,11 @@ function CreatePlanPageContent() {
                 updateFormData({ planDescription: e.target.value })
               }
               placeholder="Text"
-              maxLength={2000}
+              maxLength={1500}
               className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[15px] outline-none min-h-[60px]"
             />
             <p className="text-[#425558] text-[14px]">
-              {formData.planDescription.length}/2000
+              {formData.planDescription.length}/1500
             </p>
           </div>
           <div>

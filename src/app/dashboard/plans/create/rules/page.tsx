@@ -18,6 +18,7 @@ const RulesPageContent = () => {
     useCreatePlan();
   const [showDisbursementDropdown, setShowDisbursementDropdown] =
     useState(false);
+  const [dateError, setDateError] = useState(false);
 
   const isFormValid =
     /^\d{6}$/.test(formData.claimCode.trim()) &&
@@ -207,14 +208,52 @@ const RulesPageContent = () => {
                   </label>
                   <input
                     type="date"
+                    min={new Date().toISOString().split("T")[0]}
                     value={formData.lumpDate}
-                    onChange={(e) =>
-                      updateFormData({ lumpDate: e.target.value })
-                    }
-                    className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] text-[15px] outline-none text-center"
+                    onChange={(e) => {
+                      const selectedDate = e.target.value;
+                      const today = new Date().toISOString().split("T")[0];
+
+                      // Always update the form data to allow typing
+                      updateFormData({ lumpDate: selectedDate });
+
+                      // Only show error if the date is complete and in the past
+                      if (selectedDate && selectedDate.length === 10) {
+                        if (selectedDate < today) {
+                          setDateError(true);
+                        } else {
+                          setDateError(false);
+                        }
+                      } else {
+                        setDateError(false);
+                      }
+                    }}
+                    onBlur={(e) => {
+                      const selectedDate = e.target.value;
+                      const today = new Date().toISOString().split("T")[0];
+
+                      // Only validate and reset if the date is complete and in the past
+                      if (
+                        selectedDate &&
+                        selectedDate.length === 10 &&
+                        selectedDate < today
+                      ) {
+                        updateFormData({ lumpDate: "" });
+                        setDateError(false);
+                      }
+                    }}
+                    className={`w-full bg-[#161E22] border rounded-[12px] px-4 py-3 text-[#FCFFFF] text-[15px] outline-none text-center ${
+                      dateError ? "border-red-500" : "border-[#232B36]"
+                    }`}
                   />
-                  <span className="text-[#BFC6C8] text-xs mt-2">
-                    DD/MM/YYYY
+                  <span
+                    className={`text-xs mt-2 ${
+                      dateError ? "text-red-500" : "text-[#BFC6C8]"
+                    }`}
+                  >
+                    {dateError
+                      ? "Please select a future date"
+                      : "Select a future date for distribution"}
                   </span>
                 </div>
               )}
@@ -273,8 +312,12 @@ const RulesPageContent = () => {
               value={formData.note}
               onChange={(e) => updateFormData({ note: e.target.value })}
               placeholder="e.g Release funds monthly for upkeep of the property."
+              maxLength={1500}
               className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[15px] outline-none"
             />
+            <p className="text-[#425558] mt-1.5 text-[14px]">
+              {formData.note.length}/1500
+            </p>
           </div>
           <div className="flex justify-start mt-8">
             <button

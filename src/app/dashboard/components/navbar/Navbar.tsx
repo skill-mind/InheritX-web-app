@@ -113,7 +113,7 @@ export default function DashboardSidebar() {
               <BarChart2 className="w-[16px] h-[16px] mr-3" /> PORTFOLIO
             </Link>
           </div>
-          <div className="flex items-center space-x-2 w-full">
+          {/* <div className="flex items-center space-x-2 w-full">
             <div
               className={`bg-transparent w-[6px] h-[32px] rounded-[12px] ${
                 pathname.startsWith("/dashboard/inactivity")
@@ -131,7 +131,7 @@ export default function DashboardSidebar() {
             >
               <Activity className="w-[16px] h-[16px] mr-3" /> INACTIVITY
             </Link>
-          </div>
+          </div> */}
           <div className="flex items-center space-x-2 w-full">
             <div
               className={`bg-transparent w-[6px] h-[32px] rounded-[12px] ${
