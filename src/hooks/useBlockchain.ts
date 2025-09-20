@@ -93,9 +93,16 @@ export function useAddressCreatedPlans() {
 
       // If it's an object (e.g. { USDC: {}, STRK: undefined, ... })
       if (v && typeof v === "object") {
-        const found = Object.entries(v).find(
-          ([val]) => val !== undefined && val !== null
-        );
+        // console.log("Object entries:", Object.entries(v));
+        const found = Object.entries(v).find(([key, val]) => {
+          console.log(
+            `Checking ${key}:`,
+            val,
+            "is valid:",
+            val !== undefined && val !== null
+          );
+          return val !== undefined && val !== null;
+        });
         console.log("Found inside variant:", found);
         if (found) return found[0];
       }
@@ -196,9 +203,16 @@ export function usePlanDetails(plan_id: number) {
 
       // If it's an object (e.g. { USDC: {}, STRK: undefined, ... })
       if (v && typeof v === "object") {
-        const found = Object.entries(v).find(
-          ([val]) => val !== undefined && val !== null
-        );
+        console.log("Object entries:", Object.entries(v));
+        const found = Object.entries(v).find(([key, val]) => {
+          console.log(
+            `Checking ${key}:`,
+            val,
+            "is valid:",
+            val !== undefined && val !== null
+          );
+          return val !== undefined && val !== null;
+        });
         console.log("Found inside variant:", found);
         if (found) return found[0];
       }
