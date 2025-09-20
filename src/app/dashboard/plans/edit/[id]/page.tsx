@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { useRouter, useParams } from "next/navigation";
 import { usePlanDetails } from "@/hooks/useBlockchain";
-import { truncateAddress } from "@/lib/utils";
 
 const EditPlanPage = () => {
   const router = useRouter();
