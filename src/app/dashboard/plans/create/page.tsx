@@ -55,21 +55,6 @@ function CreatePlanPageContent() {
             </span>
           </h2>
         </div>
-        <div>
-          <button
-            className="border border-[#33C5E03D] p-[14px] rounded-[24px] text-[#33C5E0] text-[14px] hover:bg-[#33C5E0] hover:text-[#161E22] duration-500 cursor-pointer"
-            onClick={() => {}}
-          >
-            <Image
-              src="/assets/icons/plus.svg"
-              alt="plus icon"
-              width={14}
-              height={14}
-              className="inline-block mr-2"
-            />
-            <span>Save As Draft</span>
-          </button>
-        </div>
       </div>
 
       <div className="w-full flex flex-col gap-8">
@@ -133,8 +118,12 @@ function CreatePlanPageContent() {
                 updateFormData({ planDescription: e.target.value })
               }
               placeholder="Text"
+              maxLength={2000}
               className="w-full bg-[#161E22] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] placeholder:text-[#425558] text-[15px] outline-none min-h-[60px]"
             />
+            <p className="text-[#425558] text-[14px]">
+              {formData.planDescription.length}/2000
+            </p>
           </div>
           <div>
             <label className="block text-[#FCFFFF] text-[13px] mb-2">

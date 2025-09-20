@@ -7,27 +7,27 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import DeletePlanModal from "./DeletePlanModal";
 import FilterModal from "./FilterModal";
+import ViewPlanDetailsModal from "./ViewPlanDetailsModal";
 import {
   useAddressCreatedPlans,
   useContractFetch,
 } from "@/hooks/useBlockchain";
 import { InheritXAbi } from "@/abi/abi";
-import Link from "next/link";
 
-const tabs = ["Plans", "Activities"];
+const tabs = ["Plans"];
 
-const activities = [
-  {
-    activity: "Plan #001 Created (3 Beneficiaries, Inactivity Trigger Set)",
-    timestamp: "12th August, 2025",
-  },
-  { activity: "Guardian Added To Plan #002", timestamp: "12th August, 2025" },
-  {
-    activity: "Plan #001 Status Changed To Active",
-    timestamp: "12th August, 2025",
-  },
-  { activity: "1 NFC Converted", timestamp: "12th August, 2025" },
-];
+// const activities = [
+//   {
+//     activity: "Plan #001 Created (3 Beneficiaries, Inactivity Trigger Set)",
+//     timestamp: "12th August, 2025",
+//   },
+//   { activity: "Guardian Added To Plan #002", timestamp: "12th August, 2025" },
+//   {
+//     activity: "Plan #001 Status Changed To Active",
+//     timestamp: "12th August, 2025",
+//   },
+//   { activity: "1 NFC Converted", timestamp: "12th August, 2025" },
+// ];
 
 const PlansPage = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -36,6 +36,8 @@ const PlansPage = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteIdx, setDeleteIdx] = useState<number | null>(null);
   const [showFilterModal, setShowFilterModal] = useState(false);
+  const [showViewModal, setShowViewModal] = useState(false);
+  const [selectedPlanId, setSelectedPlanId] = useState<number | null>(null);
   const [filter, setFilter] = useState("All");
   const router = useRouter();
   const { readData: planSummary } = useContractFetch(
@@ -73,6 +75,16 @@ const PlansPage = () => {
   const handleApplyFilter = (selected: string) => {
     setFilter(selected);
     setShowFilterModal(false);
+  };
+
+  const handleViewPlan = (planId: number) => {
+    setSelectedPlanId(planId);
+    setShowViewModal(true);
+  };
+
+  const closeViewModal = () => {
+    setShowViewModal(false);
+    setSelectedPlanId(null);
   };
 
   return (
@@ -142,7 +154,10 @@ const PlansPage = () => {
               <span className="text-[#99A9A2] text-[12px] font-normal mb-8 text-center">
                 Secure your digital legacy by creating your first plan.
               </span>
-              <button className="flex items-center gap-2 w-fit text-[14px] px-6 py-3 font-medium rounded-[24px] border border-[#33C5E03D] bg-[#33C5E014] text-[#33C5E0] hover:bg-cyan-900/30 transition-colors">
+              <button
+                onClick={() => router.push("/dashboard/plans/create")}
+                className="flex items-center gap-2 w-fit text-[14px] px-6 py-3 font-medium rounded-[24px] border border-[#33C5E03D] bg-[#33C5E014] text-[#33C5E0] hover:bg-cyan-900/30 transition-colors"
+              >
                 <Image
                   src="/assets/icons/arrowdown.svg"
                   alt="arrowdown icon"
@@ -300,14 +315,13 @@ const PlansPage = () => {
                             )} */}
                           </div>
                           {/* Desktop: show buttons inline */}
-                          {/* src/app/dashboard/plans/view[id] */}
                           <div className="hidden sm:flex gap-2 items-center">
-                            <Link
-                              href={`/dashboard/plans/view/${plan.plan_id}`}
+                            <button
+                              onClick={() => handleViewPlan(plan.plan_id)}
                               className="bg-[#33C5E0] cursor-pointer text-[#161E22] px-4 py-2 rounded-[16px] text-[12px] font-semibold hover:bg-cyan-400"
                             >
                               VIEW
-                            </Link>
+                            </button>
                             <button
                               className="p-2 rounded-full hover:bg-[#E53E3E]"
                               onClick={() => handleDelete(idx)}
@@ -345,7 +359,7 @@ const PlansPage = () => {
         ) : (
           <div className="flex flex-col bg-[#182024] rounded-[24px] py-[32px] px-[12px] md:px-[24px] min-h-[320px] w-full overflow-x-auto">
             <table className="w-full min-w-[900px]">
-              <thead>
+              {/* <thead>
                 <tr className="text-left text-[#92A5A8] text-[14px] font-normal">
                   <th className="py-3 px-2">Activity</th>
                   <th className="py-3 px-2">Timestamp</th>
@@ -363,7 +377,7 @@ const PlansPage = () => {
                     </td>
                   </tr>
                 ))}
-              </tbody>
+              </tbody> */}
             </table>
           </div>
         )}
@@ -379,6 +393,11 @@ const PlansPage = () => {
         onClose={() => setShowFilterModal(false)}
         onApply={handleApplyFilter}
         currentFilter={filter}
+      />
+      <ViewPlanDetailsModal
+        isOpen={showViewModal}
+        onClose={closeViewModal}
+        planId={selectedPlanId || 0}
       />
     </main>
   );
