@@ -22,7 +22,6 @@ export const metadata: Metadata = {
     "digital inheritance",
     "blockchain",
     "StarkNet",
-    "NFT inheritance",
     "cryptocurrency inheritance",
     "decentralized security",
     "multi-signature",
