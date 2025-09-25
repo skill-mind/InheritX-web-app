@@ -21,9 +21,7 @@ interface Asset {
 // Contract enums
 enum AssetType {
   STRK = 0,
-  USDT = 1,
   USDC = 2,
-  NFT = 3,
 }
 
 enum DistributionMethod {
@@ -310,12 +308,8 @@ export function CreatePlanProvider({ children }: { children: ReactNode }) {
     switch (assetString) {
       case "STRK":
         return AssetType.STRK;
-      case "USDT":
-        return AssetType.USDT;
       case "USDC":
         return AssetType.USDC;
-      case "NFT":
-        return AssetType.NFT;
       default:
         return AssetType.STRK;
     }

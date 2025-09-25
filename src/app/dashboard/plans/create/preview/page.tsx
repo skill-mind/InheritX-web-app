@@ -133,18 +133,6 @@ const PreviewPageContent = () => {
             </span>
           </h2>
         </div>
-        <div>
-          <button className="border border-[#33C5E03D] p-[14px] rounded-[24px] text-[#33C5E0] text-[14px] hover:bg-[#33C5E0] hover:text-[#161E22] duration-500 cursor-pointer">
-            <Image
-              src="/assets/icons/plus.svg"
-              alt="plus icon"
-              width={14}
-              height={14}
-              className="inline-block mr-2"
-            />
-            <span>Save As Draft</span>
-          </button>
-        </div>
       </div>
       <div className="w-full flex flex-col gap-8">
         {/* Progress Steps */}
@@ -284,11 +272,9 @@ const PreviewPageContent = () => {
                   <span>
                     {formData.assetType === 0
                       ? "STRK"
-                      : formData.assetType === 1
-                      ? "USDT"
                       : formData.assetType === 2
                       ? "USDC"
-                      : "NFT"}
+                      : "STRK"}
                   </span>
                   <span className="ml-auto">
                     Amount: {formData.assetAmount}
@@ -430,10 +416,6 @@ const PreviewPageContent = () => {
 
           {/* Action Buttons */}
           <div className="flex flex-col md:flex-row gap-4 justify-center mt-8">
-            <button className="bg-[#1C252A] border-none text-[#33C5E0] px-8 py-3 rounded-t-[8px] rounded-b-[24px] font-medium md:w-[243px] text-[14px] hover:bg-[#33C5E0] hover:text-[#161E22] transition-colors cursor-pointer">
-              SAVE AS DRAFT
-            </button>
-
             <button
               className={`bg-[#33C5E0] text-[#161E22] px-8 py-3 rounded-t-[8px] rounded-b-[24px] font-medium text-[14px] md:min-w-[243px] hover:bg-[#33C5E0]/90 transition-colors cursor-pointer flex items-center justify-center gap-2 ${
                 isCreatingPlan ? "opacity-50 cursor-not-allowed" : ""

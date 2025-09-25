@@ -14,6 +14,7 @@ import {
   usePlanDetails,
 } from "@/hooks/useBlockchain";
 import { InheritXAbi } from "@/abi/abi";
+// import AutoSwapperPage from "./auto-swapper";
 
 const tabs = ["Plans"];
 
@@ -145,6 +146,7 @@ const PlansPage = () => {
           </button>
         </div>
       </section>
+      {/* <AutoSwapperPage /> */}
       <section className="bg-transparent p-0 md:p-2 flex flex-col gap-4">
         <div className="flex flex-row md:items-center justify-between gap-2 mb-2 border-t border-t-[#1C252A]">
           <div className="flex gap-2">

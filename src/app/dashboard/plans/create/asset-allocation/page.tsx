@@ -16,9 +16,7 @@ interface Asset {
 
 const assetOptions: Omit<Asset, "amount">[] = [
   { type: 0, label: "STRK", icon: "/assets/icons/strk.svg" },
-  { type: 1, label: "USDT", icon: "/assets/icons/usdt.png" },
   { type: 2, label: "USDC", icon: "/assets/icons/usdc.png" },
-  { type: 3, label: "NFT", icon: "/assets/icons/nft1.svg" },
 ];
 
 const PieChart = dynamic(
@@ -94,18 +92,6 @@ const AssetAllocationPageContent = () => {
               | Asset Allocation
             </span>
           </h2>
-        </div>
-        <div>
-          <button className="border border-[#33C5E03D] p-[14px] rounded-[24px] text-[#33C5E0] text-[14px] hover:bg-[#33C5E0] hover:text-[#161E22] duration-500 cursor-pointer">
-            <Image
-              src="/assets/icons/plus.svg"
-              alt="plus icon"
-              width={14}
-              height={14}
-              className="inline-block mr-2"
-            />
-            <span>Save As Draft</span>
-          </button>
         </div>
       </div>
       <div className="w-full flex flex-col gap-8">
@@ -319,7 +305,7 @@ const AssetAllocationPageContent = () => {
                 Sum Of All Asset Values
               </span>
               {formData.assets.length === 0 ? (
-                <span className="text-[#BFC6C8] text-[16px]">
+                <span className="text-[#c8bfbf] text-[16px]">
                   No Assets Yet
                 </span>
               ) : (
@@ -328,16 +314,8 @@ const AssetAllocationPageContent = () => {
                     title: a.label,
                     value: a.amount,
                     color:
-                      a.label === "ETH"
-                        ? "#33C5E0"
-                        : a.label === "NFT"
-                        ? "#B97AFF"
-                        : a.label === "Real World Asset"
-                        ? "#FF9F43"
-                        : a.label === "BTC"
-                        ? "#F7931A"
-                        : a.label === "USDT"
-                        ? "#26A17B"
+                      a.label === "STRK"
+                        ? "#db2e2e"
                         : a.label === "USDC"
                         ? "#2775CA"
                         : "#BFC6C8",
@@ -371,16 +349,8 @@ const AssetAllocationPageContent = () => {
                         className="inline-block w-3 h-3 rounded-full mr-1"
                         style={{
                           backgroundColor:
-                            a.label === "ETH"
-                              ? "#33C5E0"
-                              : a.label === "NFT"
-                              ? "#B97AFF"
-                              : a.label === "Real World Asset"
-                              ? "#FF9F43"
-                              : a.label === "BTC"
-                              ? "#F7931A"
-                              : a.label === "USDT"
-                              ? "#26A17B"
+                            a.label === "STRK"
+                              ? "#db2e2e"
                               : a.label === "USDC"
                               ? "#2775CA"
                               : "#BFC6C8",
