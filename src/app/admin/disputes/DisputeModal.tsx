@@ -161,7 +161,7 @@ const DisputeModal: React.FC<DisputeModalProps> = ({ open, ticket, onClose }) =>
           open={messageOpen}
           recipient={ticket?.user || "User"}
           onClose={() => setMessageOpen(false)}
-          onSend={(subject, message) => {
+          onSend={() => {
             setMessageOpen(false);
             // You can add a toast or success modal here
           }}

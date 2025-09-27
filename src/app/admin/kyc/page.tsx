@@ -212,33 +212,32 @@ export default function KycAdminPage() {
               {filtered.map((row, idx) => (
                 <tr
                   key={row.id}
-                  className="border-b border-white/10 last:border-b-0"
+                  className="border-b border-white/10 last:border-b-0 transition-colors duration-200 hover:bg-[#222C32] cursor-pointer"
+                  onClick={() => setSelectedRow(row)}
                 >
-                  <td className="py-3 px-4 text-[#FCFFFF] text-sm font-normal">
-                    {idx + 1}. {row.username}
+                  <td className="py-3 px-4 text-[#FCFFFF] text-sm font-normal group">
+                    <span className="transition-colors duration-200 group-hover:text-[#33C5E0]">{idx + 1}. {row.username}</span>
                   </td>
-                  <td className="py-3 px-4 text-[#FCFFFF] text-sm">
-                    {row.verificationType}
+                  <td className="py-3 px-4 text-[#FCFFFF] text-sm group">
+                    <span className="transition-colors duration-200 group-hover:text-[#33C5E0]">{row.verificationType}</span>
                   </td>
                   <td className="py-3 px-4">
                     <span
-                      className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                        STATUS_COLORS[row.status]
-                      }`}
+                      className={`px-3 py-1 rounded-full text-xs font-semibold ${STATUS_COLORS[row.status]} transition-colors duration-200 group-hover:shadow-[0_0_8px_0_#33C5E0]`}
                     >
                       {row.status.toUpperCase()}
                     </span>
                   </td>
-                  <td className="py-3 px-4 text-[#FCFFFF] font-normal text-sm">
-                    {row.timestamp}
+                  <td className="py-3 px-4 text-[#FCFFFF] font-normal text-sm group">
+                    <span className="transition-colors duration-200 group-hover:text-[#33C5E0]">{row.timestamp}</span>
                   </td>
                   <td className="py-3 px-4">
                     <div className="flex gap-2">
-                      <button className="px-4 py-2 rounded-[24px] text-[12px] font-semibold bg-[#33C5E014] text-[#BFC6C8] border border-[#33C5E03D] hover:bg-[#2a3a44] transition">
+                      <button className="px-4 py-2 rounded-[24px] text-[12px] font-semibold bg-[#33C5E014] text-[#BFC6C8] border border-[#33C5E03D] hover:bg-[#2a3a44] hover:text-[#33C5E0] transition-colors duration-200 cursor-pointer active:scale-95">
                         REJECT
                       </button>
                       <button
-                        className="px-4 py-2 rounded-[24px] text-[12px] font-semibold"
+                        className="px-4 py-2 rounded-[24px] text-[12px] font-semibold transition-colors duration-200 cursor-pointer active:scale-95 hover:shadow-[0_0_8px_0_#33C5E0]"
                         style={{ background: ACCENT, color: BG }}
                         onClick={() => { setSelectedRow(row); setModalOpen(true); }}
                       >
@@ -247,7 +246,7 @@ export default function KycAdminPage() {
                     </div>
                   </td>
                   <td className="py-3 px-2 text-right">
-                    <button className="text-slate-400 hover:text-white">
+                    <button className="text-slate-400 hover:text-[#33C5E0] transition-colors duration-200 cursor-pointer active:scale-95">
                       <svg
                         width="20"
                         height="20"

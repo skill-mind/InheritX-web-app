@@ -71,7 +71,24 @@ const InheritancePlanTable: React.FC<Props> = ({ plans }) => {
         <InheritancePlanModal
           open={true}
           onClose={() => setShowModalIdx(null)}
-          plan={plans[showModalIdx] as any} // You may need to adapt mock data to match modal props
+          plan={{
+            name: plans[showModalIdx].planId, // or a more descriptive name if available
+            description: `Inheritance plan created by ${plans[showModalIdx].creator}`,
+            beneficiary: {
+              name: plans[showModalIdx].claimSummary.name,
+              email: plans[showModalIdx].claimSummary.email,
+              avatar: "/assets/icons/avatar.svg", // fallback or add avatar to your data
+              link: "#", // fallback or add link to your data
+            },
+            assets: "Tokens, NFTs, Real-World Assets", // fallback or add to your data
+            wallet: "0xajoer....apro", // fallback or add to your data
+            executeOn: plans[showModalIdx].claimDate, // or another date field
+            rules: {
+              claimCode: plans[showModalIdx].claimSummary.claimCode,
+              distribution: "Yearly Release of funds (disbursement)", // fallback
+            },
+            // Optionally add legalDocs, trustee, notes if available in your data
+          }}
         />
       )}
       {/* Desktop Table */}

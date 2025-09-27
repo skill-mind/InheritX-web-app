@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React from "react";
 import NotificationModal from "./NotificationModal";
 import { useAccount } from "@starknet-react/core";
@@ -10,7 +9,6 @@ import { truncateAddress } from "@/lib/utils";
 // import ConnectWalletModal from "@/components/connect-wallet";
 
 export default function AdminHeader() {
-  const router = useRouter();
   const [showNotifModal, setShowNotifModal] = React.useState(false);
   const { address, isConnected, account } = useAccount();
 

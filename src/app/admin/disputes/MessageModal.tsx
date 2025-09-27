@@ -60,7 +60,7 @@ const MessageModal: React.FC<MessageModalProps> = ({ open, recipient, onClose, o
                 <span className="mr-2">
                     <Image src="/assets/icons/back.svg" alt="back" width={15} height={12.5} />
                 </span>
-                <span>MESSAGE "{recipient.toUpperCase()}"</span>
+                <span>MESSAGE &quot;{recipient.toUpperCase()}&quot;</span>
               </button>
             </div>
             {/* Subject */}

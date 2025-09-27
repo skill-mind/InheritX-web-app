@@ -18,7 +18,7 @@ const STATUS_COLORS = {
   CLOSED: "bg-red-900/30 text-red-300 border border-red-700/30",
 };
 
-const mockData = Array.from({ length: 6 }).map((_, i) => ({
+const mockData = Array.from({ length: 6 }).map(() => ({
   id: `C-402`,
   issue: "Plan Claim Issue",
   plan: "Landed Property Plan",

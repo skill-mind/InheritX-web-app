@@ -17,7 +17,7 @@ const MessageSuccessModal: React.FC<MessageSuccessModalProps> = ({ open, recipie
       <div className="relative w-full max-w-xl mx-4 md:mx-0 md:w-[600px] rounded-[24px] bg-[#161E22] border border-[#2A3338] p-6 md:p-10 shadow-xl z-10 flex flex-col items-center gap-8 max-h-[95vh] overflow-y-auto">
         <div className="text-center w-full">
           <div className="text-[#FCFFFF] text-lg md:text-xl font-medium mb-4">
-            Message sent to <span className="text-[#33C5E0] underline">"{recipient}"</span> successfully!
+            Message sent to <span className="text-[#33C5E0] underline">&quot;{recipient}&quot;</span> successfully!
           </div>
           <div className="flex justify-center mb-6">
             <div className="w-[180px] h-[180px] md:w-[220px] md:h-[220px] rounded-[20px] bg-[#222C32] flex items-center justify-center">

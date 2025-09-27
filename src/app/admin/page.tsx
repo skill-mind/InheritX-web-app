@@ -106,13 +106,13 @@ interface PlatformTransaction {
 export default function AdminDashboardPage() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("All");
-  const [showUserVerificationModal, setShowUserVerificationModal] =
-    useState(false);
+  const [showUserVerificationModal, setShowUserVerificationModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [selectedUser, setSelectedUser] =
-    useState<UserVerificationModalProfile | null>(null);
+  const [selectedUser, setSelectedUser] = useState<UserVerificationModalProfile | null>(null);
   // Set the first button (Approve KYC) as active by default
   const [activeAction, setActiveAction] = useState("Approve KYC");
+  const [showFilterModal, setShowFilterModal] = useState(false);
+  const [filterType, setFilterType] = useState<string>("All");
 
   const activities = [
     { id: 1, title: "User Verification", newCount: 2 },
@@ -555,13 +555,10 @@ export default function AdminDashboardPage() {
     },
   ];
 
-  // Filter activities based on activeTab
+  // Filter activities based on activeTab and filterType
   const filteredActivities =
-    activeTab === "All"
-      ? activities
-      : activities.filter((a) =>
-          a.title.toLowerCase().includes(activeTab.toLowerCase())
-        );
+    (activeTab === "All" ? activities : activities.filter((a) => a.title.toLowerCase().includes(activeTab.toLowerCase())))
+      .filter((a) => filterType === "All" || a.title === filterType);
 
   const handleActionClick = (label: string) => {
     setActiveAction(label);
@@ -613,7 +610,7 @@ export default function AdminDashboardPage() {
               "Total Verified User",
               "Total Inheritance Span",
               "Open Disputes",
-            ].map((label, idx) => (
+            ].map((label) => (
               <div
                 key={label}
                 className="flex-1 rounded-[8px] py-[24px] sm:py-[32px] px-[10px] sm:px-[20px] bg-[#182024] h-[100px] sm:h-[132px] flex flex-col gap-2 items-center justify-center min-w-[110px] transition-all duration-200 cursor-pointer hover:shadow-[0_0_16px_0_#33C5E0] hover:bg-[#1C252A] active:scale-[0.98]"
@@ -700,7 +697,7 @@ export default function AdminDashboardPage() {
             <h2 className="text-[13px] sm:text-[14px] text-[#BFC6C8] font-medium">
               RECENT ACTIVITIES
             </h2>
-            <h3 className="cursor-pointer hover:text-[#33C5E0] transition-colors duration-150">
+            <h3 className="cursor-pointer hover:text-[#33C5E0] transition-colors duration-150" onClick={() => setShowFilterModal(true)}>
               <Image
                 src="/assets/icons/filter.svg"
                 alt="filter icon"
@@ -713,6 +710,40 @@ export default function AdminDashboardPage() {
               </span>
             </h3>
           </div>
+          {/* Filter Modal */}
+          {showFilterModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+              <div className="bg-[#182024] rounded-[16px] p-6 w-[90vw] max-w-[340px] shadow-lg border border-[#222] flex flex-col gap-4">
+                <h4 className="text-lg font-semibold text-[#33C5E0] mb-2">Filter Activities</h4>
+                <label className="text-[#BFC6C8] text-sm mb-2">Activity Type</label>
+                <select
+                  className="w-full rounded-[8px] border border-[#222] bg-[#161E22] text-[#FCFFFF] py-2 px-3 mb-4"
+                  value={filterType}
+                  onChange={e => setFilterType(e.target.value)}
+                >
+                  <option value="All">All</option>
+                  <option value="User Verification">User Verification</option>
+                  <option value="Support Ticket">Support Ticket</option>
+                  <option value="Inheritance Plan">Inheritance Plan</option>
+                  <option value="Platform Transaction">Platform Transaction</option>
+                </select>
+                <div className="flex gap-2 justify-end">
+                  <button
+                    className="px-4 py-2 rounded-[8px] bg-[#33C5E0] text-[#161E22] font-semibold"
+                    onClick={() => setShowFilterModal(false)}
+                  >
+                    Apply
+                  </button>
+                  <button
+                    className="px-4 py-2 rounded-[8px] bg-[#222] text-[#BFC6C8] font-semibold"
+                    onClick={() => setShowFilterModal(false)}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
           {/* Tabs */}
           <ul className="flex max-w-[400px] md:max-w-full flex-nowrap items-center border-t border-[#1C252A] mt-[.7rem] text-[#BFC6C8] text-[13px] sm:text-[14px] px-2 sm:px-6 overflow-x-auto gap-x-2 sm:gap-x-6 hide-scrollbar">
             {[
@@ -765,7 +796,7 @@ export default function AdminDashboardPage() {
       </div>
       <div className="hidden lg:flex flex-row lg:flex-col gap-2 w-full lg:w-auto justify-between lg:justify-start">
         {["Total Verified User", "Total Inheritance Span", "Open Disputes"].map(
-          (label, idx) => (
+          (label) => (
             <div
               key={label}
               className="flex-1 lg:w-[200px] rounded-[8px] py-[24px] sm:py-[32px] px-[10px] sm:px-[20px] bg-[#182024] h-[100px] sm:h-[132px] flex flex-col gap-2 items-center justify-center min-w-[110px] transition-all duration-200 cursor-pointer hover:shadow-[0_0_16px_0_#33C5E0] hover:bg-[#1C252A] active:scale-[0.98]"
