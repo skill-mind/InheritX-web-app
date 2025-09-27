@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Image from "next/image";
+import DisputeModal, { DisputeTicket } from "../../disputes/DisputeModal";
 
 interface SupportTicket {
   id: number;
@@ -20,6 +21,8 @@ interface Props {
 const SupportTicketTable: React.FC<Props> = ({ tickets }) => {
   const [actionOpenIdx, setActionOpenIdx] = useState<number | null>(null);
   const [activeTab, setActiveTab] = useState<'Open' | 'Pending' | 'Resolved' | 'Closed'>('Open');
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedTicket, setSelectedTicket] = useState<DisputeTicket | null>(null);
 
   // Filter tickets by status for the selected tab
   const filteredTickets = tickets.filter(ticket => {
@@ -30,8 +33,21 @@ const SupportTicketTable: React.FC<Props> = ({ tickets }) => {
     return true;
   });
 
+  // Helper to convert SupportTicket to DisputeTicket
+  const toDisputeTicket = (ticket: SupportTicket): DisputeTicket => ({
+    id: String(ticket.ticketId),
+    issue: ticket.issue,
+    plan: ticket.plan,
+    user: ticket.user,
+    priority: ticket.priority,
+    status: ticket.status,
+    timestamp: ticket.timestamp || "",
+  });
+
   return (
     <div className="bg-[#182024] mt-[2rem] w-full min-h-[376px] rounded-[24px] py-[24px] px-[8px] sm:px-[16px] md:px-[24px] overflow-x-auto">
+      {/* Dispute Modal */}
+      <DisputeModal open={modalOpen} ticket={selectedTicket} onClose={() => setModalOpen(false)} />
       {/* Tabs */}
       <div className="flex gap-4 mb-6 border-b border-[#1C252A]">
         {['Open', 'Pending', 'Resolved', 'Closed'].map(tab => (
@@ -132,12 +148,12 @@ const SupportTicketTable: React.FC<Props> = ({ tickets }) => {
               </td>
               <td className="py-4 px-2">
                 <div className="flex gap-2">
-                  <button className="bg-[#232B2F] border border-[#425558] text-[#BFC6C8] px-5 py-2 rounded-[16px] text-[12px] font-medium hover:bg-[#232B2F]/80">
-                    ESCALATE
-                  </button>
-                  <button className="bg-[#33C5E0] text-[#161E22] px-5 py-2 rounded-[16px] text-[12px] font-semibold hover:bg-cyan-400">
-                    APPROVE
-                  </button>
+                  {activeTab !== 'Closed' && (
+                    <button className="bg-[#33C5E0] text-[#161E22] px-5 py-2 rounded-[16px] text-[12px] text-nowrap font-semibold hover:bg-cyan-400 cursor-pointer transition-all duration-150"
+                      onClick={() => { setSelectedTicket(toDisputeTicket(ticket)); setModalOpen(true); }}>
+                      RESOLVE DISPUTE
+                    </button>
+                  )}
                 </div>
               </td>
               <td className="py-4 px-2 text-right">
@@ -223,13 +239,11 @@ const SupportTicketTable: React.FC<Props> = ({ tickets }) => {
                 {ticket.status}
               </span>
             </div>
-            {actionOpenIdx === idx && (
+            {actionOpenIdx === idx && activeTab !== 'Closed' && (
               <div className="flex gap-2 mt-2">
-                <button className="flex-1 bg-[#232B2F] border border-[#425558] text-[#BFC6C8] py-2 rounded-[16px] text-[12px] font-medium hover:bg-[#232B2F]/80">
-                  ESCALATE
-                </button>
-                <button className="flex-1 bg-[#33C5E0] text-[#161E22] py-2 rounded-[16px] text-[12px] font-semibold hover:bg-cyan-400">
-                  APPROVE
+                <button className="flex-1 bg-[#33C5E0] text-[#161E22] py-2 rounded-[16px] text-[12px] font-semibold hover:bg-cyan-400 cursor-pointer transition-all duration-150"
+                  onClick={() => { setSelectedTicket(toDisputeTicket(ticket)); setModalOpen(true); }}>
+                  RESOLVE DISPUTE
                 </button>
               </div>
             )}
