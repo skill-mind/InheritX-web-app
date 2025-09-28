@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Home, Activity, ShieldCheck, FileCheck } from "lucide-react";
 
-export default function AdminSidebar() {
+export default function AdminSidebar({ modalOpen = false }: { modalOpen?: boolean } = {}) {
   const pathname = usePathname();
 
   return (
@@ -85,20 +85,20 @@ export default function AdminSidebar() {
         </nav>
       </aside>
       {/* Mobile Bottom Navbar */}
-      <nav className="fixed md:hidden p-[16px] bottom-0 left-0 right-0 z-50 bg-[#161E22] border-t border-[#33C5E014] text-[12px] flex justify-around items-center">
+      <nav className="fixed md:hidden p-[16px] bottom-0 left-0 right-0 z-50 bg-[#161E22] border-t border-[#33C5E014] text-[12px] flex justify-around items-center transition-opacity duration-200">
         <Link
           href="/admin"
-          className={`flex flex-col items-center flex-1 py-2 rounded-t-[16px] rounded-b-[4px] transition-all duration-200 ${
-            pathname === "/admin" ? "bg-[#1C252A]" : ""
+          className={`flex cursor-pointer flex-col items-center flex-1 py-2 rounded-t-[16px] rounded-b-[4px] transition-all duration-200 hover:bg-[#232B2F] hover:text-cyan-400 group ${
+            pathname === "/admin" ? "bg-[#1C252A] text-cyan-400" : "text-[#BFC6C8]"
           }`}
         >
           <Home
-            className={`w-[20px] h-[20px] mb-1 ${
+            className={`w-[20px] h-[20px] mb-1 group-hover:text-cyan-400 transition-colors duration-200 ${
               pathname === "/admin" ? "text-cyan-400" : "text-[#BFC6C8]"
             }`}
           />
           <span
-            className={`text-xs font-semibold ${
+            className={`text-xs font-semibold group-hover:text-cyan-400 transition-colors duration-200 ${
               pathname === "/admin" ? "text-cyan-400" : "text-[#BFC6C8]"
             }`}
           >
@@ -107,19 +107,19 @@ export default function AdminSidebar() {
         </Link>
         <Link
           href="/admin/kyc"
-          className={`flex flex-col items-center flex-1 py-2 rounded-t-[16px] rounded-b-[4px] transition-all duration-200 ${
-            pathname.startsWith("/admin/kyc") ? "bg-[#1C252A]" : ""
+          className={`flex cursor-pointer flex-col items-center flex-1 py-2 rounded-t-[16px] rounded-b-[4px] transition-all duration-200 hover:bg-[#232B2F] hover:text-cyan-400 group ${
+            pathname.startsWith("/admin/kyc") ? "bg-[#1C252A] text-cyan-400" : "text-[#BFC6C8]"
           }`}
         >
           <FileCheck
-            className={`w-[20px] h-[20px] mb-1 ${
+            className={`w-[20px] h-[20px] mb-1 group-hover:text-cyan-400 transition-colors duration-200 ${
               pathname.startsWith("/admin/kyc")
                 ? "text-cyan-400"
                 : "text-[#BFC6C8]"
             }`}
           />
           <span
-            className={`text-xs font-semibold ${
+            className={`text-xs font-semibold group-hover:text-cyan-400 transition-colors duration-200 ${
               pathname.startsWith("/admin/kyc")
                 ? "text-cyan-400"
                 : "text-[#BFC6C8]"
@@ -130,19 +130,19 @@ export default function AdminSidebar() {
         </Link>
         <Link
           href="/admin/disputes"
-          className={`flex flex-col items-center flex-1 py-2 rounded-t-[16px] rounded-b-[4px] transition-all duration-200 ${
-            pathname.startsWith("/admin/disputes") ? "bg-[#1C252A]" : ""
+          className={`flex flex-col items-center flex-1 py-2 rounded-t-[16px] rounded-b-[4px] transition-all duration-200 hover:bg-[#232B2F] hover:text-cyan-400 group ${
+            pathname.startsWith("/admin/disputes") ? "bg-[#1C252A] text-cyan-400" : "text-[#BFC6C8]"
           }`}
         >
           <ShieldCheck
-            className={`w-[20px] h-[20px] mb-1 ${
+            className={`w-[20px] h-[20px] mb-1 group-hover:text-cyan-400 transition-colors duration-200 ${
               pathname.startsWith("/admin/disputes")
                 ? "text-cyan-400"
                 : "text-[#BFC6C8]"
             }`}
           />
           <span
-            className={`text-xs font-semibold ${
+            className={`text-xs font-semibold group-hover:text-cyan-400 transition-colors duration-200 ${
               pathname.startsWith("/admin/disputes")
                 ? "text-cyan-400"
                 : "text-[#BFC6C8]"
@@ -153,21 +153,21 @@ export default function AdminSidebar() {
         </Link>
         <Link
           href="/admin/platform-activity"
-          className={`flex flex-col items-center flex-1 py-2 rounded-t-[16px] rounded-b-[4px] transition-all duration-200 ${
+          className={`flex flex-col items-center flex-1 py-2 rounded-t-[16px] rounded-b-[4px] transition-all duration-200 hover:bg-[#232B2F] hover:text-cyan-400 group ${
             pathname.startsWith("/admin/platform-activity")
-              ? "bg-[#1C252A]"
-              : ""
+              ? "bg-[#1C252A] text-cyan-400"
+              : "text-[#BFC6C8]"
           }`}
         >
           <Activity
-            className={`w-[20px] h-[20px] mb-1 ${
+            className={`w-[20px] h-[20px] mb-1 group-hover:text-cyan-400 transition-colors duration-200 ${
               pathname.startsWith("/admin/platform-activity")
                 ? "text-cyan-400"
                 : "text-[#BFC6C8]"
             }`}
           />
           <span
-            className={`text-xs font-semibold ${
+            className={`text-xs font-semibold group-hover:text-cyan-400 transition-colors duration-200 ${
               pathname.startsWith("/admin/platform-activity")
                 ? "text-cyan-400"
                 : "text-[#BFC6C8]"

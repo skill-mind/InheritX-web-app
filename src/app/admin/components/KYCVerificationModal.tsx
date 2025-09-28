@@ -108,7 +108,7 @@ export default function UserVerificationRequestModal({
               alt="back Icon"
               width={15}
               height={12.5}
-              className="inline-block mr-2"
+              className="inline-block mr-2 cursor-pointer"
             />
             <span>USER VERIFICATION REQUEST</span>
           </span>
@@ -229,7 +229,7 @@ export default function UserVerificationRequestModal({
         {/* Action Buttons */}
         <div className="flex flex-col md:flex-row gap-3 md:gap-4 mt-2">
           <button
-            className="flex-1 bg-[#222C32] text-[#FCFFFF] hover:bg-[#1C252A] rounded-full py-3 font-medium text-[14px] border border-[#222C32]"
+            className="flex-1 cursor-pointer bg-[#222C32] text-[#FCFFFF] hover:bg-[#1C252A] rounded-full py-3 font-medium text-[14px] border border-[#222C32]"
             onClick={() => setShowMessageModal(true)}
           >
             <Image
@@ -242,7 +242,7 @@ export default function UserVerificationRequestModal({
             <span> Message User</span>
           </button>
           <button
-            className="flex-1 bg-[#222C32] text-[#F87171] hover:bg-[#1C252A] rounded-full py-3 font-medium text-[14px] border border-[#222C32]"
+            className="flex-1 cursor-pointer bg-[#222C32] text-[#F87171] hover:bg-[#1C252A] rounded-full py-3 font-medium text-[14px] border border-[#222C32]"
             onClick={onReject}
           >
             <Image
@@ -255,7 +255,7 @@ export default function UserVerificationRequestModal({
             <span> Reject KYC</span>
           </button>
           <button
-            className="flex-1 bg-[#33C5E0] text-[#161E22] hover:bg-cyan-600 rounded-full py-3 font-semibold text-[15px] border border-[#33C5E0]"
+            className="flex-1 cursor-pointer bg-[#33C5E0] text-[#161E22] hover:bg-cyan-600 rounded-full py-3 font-semibold text-[15px] border border-[#33C5E0]"
             onClick={onApprove}
           >
             <Image

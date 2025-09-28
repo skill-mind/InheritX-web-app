@@ -100,13 +100,13 @@ export default function DisputesPage() {
         </nav>
         {/* Table */}
         <div className="bg-[#182024] border-none rounded-[24px] p-[8px] md:p-[24px] backdrop-blur-md shadow-sm border overflow-x-auto">
-          <table className="min-w-full text-left">
+          <table className="min-w-full w-full text-left">
             <thead>
               <tr className="text-[#92A5A8] text-[14px] font-normal">
                 <th className="py-3 px-4">Ticket ID</th>
                 <th className="py-3 px-4">User/Plan Involved</th>
                 <th className="py-3 px-4">Priority</th>
-                <th className="py-3 px-4">Status</th>
+                <th className="py-3 px-4 hidden md:table-cell">Status</th>
                 <th className="py-3 px-4">Action</th>
                 <th className="py-3 px-2 text-right"> </th>
               </tr>
@@ -131,33 +131,35 @@ export default function DisputesPage() {
                       />
                     </div>
                   </td>
-                  <td
-                    className={`py-3 px-4 font-semibold text-xs`}
-                  >
+                  <td className={`py-3 px-4 font-semibold text-xs`}>
                     <span
                       className={`px-3 py-1 rounded-full text-xs font-semibold transition-all duration-150 cursor-default inline-block ${STATUS_COLORS[row.status?.toUpperCase() as keyof typeof STATUS_COLORS] || ''} ${PRIORITY_COLORS[row.priority?.toUpperCase() as keyof typeof PRIORITY_COLORS] || ''}`}
                     >
                       {row.priority}
                     </span>
                   </td>
-                  <td className="py-3 px-4">
+                  {/* Status column: hidden on mobile */}
+                  <td className="py-3 px-4 hidden md:table-cell">
                     <span
                       className={`px-3 py-1 rounded-full text-xs font-semibold transition-all duration-150 cursor-default`}
                     >
                       {row.status}
                     </span>
                   </td>
+                  {/* Action column: desktop shows button, mobile shows More icon */}
                   <td className="py-3 px-4">
                     <button
-                      className="px-4 py-2 rounded-[24px] text-[12px] font-semibold transition-all duration-150 cursor-pointer hover:shadow-[0_0_8px_0_#33C5E0] hover:bg-[#33C5E0] hover:text-[#161E22] active:scale-[0.98]"
+                      className="px-4 py-2 rounded-[24px] text-[12px] font-semibold transition-all duration-150 cursor-pointer hover:shadow-[0_0_8px_0_#33C5E0] hover:bg-[#33C5E0] hover:text-[#161E22] active:scale-[0.98] hidden md:inline-block"
                       style={{ background: ACCENT, color: BG }}
                       onClick={() => { setSelectedTicket(row); setModalOpen(true); }}
                     >
                       RESOLVE DISPUTE
                     </button>
-                  </td>
-                  <td className="py-3 px-2 text-right">
-                    <button className="text-slate-400 hover:text-white transition-colors duration-150 cursor-pointer">
+                    <button
+                      className="text-slate-400 hover:text-white transition-colors duration-150 cursor-pointer flex md:hidden items-center justify-center w-8 h-8 rounded-full hover:bg-[#232B2F]"
+                      aria-label="More actions"
+                      onClick={() => { setSelectedTicket(row); setModalOpen(true); }}
+                    >
                       <svg
                         width="20"
                         height="20"
@@ -170,6 +172,8 @@ export default function DisputesPage() {
                       </svg>
                     </button>
                   </td>
+                  {/* Empty cell for spacing/alignment */}
+                  <td className="py-3 px-2 text-right"></td>
                 </tr>
               ))}
             </tbody>
@@ -177,7 +181,7 @@ export default function DisputesPage() {
         </div>
       </section>
       {/* Sidebar summary cards */}
-      <aside className="w-full lg:w-64 flex flex-row items-end lg:flex-col gap-4">
+      <aside className="w-full lg:w-64 hidden lg:flex flex-row items-end lg:flex-col gap-4">
         {summaryCards.map((card) => (
           <div
             key={card.label}

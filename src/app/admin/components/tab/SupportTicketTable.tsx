@@ -53,7 +53,7 @@ const SupportTicketTable: React.FC<Props> = ({ tickets }) => {
         {['Open', 'Pending', 'Resolved', 'Closed'].map(tab => (
           <button
             key={tab}
-            className={`px-4 py-2 text-[15px] font-medium focus:outline-none transition-all duration-150 rounded-t-[12px] -mb-px ${
+            className={`px-4 py-2 text-[15px] font-medium focus:outline-none transition-all duration-150 rounded-t-[12px] -mb-px cursor-pointer ${
               activeTab === tab
                 ? 'text-[#33C5E0] bg-[#161E22] border-b-2 border-[#33C5E0]'
                 : 'text-[#BFC6C8] bg-transparent'
@@ -186,9 +186,7 @@ const SupportTicketTable: React.FC<Props> = ({ tickets }) => {
               </div>
               <button
                 className="p-2 rounded-full hover:bg-[#222C32]"
-                onClick={() =>
-                  setActionOpenIdx(actionOpenIdx === idx ? null : idx)
-                }
+                onClick={() => setActionOpenIdx(actionOpenIdx === idx ? null : idx)}
                 aria-label="Show actions"
               >
                 <Image
@@ -239,7 +237,8 @@ const SupportTicketTable: React.FC<Props> = ({ tickets }) => {
                 {ticket.status}
               </span>
             </div>
-            {actionOpenIdx === idx && activeTab !== 'Closed' && (
+            {/* Always show RESOLVE DISPUTE on mobile if not closed */}
+            {activeTab !== 'Closed' && (
               <div className="flex gap-2 mt-2">
                 <button className="flex-1 bg-[#33C5E0] text-[#161E22] py-2 rounded-[16px] text-[12px] font-semibold hover:bg-cyan-400 cursor-pointer transition-all duration-150"
                   onClick={() => { setSelectedTicket(toDisputeTicket(ticket)); setModalOpen(true); }}>

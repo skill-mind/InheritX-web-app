@@ -67,40 +67,35 @@ const InheritancePlanModal: React.FC<InheritancePlanModalProps> = ({
     plan.notes || "Release funds monthly for upkeep of the property.";
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
-      <main className="flex flex-col gap-6 p-2 md:p-8 w-full max-w-2xl bg-[#10181B] rounded-2xl shadow-2xl relative">
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-[#FCFFFF] text-lg cursor-pointer hover-raise clickable button-focus"
-          aria-label="Close modal"
-        >
-          <Image
-            src="/assets/icons/x.svg"
-            alt="close"
-            width={24}
-            height={24}
-          />
-        </button>
-        <div className="flex items-center gap-2 mb-2">
-          <h2 className="text-lg md:text-2xl font-medium text-[#FCFFFF]">
-            Claim Plan
-          </h2>
-          <span className="text-[#92A5A8] text-[12px] md:text-[14px] ml-2">
-            To transfer inheritance to your wallet, click on the &apos;Withdraw&apos;
-            button
-          </span>
+    <div className="fixed inset-0 z-40 flex items-start md:items-center justify-center bg-[#161E22]/80 bg-opacity-60">
+      <main className="flex flex-col gap-6 p-2 md:p-8 w-full max-w-2xl bg-[#161E22] border border-[#2A3338] rounded-2xl shadow-2xl relative max-h-[90vh] overflow-y-auto scrollbar-thin scrollbar-thumb-[#232B2F] scrollbar-track-transparent mt-0 md:mt-0">   
+        <div className="flex items-center justify-between m-4">
+          <div className="flex items-center justify-between gap-2">
+            <button onClick={onClose} className="focus:outline-none cursor-pointer">
+              <Image
+                src="/assets/icons/arrowback.svg"
+                alt="back icon"
+                width={15}
+                height={12.5}
+              />
+            </button>
+            <h2 className="font-medium text-[14px] text-[#92A5A8]">INHERITANCE PLANS</h2>
+          </div>
+          <div className="w-[70px] h-[26px] rounded-[24px] border border-[#1E3F1F] bg-[#1B311C] text-[12px] text-[#0DA314] font-semibold flex items-center justify-center">
+            Active
+          </div>
         </div>
         <section className="bg-transparent">
           <div className="flex flex-col gap-4">
-            <div className="flex justify-between w-full items-center mb-2">
+            <div className="flex justify-between items-center mb-2 m-4">
               <span className="text-[16px] md:text-[18px] font-medium text-[#FCFFFF]">
                 Plan Summary
               </span>
               <button
-                className="px-6 py-2 rounded-[24px] bg-[#33C5E014] border border-[#33C5E03D] text-[#33C5E0] text-[12px] font-semibold hover:bg-cyan-400 hover:text-black cursor-pointer transition-colors hover-raise clickable"
+                className="px-6 py-2 rounded-[24px] bg-[#182024] border border-[#1C252A] text-[#425558] text-[12px] font-semibold hover:bg-cyan-400 hover:text-black cursor-pointer transition-colors hover-raise clickable"
                 onClick={onClose}
               >
-                CLOSE
+                VIEW CLAIM
               </button>
             </div>
             <div className="bg-[#161E22] rounded-[16px] p-4 md:p-6 w-full text-[13px] md:text-[15px] text-[#FCFFFF]">

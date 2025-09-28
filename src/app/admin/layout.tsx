@@ -1,5 +1,7 @@
 import AdminHeader from "./components/header/Header";
 import AdminSidebar from "./components/navbar/Navbar";
+import "./dashboard-fadein.css";
+
 
 export default function AdminLayout({
   children,
@@ -19,3 +21,4 @@ export default function AdminLayout({
     </div>
   );
 }
+

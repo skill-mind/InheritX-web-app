@@ -32,7 +32,7 @@ export default function MessageUserModal({
       <div className="relative w-[812px] h-[510px] mx-4 md:mx-0 rounded-[24px] bg-[#161E22] border border-[#2A3338] p-8 md:p-12 shadow-xl flex flex-col gap-8">
         {/* Header */}
         <div className="flex items-center mb-2">
-          <button onClick={onClose} className="mr-2">
+          <button onClick={onClose} className="mr-2 cursor-pointer">
             <Image src="/assets/icons/back.svg" alt="back" width={18} height={15} />
           </button>
           <span className="text-[#92A5A8] text-[14px] font-medium">
@@ -79,14 +79,14 @@ export default function MessageUserModal({
           <div className="flex flex-col md:flex-row gap-4 w-full mt-4">
             <button
               type="button"
-              className="flex-1 bg-[#222C32] text-[#FCFFFF] hover:bg-[#1C252A] rounded-full py-3 font-medium text-[16px] border border-[#222C32]"
+              className="flex-1 cursor-pointer bg-[#222C32] text-[#FCFFFF] hover:bg-[#1C252A] rounded-full py-3 font-medium text-[16px] border border-[#222C32]"
               onClick={onClose}
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="flex-1 bg-[#33C5E0] text-[#161E22] hover:bg-cyan-600 rounded-full py-3 font-semibold text-[16px] border border-[#33C5E0] disabled:opacity-60"
+              className="flex-1 cursor-pointer bg-[#33C5E0] text-[#161E22] hover:bg-cyan-600 rounded-full py-3 font-semibold text-[16px] border border-[#33C5E0] disabled:opacity-60"
               disabled={!subject.trim() || !message.trim()}
             >
               Send Message

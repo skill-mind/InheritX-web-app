@@ -177,18 +177,17 @@ const InheritancePlanTable: React.FC<Props> = ({ plans }) => {
               <span className="text-[#92A5A8]">Claim Date:</span>
               <span>{plan.claimDate}</span>
             </div>
-            {actionOpenIdx === idx && (
-              <div className="flex gap-2 mt-2">
-                <button className="flex-1 bg-[#232B2F] border border-[#425558] text-[#BFC6C8] py-2 rounded-[16px] text-[12px] font-medium hover:bg-[#232B2F]/80"
-                  onClick={() => { setActionOpenIdx(null); setShowClaimIdx(idx); }}>
-                  VIEW
-                </button>
-                <button className="flex-1 bg-[#33C5E0] text-[#161E22] py-2 rounded-[16px] text-[12px] font-semibold hover:bg-cyan-400"
-                  onClick={() => setShowModalIdx(idx)}>
-                  VIEW CLAIM
-                </button>
-              </div>
-            )}
+            {/* Always show VIEW and VIEW CLAIM on mobile */}
+            <div className="flex gap-2 mt-2">
+              <button className="flex-1 cursor-pointer bg-[#232B2F] border border-[#425558] text-[#BFC6C8] py-2 rounded-[16px] text-[12px] font-medium hover:bg-[#232B2F]/80"
+                onClick={() => { setActionOpenIdx(null); setShowClaimIdx(idx); }}>
+                VIEW
+              </button>
+              <button className="flex-1 cursor-pointer bg-[#33C5E0] text-[#161E22] py-2 rounded-[16px] text-[12px] font-semibold hover:bg-cyan-400"
+                onClick={() => setShowModalIdx(idx)}>
+                VIEW CLAIM
+              </button>
+            </div>
           </div>
         ))}
       </div>

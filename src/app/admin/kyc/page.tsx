@@ -146,15 +146,15 @@ export default function KycAdminPage() {
   });
 
   return (
-    <main className="min-h-screen w-full flex flex-col justify-between lg:flex-row gap-6">
+    <main className="min-h-screen w-full flex flex-col justify-between md:flex-row gap-6">
       {/* Main content */}
       <section className="flex-1 flex flex-col gap-6">
         {/* Header */}
         <div className="flex items-center gap-2 mb-2">
           <button
-            className="text-slate-300 text-lg mr-2"
+            className="text-slate-300 text-lg mr-2 cursor-pointer"
             aria-label="Back"
-            onClick={() => router.push("/admin/dashboard")}
+            onClick={() => router.push("/admin")}
           >
             <Image
               src="/assets/icons/back.svg"
@@ -180,7 +180,7 @@ export default function KycAdminPage() {
           </div>
         </div>
         {/* Tabs */}
-        <nav className="flex gap-2 border-t border-[#1C252A] mb-2">
+        <nav className="flex gap-2 border-t border-[#1C252A] mb-2 ">
           {tabs.map((tab) => (
             <button
               key={tab}
@@ -196,63 +196,60 @@ export default function KycAdminPage() {
           ))}
         </nav>
         {/* Table */}
-        <div className="bg-[#182024] border-none rounded-[24px] p-[8px] md:p-[24px] backdrop-blur-md shadow-sm border overflow-x-auto">
-          <table className="min-w-full text-left">
+        <div className=" max-w-full overflow-x-auto bg-[#182024] border-none rounded-[24px] p-2 sm:p-4 md:p-[24px] backdrop-blur-md shadow-sm border">
+          <table className="min-w-[400px] w-full text-left">
             <thead>
-              <tr className="text-[#92A5A8] text-[14px] font-normal">
-                <th className="py-3 px-4">Username</th>
-                <th className="py-3 px-4">Verification Type</th>
-                <th className="py-3 px-4">Status</th>
-                <th className="py-3 px-4">Timestamp</th>
-                <th className="py-3 px-4">Action</th>
-                <th className="py-3 px-2 text-right"> </th>
+              <tr className="text-[#92A5A8] text-[14px] font-normal align-middle">
+                <th className="py-3 px-4 align-middle">Username</th>
+                <th className="py-3 px-4 align-middle">Verification Type</th>
+                <th className="py-3 px-4 align-middle">Status</th>
+                <th className="py-3 px-4 hidden md:table-cell align-middle">Timestamp</th>
+                <th className="py-3 px-4 text-center align-middle">Action</th>
               </tr>
             </thead>
             <tbody>
               {filtered.map((row, idx) => (
                 <tr
                   key={row.id}
-                  className="border-b border-white/10 last:border-b-0 transition-colors duration-200 hover:bg-[#222C32] cursor-pointer"
+                  className="border-b border-white/10 last:border-b-0 transition-colors duration-200 hover:bg-[#222C32] cursor-pointer align-middle"
                   onClick={() => setSelectedRow(row)}
                 >
-                  <td className="py-3 px-4 text-[#FCFFFF] text-sm font-normal group">
+                  <td className="py-3 px-4 text-[#FCFFFF] text-sm font-normal group align-middle">
                     <span className="transition-colors duration-200 group-hover:text-[#33C5E0]">{idx + 1}. {row.username}</span>
                   </td>
-                  <td className="py-3 px-4 text-[#FCFFFF] text-sm group">
+                  <td className="py-3 px-4 text-[#FCFFFF] text-sm group align-middle">
                     <span className="transition-colors duration-200 group-hover:text-[#33C5E0]">{row.verificationType}</span>
                   </td>
-                  <td className="py-3 px-4">
+                  <td className="py-3 px-4 align-middle">
                     <span
                       className={`px-3 py-1 rounded-full text-xs font-semibold ${STATUS_COLORS[row.status]} transition-colors duration-200 group-hover:shadow-[0_0_8px_0_#33C5E0]`}
                     >
                       {row.status.toUpperCase()}
                     </span>
                   </td>
-                  <td className="py-3 px-4 text-[#FCFFFF] font-normal text-sm group">
+                  <td className="py-3 px-4 hidden md:table-cell text-[#FCFFFF] font-normal text-sm group align-middle">
                     <span className="transition-colors duration-200 group-hover:text-[#33C5E0]">{row.timestamp}</span>
                   </td>
-                  <td className="py-3 px-4">
-                    <div className="flex gap-2">
+                  <td className="py-3 px-4 text-center align-middle">
+                    {/* Desktop: Show Approve/Reject, Mobile: Show More icon */}
+                    <div className="hidden md:flex gap-2 items-center justify-center">
                       <button className="px-4 py-2 rounded-[24px] text-[12px] font-semibold bg-[#33C5E014] text-[#BFC6C8] border border-[#33C5E03D] hover:bg-[#2a3a44] hover:text-[#33C5E0] transition-colors duration-200 cursor-pointer active:scale-95">
                         REJECT
                       </button>
                       <button
                         className="px-4 py-2 rounded-[24px] text-[12px] font-semibold transition-colors duration-200 cursor-pointer active:scale-95 hover:shadow-[0_0_8px_0_#33C5E0]"
                         style={{ background: ACCENT, color: BG }}
-                        onClick={() => { setSelectedRow(row); setModalOpen(true); }}
+                        onClick={e => { e.stopPropagation(); setSelectedRow(row); setModalOpen(true); }}
                       >
                         APPROVE
                       </button>
                     </div>
-                  </td>
-                  <td className="py-3 px-2 text-right">
-                    <button className="text-slate-400 hover:text-[#33C5E0] transition-colors duration-200 cursor-pointer active:scale-95">
-                      <svg
-                        width="20"
-                        height="20"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
+                    <button
+                      className="md:hidden flex cursor-pointer items-center justify-center w-8 h-8 rounded-full hover:bg-[#232B2F] transition-colors duration-200 align-middle"
+                      onClick={e => { e.stopPropagation(); setSelectedRow(row); setModalOpen(true); }}
+                      aria-label="More actions"
+                    >
+                      <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
                         <circle cx="5" cy="12" r="2" fill="currentColor" />
                         <circle cx="12" cy="12" r="2" fill="currentColor" />
                         <circle cx="19" cy="12" r="2" fill="currentColor" />
@@ -266,7 +263,7 @@ export default function KycAdminPage() {
         </div>
       </section>
       {/* Sidebar summary cards */}
-      <aside className="w-full lg:w-64 flex flex-row items-end lg:flex-col gap-4">
+      <aside className="w-full hidden md:w-64 md:flex flex-row items-end md:flex-col gap-4">
         {summaryCards.map((card) => (
           <div
             key={card.label}
