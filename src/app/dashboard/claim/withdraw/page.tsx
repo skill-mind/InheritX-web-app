@@ -13,7 +13,7 @@ const plan = {
     avatar: "/assets/icons/avatar.svg",
     link: "#",
   },
-  assets: "Tokens, NFTs, Real-World Assets",
+  assets: "Tokens, Real-World Assets",
   wallet: "0xajoer....apro",
   executeOn: "16/04/2027",
 };
@@ -192,40 +192,6 @@ export default function ClaimWithdrawPage() {
                   </button>
                 </div>
               </div>
-              {/* NFTs */}
-              <div>
-                <div className="text-[#92A5A8] text-[12px] font-normal mb-2">
-                  NFTs
-                </div>
-                <div className="bg-[#182024] rounded-[12px] p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 hover-raise clickable">
-                  <div className="flex items-center gap-3">
-                    <Image
-                      src="/assets/icons/nft1.svg"
-                      alt="Monkey Art"
-                      width={20}
-                      height={20}
-                    />
-                    <span className="font-normal text-[#FCFFFF] text-[14px]">
-                      Monkey Art
-                    </span>
-                  </div>
-                  <div className="flex flex-col items-start md:items-center gap-1">
-                    <span className="text-[#FCFFFF] text-[15px] font-bold">
-                      3
-                    </span>
-                    <span className="text-[#92A5A8] text-[13px]">$850.00</span>
-                  </div>
-                  <span className="text-[#FCFFFF] font-normal text-[14px]">
-                    30%
-                  </span>
-                  <button
-                    className="cursor-pointer px-6 py-2 rounded-[24px] bg-[#33C5E0] text-[#161E22] text-[13px] font-semibold hover:bg-cyan-400 transition-colors hover-raise clickable"
-                    onClick={() => setShowSuccess(true)}
-                  >
-                    WITHDRAW
-                  </button>
-                </div>
-              </div>
               {/* RWA */}
               <div>
                 <div className="text-[#92A5A8] text-[12px] font-normal mb-2">
@@ -379,16 +345,28 @@ export default function ClaimWithdrawPage() {
       />
       <style jsx>{`
         .hover-raise {
-          transition: transform .16s cubic-bezier(.2,.9,.2,1), box-shadow .16s ease;
+          transition: transform 0.16s cubic-bezier(0.2, 0.9, 0.2, 1),
+            box-shadow 0.16s ease;
         }
         .hover-raise:hover {
           transform: translateY(-4px);
-          box-shadow: 0 8px 24px rgba(3,10,14,0.36);
+          box-shadow: 0 8px 24px rgba(3, 10, 14, 0.36);
         }
-        .image-tile { transition: transform .18s ease, box-shadow .18s ease; }
-        .image-tile:hover { transform: scale(1.03); box-shadow: 0 10px 30px rgba(0,0,0,0.28); }
-        .clickable { cursor: pointer; }
-        .button-focus:focus-visible { outline: 2px solid rgba(51,197,224,0.12); outline-offset: 2px; border-radius: 8px; }
+        .image-tile {
+          transition: transform 0.18s ease, box-shadow 0.18s ease;
+        }
+        .image-tile:hover {
+          transform: scale(1.03);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+        }
+        .clickable {
+          cursor: pointer;
+        }
+        .button-focus:focus-visible {
+          outline: 2px solid rgba(51, 197, 224, 0.12);
+          outline-offset: 2px;
+          border-radius: 8px;
+        }
       `}</style>
     </main>
   );

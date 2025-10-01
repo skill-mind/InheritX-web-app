@@ -30,6 +30,8 @@ const PreviewPageContent = () => {
     formData.selectedBeneficiaries.includes(b.id)
   );
 
+  console.log("form data: ", formData);
+
   // Calculate asset percentages
   // const totalAssetAmount = formData.assets.reduce(
   //   (sum, asset) => sum + asset.amount,

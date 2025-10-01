@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "InheritX - Securing Digital Legacies Through Blockchain Technology",
   description:
-    "InheritX is a revolutionary platform for digital asset inheritance. Leveraging StarkNet’s Layer 2 solution, InheritX ensures secure, automated, and trustless transfer of cryptocurrencies and NFTs to designated heirs—empowering you to safeguard your digital legacy with cutting-edge blockchain technology.",
+    "InheritX is a revolutionary platform for digital asset inheritance. Leveraging StarkNet's Layer 2 solution, InheritX ensures secure, automated, and trustless transfer of cryptocurrencies to designated heirs—empowering you to safeguard your digital legacy with cutting-edge blockchain technology.",
   keywords: [
     "digital inheritance",
     "blockchain",

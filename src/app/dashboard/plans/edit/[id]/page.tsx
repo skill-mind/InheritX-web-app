@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { useRouter, useParams } from "next/navigation";
 import { usePlanDetails } from "@/hooks/useBlockchain";
+import { getAssetTypeString, formatAssetAmount } from "@/lib/utils";
 
 const EditPlanPage = () => {
   const router = useRouter();
@@ -117,8 +118,15 @@ const EditPlanPage = () => {
               CURRENT ASSETS:
             </span>
             <p className="text-[#FCFFFF]">
-              {planDetails?.asset_amount}{" "}
-              {planDetails?.asset_type?.toString() || "Unknown"}
+              {planDetails?.asset_amount !== undefined
+                ? formatAssetAmount(
+                    Number(planDetails.asset_amount),
+                    Number(planDetails.asset_type)
+                  )
+                : "0"}{" "}
+              {planDetails?.asset_type !== undefined
+                ? getAssetTypeString(Number(planDetails.asset_type))
+                : "Unknown"}
             </p>
           </div>
           <div>
@@ -182,8 +190,15 @@ const EditPlanPage = () => {
                   Current Assets
                 </h4>
                 <p className="text-[#BFC6C8] text-[14px]">
-                  {planDetails?.asset_amount}{" "}
-                  {planDetails?.asset_type?.toString() || "Unknown"}
+                  {planDetails?.asset_amount !== undefined
+                    ? formatAssetAmount(
+                        Number(planDetails.asset_amount),
+                        Number(planDetails.asset_type)
+                      )
+                    : "0"}{" "}
+                  {planDetails?.asset_type !== undefined
+                    ? getAssetTypeString(Number(planDetails.asset_type))
+                    : "Unknown"}
                 </p>
               </div>
             </div>

@@ -160,9 +160,7 @@ export default function AdminDashboardPage() {
       dateSubmitted: "08 Aug 2025, 9:30 AM",
       verificationType: "Document",
       status: "PENDING",
-      documents: [
-        { src: "/assets/images/doc.svg", label: "Driver's License" },
-      ],
+      documents: [{ src: "/assets/images/doc.svg", label: "Driver's License" }],
       activityHistory: [
         { text: "User submitted verification request.", date: "08 Aug 2025" },
       ],
@@ -175,9 +173,7 @@ export default function AdminDashboardPage() {
       dateSubmitted: "07 Aug 2025, 2:00 PM",
       verificationType: "Biometric",
       status: "APPROVED",
-      documents: [
-        { src: "/assets/images/doc.svg", label: "ID Card" },
-      ],
+      documents: [{ src: "/assets/images/doc.svg", label: "ID Card" }],
       activityHistory: [
         { text: "User submitted verification request.", date: "07 Aug 2025" },
         { text: "Admin approved verification.", date: "08 Aug 2025" },
@@ -191,9 +187,7 @@ export default function AdminDashboardPage() {
       dateSubmitted: "06 Aug 2025, 4:45 PM",
       verificationType: "Document",
       status: "REJECTED",
-      documents: [
-        { src: "/assets/images/doc.svg", label: "Passport" },
-      ],
+      documents: [{ src: "/assets/images/doc.svg", label: "Passport" }],
       activityHistory: [
         { text: "User submitted verification request.", date: "06 Aug 2025" },
         { text: "Admin rejected verification.", date: "07 Aug 2025" },

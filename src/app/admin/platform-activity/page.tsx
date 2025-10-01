@@ -91,7 +91,7 @@ const lineOptions = {
 };
 
 const doughnutData = {
-  labels: ["ETH", "NFTs", "Real World Asset"],
+  labels: ["ETH", "STRK", "Real World Asset"],
   datasets: [
     {
       data: [10, 30, 60],
@@ -205,11 +205,13 @@ const Page = () => {
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="inline-block w-3 h-3 rounded-full bg-[#A78BFA]"></span>
-                  <span className="text-[#BFC6C8] text-[12px]">NFTs</span>
+                  <span className="text-[#BFC6C8] text-[12px]">STRK</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="inline-block w-3 h-3 rounded-full bg-[#FDBA74]"></span>
-                  <span className="text-[#BFC6C8] text-[12px]">Real World Asset</span>
+                  <span className="text-[#BFC6C8] text-[12px]">
+                    Real World Asset
+                  </span>
                 </div>
               </div>
             </div>

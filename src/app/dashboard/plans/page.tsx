@@ -14,6 +14,7 @@ import {
   usePlanDetails,
 } from "@/hooks/useBlockchain";
 import { InheritXAbi } from "@/abi/abi";
+import { formatAssetAmount, getAssetTypeString } from "@/lib/utils";
 // import AutoSwapperPage from "./auto-swapper";
 
 const tabs = ["Plans"];
@@ -259,8 +260,19 @@ const PlansPage = () => {
                               </div>
                             )}
                           </div> */}
-                          <span>{plan.plan_asset_amount}</span>{" "}
-                          <span>{plan.plan_asset_type}</span>
+                          <span>
+                            {formatAssetAmount(
+                              plan.plan_asset_amount,
+                              typeof plan.plan_asset_type === "string"
+                                ? 0
+                                : plan.plan_asset_type
+                            )}
+                          </span>{" "}
+                          <span>
+                            {typeof plan.plan_asset_type === "string"
+                              ? plan.plan_asset_type
+                              : getAssetTypeString(plan.plan_asset_type)}
+                          </span>
                         </td>
                         <td className="hidden sm:table-cell py-4 px-2 min-w-[80px]">
                           {plan.plan_beneficiary_count}
