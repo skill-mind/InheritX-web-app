@@ -11,8 +11,15 @@ interface Beneficiary {
   email: string;
 }
 
+// Contract beneficiary input structure
+interface BeneficiaryInput {
+  name: string;
+  email: string;
+  relationship: string;
+}
+
 interface Asset {
-  type: number; // u8: 0=STRK, 1=USDT, 2=USDC, 3=NFT
+  type: number; // u8: 0=STRK, 1=USDT, 2=USDC
   amount: number; // u256
   label: string; // For UI display
   icon: string; // For UI display
@@ -21,6 +28,7 @@ interface Asset {
 // Contract enums
 enum AssetType {
   STRK = 0,
+  USDT = 1,
   USDC = 2,
 }
 
@@ -38,13 +46,11 @@ interface CreatePlanContextType {
     planName: string;
     planDescription: string;
 
-    // Step 2: Add Beneficiary (single beneficiary for contract)
-    beneficiaryName: string;
-    beneficiaryRelationship: string;
-    beneficiaryEmail: string;
+    // Step 2: Add Multiple Beneficiaries (array of beneficiaries for contract)
+    contractBeneficiaries: Array<BeneficiaryInput>;
 
     // Step 3: Asset Allocation (single asset for contract)
-    assetType: number; // u8: 0=STRK, 1=USDT, 2=USDC, 3=NFT
+    assetType: number; // u8: 0=STRK, 1=USDT, 2=USDC
     assetAmount: number; // u256
 
     // Step 4: Rules for Plan Creation
@@ -91,6 +97,7 @@ interface CreatePlanContextType {
 
   // Helper functions for contract integration
   getAssetTypeFromString: (assetString: string) => number;
+  getAssetTypeToString: (assetType: number) => string;
   getDistributionMethodFromString: (methodString: string) => number;
   getDistributionParameters: () => {
     lumpSumDate: number;
@@ -108,9 +115,7 @@ const initialFormData: CreatePlanContextType["formData"] = {
   // Contract required fields
   planName: "",
   planDescription: "",
-  beneficiaryName: "",
-  beneficiaryRelationship: "",
-  beneficiaryEmail: "",
+  contractBeneficiaries: [], // Array of beneficiaries for contract
   assetType: 0, // Default to STRK
   assetAmount: 0,
   distributionMethod: 0, // Default to LumpSum
@@ -124,7 +129,7 @@ const initialFormData: CreatePlanContextType["formData"] = {
   additional_note: "",
 
   // UI fields
-  beneficiaries: [],
+  beneficiaries: [], // Add missing beneficiaries field
   selectedBeneficiaries: [],
   assets: [],
 
@@ -308,10 +313,25 @@ export function CreatePlanProvider({ children }: { children: ReactNode }) {
     switch (assetString) {
       case "STRK":
         return AssetType.STRK;
+      case "USDT":
+        return AssetType.USDT;
       case "USDC":
         return AssetType.USDC;
       default:
         return AssetType.STRK;
+    }
+  };
+
+  const getAssetTypeToString = (assetType: number): string => {
+    switch (assetType) {
+      case AssetType.STRK:
+        return "STRK";
+      case AssetType.USDT:
+        return "USDT";
+      case AssetType.USDC:
+        return "USDC";
+      default:
+        return "STRK";
     }
   };
 
@@ -364,26 +384,37 @@ export function CreatePlanProvider({ children }: { children: ReactNode }) {
     try {
       setIsSubmitting(true);
 
-      // Get the first selected beneficiary for contract
-      let selectedBeneficiary = formData.beneficiaries.find((b) =>
+      // Get selected beneficiaries for contract
+      let selectedBeneficiaries = formData.beneficiaries.filter((b) =>
         formData.selectedBeneficiaries.includes(b.id)
       );
 
-      // Fallback: if no beneficiary is selected but there are beneficiaries, select the first one
-      if (!selectedBeneficiary && formData.beneficiaries.length > 0) {
-        selectedBeneficiary = formData.beneficiaries[0];
+      // Fallback: if no beneficiaries are selected but there are beneficiaries, select all
+      if (
+        selectedBeneficiaries.length === 0 &&
+        formData.beneficiaries.length > 0
+      ) {
+        selectedBeneficiaries = formData.beneficiaries;
         // Update the selectedBeneficiaries array
         setFormData((prev) => ({
           ...prev,
-          selectedBeneficiaries: [selectedBeneficiary!.id],
+          selectedBeneficiaries: formData.beneficiaries.map((b) => b.id),
         }));
       }
 
-      if (!selectedBeneficiary) {
+      if (selectedBeneficiaries.length === 0) {
         throw new Error(
-          "No beneficiary available. Please add a beneficiary first."
+          "No beneficiaries available. Please add at least one beneficiary first."
         );
       }
+
+      // Convert UI beneficiaries to contract format
+      const contractBeneficiaries: BeneficiaryInput[] =
+        selectedBeneficiaries.map((beneficiary) => ({
+          name: beneficiary.name,
+          email: beneficiary.email,
+          relationship: beneficiary.relationship,
+        }));
 
       // Prepare distribution parameters based on selected method
       let lumpSumDate = 0;
@@ -415,23 +446,33 @@ export function CreatePlanProvider({ children }: { children: ReactNode }) {
           break;
       }
 
+      const decimals = 18; // STRK uses 18 decimals
+
+      const assetAmountInSmallestUnit = BigInt(
+        Math.floor(formData.assetAmount * Math.pow(10, decimals))
+      );
+
+      console.log("XXXX ASSET AMOUNT: ", formData.assetAmount);
+      console.log(
+        "XXXX ASSET AMOUNT IN SMALLEST UNIT: ",
+        assetAmountInSmallestUnit
+      );
+
+      console.log("XXXX ASSET AMOUNT: ", formData.assetAmount);
+
       // Prepare contract parameters
       const contractParameters = {
         plan_name: byteArray.byteArrayFromString(formData.planName),
         plan_description: byteArray.byteArrayFromString(
           formData.planDescription
         ),
-        beneficiary_name: byteArray.byteArrayFromString(
-          selectedBeneficiary.name
-        ),
-        beneficiary_relationship: byteArray.byteArrayFromString(
-          selectedBeneficiary.relationship
-        ),
-        beneficiary_email: byteArray.byteArrayFromString(
-          selectedBeneficiary.email
-        ),
+        beneficiaries: selectedBeneficiaries.map((beneficiary) => ({
+          name: byteArray.byteArrayFromString(beneficiary.name),
+          email: byteArray.byteArrayFromString(beneficiary.email),
+          relationship: byteArray.byteArrayFromString(beneficiary.relationship),
+        })),
         asset_type: BigInt(formData.assetType),
-        asset_amount: cairo.uint256(formData.assetAmount),
+        asset_amount: cairo.uint256(assetAmountInSmallestUnit), // Use converted amount
         distribution_method: BigInt(formData.distributionMethod),
         lump_sum_date: BigInt(lumpSumDate),
         quarterly_percentage: BigInt(quarterlyPercentage),
@@ -444,6 +485,7 @@ export function CreatePlanProvider({ children }: { children: ReactNode }) {
       };
 
       console.log("=== CONTRACT PARAMETERS DEBUG ===");
+      console.log("Selected Beneficiaries:", selectedBeneficiaries);
       console.log("Distribution Method:", formData.distributionMethod);
       console.log("Yearly Percentage:", yearlyPercentage);
       console.log("Quarterly Percentage:", quarterlyPercentage);
@@ -489,6 +531,7 @@ export function CreatePlanProvider({ children }: { children: ReactNode }) {
     resetForm,
     createPlan,
     getAssetTypeFromString,
+    getAssetTypeToString,
     getDistributionMethodFromString,
     getDistributionParameters,
   };

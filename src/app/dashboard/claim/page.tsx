@@ -34,12 +34,6 @@ const summaryCards = [
     actionLink: "#",
   },
   {
-    label: "NFT",
-    value: 0,
-    action: "Withraw NFT",
-    actionLink: "#",
-  },
-  {
     label: "Assets",
     value: 0,
     action: "Withraw Asset",
@@ -230,14 +224,21 @@ const ClaimPage = () => {
 
       <style jsx>{`
         .hover-raise {
-          transition: transform .18s cubic-bezier(.2,.9,.2,1), box-shadow .18s ease;
+          transition: transform 0.18s cubic-bezier(0.2, 0.9, 0.2, 1),
+            box-shadow 0.18s ease;
         }
         .hover-raise:hover {
           transform: translateY(-4px);
-          box-shadow: 0 6px 20px rgba(3,10,14,0.36);
+          box-shadow: 0 6px 20px rgba(3, 10, 14, 0.36);
         }
-        .clickable { cursor: pointer; }
-        .button-focus:focus-visible { outline: 2px solid rgba(51,197,224,0.18); outline-offset: 2px; border-radius: 8px; }
+        .clickable {
+          cursor: pointer;
+        }
+        .button-focus:focus-visible {
+          outline: 2px solid rgba(51, 197, 224, 0.18);
+          outline-offset: 2px;
+          border-radius: 8px;
+        }
       `}</style>
     </main>
   );

@@ -106,7 +106,7 @@ const AboutPage = () => {
               InheritX is a cutting-edge blockchain platform dedicated to
               revolutionizing how digital assets are secured and passed down. We
               combine security, transparency, and decentralization to ensure
-              your crypto and NFTs remain protected across generations. <br />
+              your crypto assets remain protected across generations. <br />
               Founded by a team of blockchain experts at Salt Mind, InheritX was
               created to bridge the gap between traditional estate planning and
               the digital economy. We provide a secure, decentralized solution
@@ -131,8 +131,8 @@ const AboutPage = () => {
               To Make Digital Inheritance Seamless, Secure, & Automated.{" "}
             </p>
             <p className="text-base sm:text-[16px] text-[#FCFFFF] leading-[28px]">
-              We envision a world where passing down cryptocurrencies and NFTs
-              is automated, secure, and effortless. By leveraging cutting-edge
+              We envision a world where passing down cryptocurrencies is
+              automated, secure, and effortless. By leveraging cutting-edge
               blockchain technology, we aim to be the trusted partner for
               individuals, families, and businesses in digital estate planning.
             </p>

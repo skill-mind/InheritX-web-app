@@ -459,17 +459,18 @@ const PortfolioPage = () => {
       {/* scoped micro-interaction styles */}
       <style jsx>{`
         .hover-raise {
-          transition: transform 180ms cubic-bezier(.2,.9,.2,1), box-shadow 180ms cubic-bezier(.2,.9,.2,1);
+          transition: transform 180ms cubic-bezier(0.2, 0.9, 0.2, 1),
+            box-shadow 180ms cubic-bezier(0.2, 0.9, 0.2, 1);
         }
         .hover-raise:hover {
           transform: translateY(-6px);
-          box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
         }
         .clickable {
           cursor: pointer;
         }
         .button-focus:focus {
-          outline: 3px solid rgba(51,197,224,0.12);
+          outline: 3px solid rgba(51, 197, 224, 0.12);
           outline-offset: 2px;
           border-radius: 12px;
         }
