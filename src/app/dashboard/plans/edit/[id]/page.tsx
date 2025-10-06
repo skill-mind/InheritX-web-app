@@ -390,13 +390,33 @@ const EditPlanPage = () => {
                         className="rounded-full"
                       />
                       <div>
-                        <p className="text-[#FCFFFF] font-medium">
-                          {planDetails?.beneficiary_name}
-                        </p>
-                        <p className="text-[#BFC6C8] text-[14px]">
-                          {planDetails?.beneficiary_relationship} -{" "}
-                          {planDetails?.beneficiary_email}
-                        </p>
+                        {Array.isArray(planDetails?.beneficiaries) &&
+                        planDetails.beneficiaries.length > 0 ? (
+                          <div className="flex flex-wrap gap-2">
+                            {planDetails.beneficiaries.map(
+                              (beneficiary, idx) => (
+                                <span
+                                  key={idx}
+                                  className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1C252A] border border-[#2A3338] text-[#BFC6C8] text-[13px]"
+                                >
+                                  <span className="text-[#FCFFFF] font-medium">
+                                    {beneficiary.beneficiary_name}
+                                  </span>
+                                  <span className="text-[#92A5A8]">
+                                    ({beneficiary.beneficiary_relationship})
+                                  </span>
+                                  <span className="text-[#6F8488] hidden sm:inline">
+                                    · {beneficiary.beneficiary_email}
+                                  </span>
+                                </span>
+                              )
+                            )}
+                          </div>
+                        ) : (
+                          <span className="text-[#BFC6C8] text-[14px]">
+                            No beneficiaries added yet
+                          </span>
+                        )}
                       </div>
                     </div>
                     <div className="flex gap-2">

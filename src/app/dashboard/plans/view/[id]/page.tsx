@@ -200,9 +200,9 @@ const ViewPageContent = () => {
                     height={24}
                     className="rounded-full"
                   />
-                  {planDetails?.beneficiary_name} (
+                  {/* {planDetails?.beneficiary_name} (
                   {planDetails?.beneficiary_relationship}) -{" "}
-                  {planDetails?.beneficiary_email}
+                  {planDetails?.beneficiary_email} */}
                 </span>
               </div>
             </div>
