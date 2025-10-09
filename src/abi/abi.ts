@@ -577,16 +577,8 @@ export const InheritXAbi: Abi = [
         type: "inheritx_contracts::base::types::PlanStatus",
       },
       {
-        name: "beneficiary_name",
-        type: "core::byte_array::ByteArray",
-      },
-      {
-        name: "beneficiary_relationship",
-        type: "core::byte_array::ByteArray",
-      },
-      {
-        name: "beneficiary_email",
-        type: "core::byte_array::ByteArray",
+        name: "beneficiaries",
+        type: "core::array::Array::<inheritx_contracts::base::types::Beneficiary>",
       },
       {
         name: "distribution_method",

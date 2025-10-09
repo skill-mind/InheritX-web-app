@@ -151,14 +151,21 @@ export function useAddressCreatedPlans() {
 export function usePlanDetails(plan_id: number) {
   const { address } = useAccount();
 
+  interface Beneficiary {
+    beneficiary_name: string;
+    beneficiary_relationship: string;
+    beneficiary_email: string;
+    has_claimed?: boolean;
+    claimed_amount?: number;
+    claim_code_hash?: string;
+  }
+
   interface ContractSummaryData {
     additional_note: string;
     asset_amount: number;
     asset_type: number | void | string;
     beneficiary_count: number;
-    beneficiary_email: string;
-    beneficiary_name: string;
-    beneficiary_relationship: string;
+    beneficiaries: Beneficiary[];
     claim_code_hash: string;
     created_at: number | string;
     distribution_method: number;
@@ -203,7 +210,7 @@ export function usePlanDetails(plan_id: number) {
 
       // If it's an object (e.g. { USDC: {}, STRK: undefined, ... })
       if (v && typeof v === "object") {
-        console.log("Object entries:", Object.entries(v));
+        // console.log("Object entries:", Object.entries(v));
         const found = Object.entries(v).find(([key, val]) => {
           console.log(
             `Checking ${key}:`,
@@ -239,10 +246,20 @@ export function usePlanDetails(plan_id: number) {
       asset_amount: Number(planDetailsList?.asset_amount),
       asset_type: getPlanType(planDetailsList?.asset_type),
       beneficiary_count: Number(planDetailsList?.beneficiary_count),
-      beneficiary_email: planDetailsList?.beneficiary_email?.toString(),
-      beneficiary_name: planDetailsList?.beneficiary_name?.toString(),
-      beneficiary_relationship:
-        planDetailsList?.beneficiary_relationship?.toString(),
+      beneficiaries: (Array.isArray(planDetailsList?.beneficiaries)
+        ? planDetailsList?.beneficiaries
+        : []
+      ).map((beneficiary: any) => {
+        return {
+          beneficiary_name: beneficiary?.name?.toString?.() ?? "",
+          beneficiary_relationship:
+            beneficiary?.relationship?.toString?.() ?? "",
+          beneficiary_email: beneficiary?.email?.toString?.() ?? "",
+          has_claimed: Boolean(beneficiary?.has_claimed),
+          claimed_amount: Number(beneficiary?.claimed_amount ?? 0),
+          claim_code_hash: beneficiary?.claim_code_hash?.toString?.() ?? "",
+        } as Beneficiary;
+      }),
       claim_code_hash: planDetailsList?.claim_code_hash?.toString(),
       created_at: toEpochTime(planDetailsList?.created_at) || 0,
       distribution_method: Number(planDetailsList?.distribution_method),
