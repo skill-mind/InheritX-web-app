@@ -718,50 +718,6 @@ export const InheritXAbi: Abi = [
       },
       {
         type: "function",
-        name: "add_beneficiary_to_plan",
-        inputs: [
-          {
-            name: "plan_id",
-            type: "core::integer::u256",
-          },
-          {
-            name: "name",
-            type: "core::byte_array::ByteArray",
-          },
-          {
-            name: "email",
-            type: "core::byte_array::ByteArray",
-          },
-          {
-            name: "relationship",
-            type: "core::byte_array::ByteArray",
-          },
-        ],
-        outputs: [],
-        state_mutability: "external",
-      },
-      {
-        type: "function",
-        name: "remove_beneficiary_from_plan",
-        inputs: [
-          {
-            name: "plan_id",
-            type: "core::integer::u256",
-          },
-          {
-            name: "beneficiary",
-            type: "core::starknet::contract_address::ContractAddress",
-          },
-          {
-            name: "reason",
-            type: "core::byte_array::ByteArray",
-          },
-        ],
-        outputs: [],
-        state_mutability: "external",
-      },
-      {
-        type: "function",
         name: "get_beneficiary_percentages",
         inputs: [
           {
@@ -971,19 +927,11 @@ export const InheritXAbi: Abi = [
             type: "core::integer::u256",
           },
           {
-            name: "edit_type",
-            type: "core::integer::u8",
+            name: "new_beneficiaries",
+            type: "core::array::Array::<inheritx_contracts::base::types::BeneficiaryInput>",
           },
           {
-            name: "new_amount",
-            type: "core::integer::u256",
-          },
-          {
-            name: "new_date",
-            type: "core::integer::u64",
-          },
-          {
-            name: "new_quarterly_percentage",
+            name: "new_monthly_percentage",
             type: "core::integer::u8",
           },
           {
@@ -991,28 +939,16 @@ export const InheritXAbi: Abi = [
             type: "core::integer::u8",
           },
           {
-            name: "new_monthly_percentage",
+            name: "new_quarterly_percentage",
             type: "core::integer::u8",
           },
           {
-            name: "beneficiary_index",
+            name: "new_date",
+            type: "core::integer::u64",
+          },
+          {
+            name: "new_amount",
             type: "core::integer::u256",
-          },
-          {
-            name: "new_name",
-            type: "core::byte_array::ByteArray",
-          },
-          {
-            name: "new_email",
-            type: "core::byte_array::ByteArray",
-          },
-          {
-            name: "new_relationship",
-            type: "core::byte_array::ByteArray",
-          },
-          {
-            name: "new_beneficiaries",
-            type: "core::array::Array::<inheritx_contracts::base::types::BeneficiaryInput>",
           },
         ],
         outputs: [],
@@ -1068,42 +1004,6 @@ export const InheritXAbi: Abi = [
           },
           {
             name: "beneficiary_address",
-            type: "core::starknet::contract_address::ContractAddress",
-          },
-        ],
-        outputs: [],
-        state_mutability: "external",
-      },
-      {
-        type: "function",
-        name: "create_inactivity_monitor",
-        inputs: [
-          {
-            name: "wallet_address",
-            type: "core::starknet::contract_address::ContractAddress",
-          },
-          {
-            name: "threshold",
-            type: "core::integer::u64",
-          },
-          {
-            name: "beneficiary_email_hash",
-            type: "core::byte_array::ByteArray",
-          },
-          {
-            name: "plan_id",
-            type: "core::integer::u256",
-          },
-        ],
-        outputs: [],
-        state_mutability: "external",
-      },
-      {
-        type: "function",
-        name: "update_wallet_activity",
-        inputs: [
-          {
-            name: "wallet_address",
             type: "core::starknet::contract_address::ContractAddress",
           },
         ],
@@ -2221,6 +2121,38 @@ export const InheritXAbi: Abi = [
   },
   {
     type: "event",
+    name: "inheritx_contracts::base::events::BeneficiaryRemovedFromPlan",
+    kind: "struct",
+    members: [
+      {
+        name: "plan_id",
+        type: "core::integer::u256",
+        kind: "data",
+      },
+      {
+        name: "removed_count",
+        type: "core::integer::u8",
+        kind: "data",
+      },
+      {
+        name: "remaining_count",
+        type: "core::integer::u8",
+        kind: "data",
+      },
+      {
+        name: "removed_by",
+        type: "core::starknet::contract_address::ContractAddress",
+        kind: "data",
+      },
+      {
+        name: "removed_at",
+        type: "core::integer::u64",
+        kind: "data",
+      },
+    ],
+  },
+  {
+    type: "event",
     name: "inheritx_contracts::base::events::FeeCollected",
     kind: "struct",
     members: [
@@ -2473,6 +2405,11 @@ export const InheritXAbi: Abi = [
       {
         name: "BeneficiaryUpdatedInPlan",
         type: "inheritx_contracts::base::events::BeneficiaryUpdatedInPlan",
+        kind: "nested",
+      },
+      {
+        name: "BeneficiaryRemovedFromPlan",
+        type: "inheritx_contracts::base::events::BeneficiaryRemovedFromPlan",
         kind: "nested",
       },
       {
