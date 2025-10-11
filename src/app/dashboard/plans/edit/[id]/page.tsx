@@ -9,22 +9,8 @@ import { useAccount, useContract } from "@starknet-react/core";
 import { cairo, byteArray, CallData } from "starknet";
 import { InheritXAbi } from "@/abi/abi";
 import { INHERITX_CONTRACT_ADDRESS } from "@/constant/ca_address";
-
-// Types for edit form
-interface BeneficiaryInput {
-  name: string;
-  email: string;
-  relationship: string;
-}
-
-interface EditFormData {
-  newBeneficiaries: BeneficiaryInput[];
-  newMonthlyPercentage: number;
-  newYearlyPercentage: number;
-  newQuarterlyPercentage: number;
-  newDate: number;
-  newAmount: number;
-}
+import { toast } from "react-hot-toast";
+import { EditFormData, BeneficiaryInput } from "@/types/edit";
 
 const EditPlanPage = () => {
   const router = useRouter();
@@ -291,12 +277,14 @@ const EditPlanPage = () => {
         result?.transaction_hash as string
       );
 
-      console.log("Transaction submitted:", status);
+      console.log("Plan edited successfully!", status);
+      toast.success("Plan edited successfully!");
 
-      console.log("Plan edited successfully!");
-      // router.back();
+      setIsEditing(false);
+      router.back();
     } catch (error) {
       console.error("Error editing plan:", error);
+      toast.error("Error editing plan!");
       setIsEditing(false);
     }
   };
@@ -464,11 +452,11 @@ const EditPlanPage = () => {
                 </div>
                 <div>
                   <label className="block text-[#BFC6C8] text-[14px] font-medium mb-2">
-                    New Amount
+                    Top Up Amount
                   </label>
                   <input
                     type="number"
-                    placeholder="Enter new amount (e.g., 45)"
+                    placeholder="Enter amount to top up (e.g., 45)"
                     value={editFormData.newAmount || ""}
                     onChange={(e) =>
                       setEditFormData((prev) => ({
@@ -479,7 +467,7 @@ const EditPlanPage = () => {
                     className="w-full bg-[#232B36] border border-[#425558] rounded-[12px] px-4 py-3 text-[#FCFFFF] focus:border-[#33C5E0] focus:outline-none"
                   />
                   <p className="text-[#92A5A8] text-xs mt-1">
-                    Enter the amount in whole units (e.g., 45 for 45 STRK)
+                    This amount will be added to your current balance (e.g., 45)
                   </p>
                 </div>
               </div>
@@ -760,7 +748,7 @@ const EditPlanPage = () => {
                           onClick={() =>
                             startEditingBeneficiary(beneficiary, idx)
                           }
-                          className="text-[#33C5E0] hover:text-cyan-400 p-2"
+                          className="text-[#33C5E0] hover:text-cyan-400 p-2 cursor-pointer"
                         >
                           <Image
                             src="/assets/icons/edit.svg"
@@ -771,7 +759,7 @@ const EditPlanPage = () => {
                         </button>
                         <button
                           onClick={() => removeBeneficiary(idx)}
-                          className="text-[#E53E3E] hover:text-red-400 p-2"
+                          className="text-[#E53E3E] hover:text-red-400 p-2 cursor-pointer"
                         >
                           <Image
                             src="/assets/icons/x.svg"
@@ -902,7 +890,7 @@ const EditPlanPage = () => {
                             addBeneficiary();
                           }
                         }}
-                        className="bg-[#33C5E0] text-[#161E22] px-4 py-2 rounded-[12px] text-[14px] font-medium hover:bg-cyan-400 transition-colors"
+                        className="bg-[#33C5E0] text-[#161E22] px-4 py-2 rounded-[12px] text-[14px] font-medium hover:bg-cyan-400 transition-colors cursor-pointer"
                       >
                         {editingBeneficiary
                           ? "Update Beneficiary"
@@ -910,7 +898,7 @@ const EditPlanPage = () => {
                       </button>
                       <button
                         onClick={cancelBeneficiaryEdit}
-                        className="bg-[#232B36] border border-[#425558] text-[#BFC6C8] px-4 py-2 rounded-[12px] text-[14px] hover:border-[#33C5E0] hover:text-[#33C5E0] transition-colors"
+                        className="bg-[#232B36] border border-[#425558] text-[#BFC6C8] px-4 py-2 rounded-[12px] text-[14px] hover:border-[#33C5E0] hover:text-[#33C5E0] transition-colors cursor-pointer"
                       >
                         Cancel
                       </button>
@@ -923,7 +911,7 @@ const EditPlanPage = () => {
               {!showBeneficiaryForm && !editingBeneficiary && (
                 <button
                   onClick={() => setShowBeneficiaryForm(true)}
-                  className="w-full border-2 border-dashed border-[#425558] rounded-[12px] p-4 text-[#BFC6C8] hover:border-[#33C5E0] hover:text-[#33C5E0] transition-colors"
+                  className="w-full border-2 border-dashed border-[#425558] rounded-[12px] p-4 text-[#BFC6C8] hover:border-[#33C5E0] hover:text-[#33C5E0] transition-colors cursor-pointer"
                 >
                   <div className="flex items-center justify-center gap-2">
                     <Image

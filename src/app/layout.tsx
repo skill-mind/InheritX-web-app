@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 // import { StarknetProvider } from "@/components/Provider";
 import StarknetProvider from "@/provider/starknet-provider";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -101,6 +102,29 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <StarknetProvider>{children}</StarknetProvider>
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            duration: 4000,
+            style: {
+              background: "#1C252A",
+              color: "#FCFFFF",
+              border: "1px solid #33C5E0",
+            },
+            success: {
+              iconTheme: {
+                primary: "#33C5E0",
+                secondary: "#1C252A",
+              },
+            },
+            error: {
+              iconTheme: {
+                primary: "#E53E3E",
+                secondary: "#1C252A",
+              },
+            },
+          }}
+        />
       </body>
     </html>
   );

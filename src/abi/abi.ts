@@ -2153,6 +2153,38 @@ export const InheritXAbi: Abi = [
   },
   {
     type: "event",
+    name: "inheritx_contracts::base::events::BeneficiariesReplaced",
+    kind: "struct",
+    members: [
+      {
+        name: "plan_id",
+        type: "core::integer::u256",
+        kind: "data",
+      },
+      {
+        name: "old_count",
+        type: "core::integer::u256",
+        kind: "data",
+      },
+      {
+        name: "new_count",
+        type: "core::integer::u256",
+        kind: "data",
+      },
+      {
+        name: "replaced_by",
+        type: "core::starknet::contract_address::ContractAddress",
+        kind: "data",
+      },
+      {
+        name: "replaced_at",
+        type: "core::integer::u64",
+        kind: "data",
+      },
+    ],
+  },
+  {
+    type: "event",
     name: "inheritx_contracts::base::events::FeeCollected",
     kind: "struct",
     members: [
@@ -2410,6 +2442,11 @@ export const InheritXAbi: Abi = [
       {
         name: "BeneficiaryRemovedFromPlan",
         type: "inheritx_contracts::base::events::BeneficiaryRemovedFromPlan",
+        kind: "nested",
+      },
+      {
+        name: "BeneficiariesReplaced",
+        type: "inheritx_contracts::base::events::BeneficiariesReplaced",
         kind: "nested",
       },
       {
