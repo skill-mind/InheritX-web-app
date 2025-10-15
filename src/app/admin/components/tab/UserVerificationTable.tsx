@@ -73,7 +73,11 @@ const UserVerificationTable: React.FC<Props> = ({
           {filteredUsers.map((user, idx) => (
             <tr
               key={user.id}
-              className="border-b border-[#1C252A] text-[#FCFFFF] text-[14px]"
+              className="border-b border-[#1C252A] text-[#FCFFFF] text-[14px] transition-all duration-300 ease-out hover:shadow-lg hover:scale-[1.015] hover:bg-[#202A2E] cursor-pointer"
+              style={{
+                boxShadow: "0 0 0 rgba(0,0,0,0)",
+                transition: "box-shadow 0.3s cubic-bezier(.22,1,.36,1), transform 0.3s cubic-bezier(.22,1,.36,1), background 0.3s cubic-bezier(.22,1,.36,1)",
+              }}
             >
               <td className="py-4 px-2 font-normal flex items-center gap-2">
                 <span className="text-[#425558] text-[14px] w-4 inline-block">
@@ -101,7 +105,7 @@ const UserVerificationTable: React.FC<Props> = ({
               <td className="py-4 px-2">
                 <div className="flex gap-2">
                   <button
-                    className="bg-[#33C5E014] border border-[#33C5E03D] text-[#BFC6C8] px-5 py-2 rounded-[16px] text-[12px] font-medium hover:bg-[#232B2F]/80"
+                    className="bg-[#33C5E014] cursor-pointer border border-[#33C5E03D] text-[#BFC6C8] px-5 py-2 rounded-[16px] text-[12px] font-medium hover:bg-[#232B2F]/80"
                     onClick={() => {
                       if (onRejectClick) onRejectClick(user);
                     }}
@@ -109,7 +113,7 @@ const UserVerificationTable: React.FC<Props> = ({
                     REJECT
                   </button>
                   <button
-                    className="bg-[#33C5E0] text-[#161E22] px-5 py-2 rounded-[16px] text-[12px] font-semibold hover:bg-cyan-400"
+                    className="bg-[#33C5E0] cursor-pointer text-[#161E22] px-5 py-2 rounded-[16px] text-[12px] font-semibold hover:bg-cyan-400"
                     onClick={() => onApproveClick(user)}
                   >
                     APPROVE
@@ -134,7 +138,11 @@ const UserVerificationTable: React.FC<Props> = ({
           {filteredUsers.map((user, idx) => (
             <tr
               key={user.id}
-              className="border-b border-[#1C252A] text-[#FCFFFF] text-[13px]"
+              className="border-b border-[#1C252A] text-[#FCFFFF] text-[13px] transition-all duration-300 ease-out hover:shadow-lg hover:scale-[1.015] hover:bg-[#202A2E] cursor-pointer"
+              style={{
+                boxShadow: "0 0 0 rgba(0,0,0,0)",
+                transition: "box-shadow 0.3s cubic-bezier(.22,1,.36,1), transform 0.3s cubic-bezier(.22,1,.36,1), background 0.3s cubic-bezier(.22,1,.36,1)",
+              }}
             >
               <td className="py-3 px-2 font-normal flex items-center gap-2">
                 <span className="text-[#425558] text-[13px] w-4 inline-block">

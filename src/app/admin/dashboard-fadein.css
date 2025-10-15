@@ -1,0 +1,12 @@
+.dashboard-fadein {
+  opacity: 0;
+  transform: translateY(32px);
+  animation: dashboardFadeIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
+}
+
+@keyframes dashboardFadeIn {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

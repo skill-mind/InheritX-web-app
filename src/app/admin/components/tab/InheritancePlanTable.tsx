@@ -1,5 +1,12 @@
 import React, { useState } from "react";
 import Image from "next/image";
+import InheritancePlanModal from "../InheritancePlanModal";
+
+interface ClaimSummary {
+  name: string;
+  email: string;
+  claimCode: string;
+}
 
 interface InheritancePlan {
   id: number;
@@ -9,6 +16,7 @@ interface InheritancePlan {
   beneficiaries: number;
   creationDate: string;
   claimDate: string;
+  claimSummary: ClaimSummary;
 }
 
 interface Props {
@@ -17,9 +25,72 @@ interface Props {
 
 const InheritancePlanTable: React.FC<Props> = ({ plans }) => {
   const [actionOpenIdx, setActionOpenIdx] = useState<number | null>(null);
+  const [showClaimIdx, setShowClaimIdx] = useState<number | null>(null);
+  const [showModalIdx, setShowModalIdx] = useState<number | null>(null);
+
+  // Handler for clicking outside the claim summary card
+  React.useEffect(() => {
+    if (showClaimIdx === null) return;
+    const handleClick = (e: MouseEvent) => {
+      const card = document.getElementById('claim-summary-card');
+      if (card && !card.contains(e.target as Node)) {
+        setShowClaimIdx(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [showClaimIdx]);
 
   return (
-    <div className="bg-[#182024] mt-[2rem] w-full min-h-[376px] rounded-[24px] py-[24px] px-[8px] sm:px-[16px] md:px-[24px] overflow-x-auto">
+    <div className="bg-[#182024] mt-[2rem] w-full min-h-[376px] rounded-[24px] py-[24px] px-[8px] sm:px-[16px] md:px-[24px] overflow-x-auto relative">
+      {/* Claim Summary Card (not modal) */}
+      {showClaimIdx !== null && plans[showClaimIdx] && (
+        <div id="claim-summary-card" className="absolute left-1/2 top-8 -translate-x-1/2 z-30 w-full max-w-lg mx-auto rounded-[24px] bg-[#161E22] border border-[#2A3338] p-6 md:p-10 shadow-xl flex flex-col gap-6" style={{ pointerEvents: 'auto' }}>
+          <h2 className="text-[#FCFFFF] text-[18px] font-medium mb-4">Claim Summary</h2>
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center justify-between border-b border-[#222C32] pb-2">
+              <span className="text-[#92A5A8] text-[12px] font-semibold">NAME</span>
+              <span className="text-[#FCFFFF] text-[14px] font-normal">{plans[showClaimIdx].claimSummary.name}</span>
+              <Image src="/assets/icons/green_check.svg" alt="verified" width={20} height={20} />
+            </div>
+            <div className="flex items-center justify-between border-b border-[#222C32] pb-2">
+              <span className="text-[#92A5A8] text-[12px] font-semibold">EMAIL</span>
+              <span className="text-[#FCFFFF] text-[14px] font-normal">{plans[showClaimIdx].claimSummary.email}</span>
+              <Image src="/assets/icons/green_check.svg" alt="verified" width={20} height={20} />
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-[#92A5A8] text-[12px] font-semibold">CLAIM CODE</span>
+              <span className="text-[#FCFFFF] text-[14px] font-normal">{plans[showClaimIdx].claimSummary.claimCode}</span>
+              <Image src="/assets/icons/green_check.svg" alt="verified" width={20} height={20} />
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Modal for Claim Details */}
+      {showModalIdx !== null && plans[showModalIdx] && (
+        <InheritancePlanModal
+          open={true}
+          onClose={() => setShowModalIdx(null)}
+          plan={{
+            name: plans[showModalIdx].planId, // or a more descriptive name if available
+            description: `Inheritance plan created by ${plans[showModalIdx].creator}`,
+            beneficiary: {
+              name: plans[showModalIdx].claimSummary.name,
+              email: plans[showModalIdx].claimSummary.email,
+              avatar: "/assets/icons/avatar.svg", // fallback or add avatar to your data
+              link: "#", // fallback or add link to your data
+            },
+            assets: "Tokens, NFTs, Real-World Assets", // fallback or add to your data
+            wallet: "0xajoer....apro", // fallback or add to your data
+            executeOn: plans[showModalIdx].claimDate, // or another date field
+            rules: {
+              claimCode: plans[showModalIdx].claimSummary.claimCode,
+              distribution: "Yearly Release of funds (disbursement)", // fallback
+            },
+            // Optionally add legalDocs, trustee, notes if available in your data
+          }}
+        />
+      )}
       {/* Desktop Table */}
       <table className="w-full text-left hidden md:table">
         <thead>
@@ -51,14 +122,16 @@ const InheritancePlanTable: React.FC<Props> = ({ plans }) => {
               <td className="py-4 px-2 text-[#92A5A8] text-[14px]">{plan.creationDate}</td>
               <td className="py-4 px-2 text-[#FCFFFF] text-[14px]">{plan.claimDate}</td>
               <td className="py-4 px-2 text-center">
-                <span className="text-[#BFC6C8] text-[20px] font-bold cursor-pointer">
-                  <Image
-                    src="/assets/icons/more.svg"
-                    alt="more icon"
-                    width={2.25}
-                    height={15}
-                  />
-                </span>
+                <div className="flex gap-2 justify-center">
+                  <button className="bg-[#232B2F] border border-[#425558] text-[#BFC6C8] px-5 py-2 rounded-[16px] text-[12px] font-medium hover:bg-[#232B2F]/80 cursor-pointer transition-all duration-150"
+                    onClick={() => { setActionOpenIdx(actionOpenIdx === idx ? null : idx); setShowClaimIdx(idx); }}>
+                    VIEW
+                  </button>
+                  <button className="bg-[#33C5E0] text-[#161E22] px-5 py-2 rounded-[16px] text-[12px] font-semibold hover:bg-cyan-400 cursor-pointer transition-all duration-150"
+                    onClick={() => setShowModalIdx(idx)}>
+                    VIEW CLAIM
+                  </button>
+                </div>
               </td>
             </tr>
           ))}
@@ -104,16 +177,17 @@ const InheritancePlanTable: React.FC<Props> = ({ plans }) => {
               <span className="text-[#92A5A8]">Claim Date:</span>
               <span>{plan.claimDate}</span>
             </div>
-            {actionOpenIdx === idx && (
-              <div className="flex gap-2 mt-2">
-                <button className="flex-1 bg-[#232B2F] border border-[#425558] text-[#BFC6C8] py-2 rounded-[16px] text-[12px] font-medium hover:bg-[#232B2F]/80">
-                  VIEW
-                </button>
-                <button className="flex-1 bg-[#33C5E0] text-[#161E22] py-2 rounded-[16px] text-[12px] font-semibold hover:bg-cyan-400">
-                  APPROVE
-                </button>
-              </div>
-            )}
+            {/* Always show VIEW and VIEW CLAIM on mobile */}
+            <div className="flex gap-2 mt-2">
+              <button className="flex-1 cursor-pointer bg-[#232B2F] border border-[#425558] text-[#BFC6C8] py-2 rounded-[16px] text-[12px] font-medium hover:bg-[#232B2F]/80"
+                onClick={() => { setActionOpenIdx(null); setShowClaimIdx(idx); }}>
+                VIEW
+              </button>
+              <button className="flex-1 cursor-pointer bg-[#33C5E0] text-[#161E22] py-2 rounded-[16px] text-[12px] font-semibold hover:bg-cyan-400"
+                onClick={() => setShowModalIdx(idx)}>
+                VIEW CLAIM
+              </button>
+            </div>
           </div>
         ))}
       </div>

@@ -127,7 +127,7 @@ const Page = () => {
         {stats.map((stat) => (
           <div
             key={stat.label}
-            className="bg-[#182024] w-full rounded-[24px] py-8 px-4 flex flex-col gap-2 items-center justify-center min-h-[140px] shadow-sm"
+            className="bg-[#182024] w-full rounded-[24px] py-8 px-4 flex flex-col gap-2 items-center justify-center min-h-[140px] shadow-sm transition-all duration-200 cursor-pointer hover:shadow-[0_0_16px_0_#33C5E0] hover:bg-[#1C252A] active:scale-[0.98]"
           >
             <span className="text-[32px] sm:text-[36px] font-semibold text-[#FCFFFF]">
               {stat.value}
@@ -135,14 +135,14 @@ const Page = () => {
             <span className="text-[#92A5A8] text-[13px] sm:text-[14px] font-normal text-center mb-2">
               {stat.label}
             </span>
-            <div className="flex w-full justify-between items-center mt-2 bg-[#1C252A] h-[60px] rounded-[24px] border border-[#2A3338] py-[14px] px-[20px]">
+            <div className="flex w-full justify-between items-center mt-2 bg-[#1C252A] h-[60px] rounded-[24px] border border-[#2A3338] py-[14px] px-[20px] transition-all duration-150 cursor-pointer hover:border-[#33C5E0] hover:bg-[#222] active:scale-[0.98]">
               <span className="text-[#0DA314] text-[12px] font-normal flex items-center">
                 {stat.sub} {stat.subIcon}
               </span>
               <span
                 className={`text-[#33C5E0] text-[12px] font-semibold ${
                   stat.subRight === "Opened"
-                    ? "border border-[#33C5E0] rounded-[16px] px-3 py-1 ml-2"
+                    ? "border border-[#33C5E0] rounded-[16px] px-3 py-1 ml-2 bg-[#161E22] cursor-pointer hover:bg-[#33C5E0] hover:text-[#161E22] transition-all duration-150"
                     : ""
                 }`}
               >
@@ -167,11 +167,13 @@ const Page = () => {
                   {ranges.map((r) => (
                     <button
                       key={r}
-                      className={`text-[12px] px-3 py-1 rounded-full border transition-all duration-150 ${
-                        activeRange === r
-                          ? "bg-[#161E22] text-[#33C5E0] border-[#33C5E0]"
-                          : "bg-transparent text-[#92A5A8] border-[#222C32]"
-                      }`}
+                      className={`text-[12px] px-3 py-1 rounded-full border transition-all duration-150 cursor-pointer select-none
+                        ${
+                          activeRange === r
+                            ? "bg-[#161E22] text-[#33C5E0] border-[#33C5E0] shadow-[0_0_8px_0_#33C5E0]"
+                            : "bg-transparent text-[#92A5A8] border-[#222C32] hover:text-[#33C5E0] hover:border-[#33C5E0] hover:bg-[#222] active:scale-[0.97]"
+                        }
+                      `}
                       onClick={() => setActiveRange(r)}
                     >
                       {r}
@@ -195,19 +197,19 @@ const Page = () => {
               <span className="text-[#92A5A8] text-[12px] mb-2 text-center">
                 Sum Of All Asset Values
               </span>
-              <div className="w-[180px] h-[180px] mx-auto">
+              <div className="w-[180px] h-[180px] mx-auto transition-all duration-200 cursor-pointer hover:scale-[1.04] active:scale-[0.98]">
                 <Doughnut data={doughnutData} options={doughnutOptions} />
               </div>
               <div className="flex justify-center gap-4 mt-4">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 cursor-pointer hover:scale-105 transition-all duration-150">
                   <span className="inline-block w-3 h-3 rounded-full bg-[#F87171]"></span>
                   <span className="text-[#BFC6C8] text-[12px]">ETH</span>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 cursor-pointer hover:scale-105 transition-all duration-150">
                   <span className="inline-block w-3 h-3 rounded-full bg-[#A78BFA]"></span>
                   <span className="text-[#BFC6C8] text-[12px]">STRK</span>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 cursor-pointer hover:scale-105 transition-all duration-150">
                   <span className="inline-block w-3 h-3 rounded-full bg-[#FDBA74]"></span>
                   <span className="text-[#BFC6C8] text-[12px]">
                     Real World Asset

@@ -25,18 +25,24 @@ const RecentActivities: React.FC<Props> = ({ activities }) =>
         {activities.map((activity, index) => (
           <li
             key={activity.id}
-            className="flex items-center justify-between  border-[#1C252A] pb-10"
+            className="flex items-center justify-between border-[#1C252A] pb-10 rounded-xl group cursor-pointer transition-transform transition-shadow duration-300 ease-out hover:shadow-lg hover:scale-[1.025]"
+            style={{
+              boxShadow: "0 0 0 rgba(0,0,0,0)",
+              transition: "box-shadow 0.3s cubic-bezier(.22,1,.36,1), transform 0.3s cubic-bezier(.22,1,.36,1)",
+            }}
           >
             <div className="flex items-center space-x-2">
               <span className="text-[#425558] text-[14px]">{index + 1}.</span>
-              <span className="font-normal text-[#FCFFFF]">{activity.title}</span>
+              <span className="font-normal text-[#FCFFFF] group-hover:text-cyan-300 transition-colors duration-300">
+                {activity.title}
+              </span>
               {activity.newCount > 0 && (
                 <span className="text-[#33C5E0] text-[12px]">
                   ({activity.newCount} New)
                 </span>
               )}
             </div>
-            <button className="bg-[#33C5E014] w-[88px] h-[34px] text-[#33C5E0] border border-[#33C5E03D] text-[12px] px-4 py-1 rounded-[24px] hover:bg-cyan-400 hover:text-white transition">
+            <button className="bg-[#33C5E014] cursor-pointer w-[88px] h-[34px] text-[#33C5E0] border border-[#33C5E03D] text-[12px] px-4 py-1 rounded-[24px] hover:bg-cyan-400 hover:text-white transition">
               VIEW
             </button>
           </li>
