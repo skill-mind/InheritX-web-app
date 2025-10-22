@@ -1037,6 +1037,33 @@ export const InheritXAbi: Abi = [
         ],
         state_mutability: "view",
       },
+      {
+        type: "function",
+        name: "get_plan_creation_fee",
+        inputs: [],
+        outputs: [
+          {
+            type: "core::integer::u256",
+          },
+        ],
+        state_mutability: "view",
+      },
+      {
+        type: "function",
+        name: "get_total_amount_needed",
+        inputs: [
+          {
+            name: "asset_amount",
+            type: "core::integer::u256",
+          },
+        ],
+        outputs: [
+          {
+            type: "core::integer::u256",
+          },
+        ],
+        state_mutability: "view",
+      },
     ],
   },
   {
@@ -1049,14 +1076,6 @@ export const InheritXAbi: Abi = [
       },
       {
         name: "strk_token",
-        type: "core::starknet::contract_address::ContractAddress",
-      },
-      {
-        name: "usdt_token",
-        type: "core::starknet::contract_address::ContractAddress",
-      },
-      {
-        name: "usdc_token",
         type: "core::starknet::contract_address::ContractAddress",
       },
     ],

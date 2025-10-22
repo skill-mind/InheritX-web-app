@@ -217,10 +217,6 @@ export function CreatePlanProvider({ children }: { children: ReactNode }) {
   };
 
   const addBeneficiary = (beneficiary: Omit<Beneficiary, "id">) => {
-    console.log("=== CONTEXT: addBeneficiary called ===");
-    console.log("Input beneficiary:", beneficiary);
-    console.log("Current beneficiaries:", formData.beneficiaries);
-
     // Check if beneficiary already exists (by email)
     const existingBeneficiary = formData.beneficiaries.find(
       (b) => b.email === beneficiary.email
@@ -448,17 +444,27 @@ export function CreatePlanProvider({ children }: { children: ReactNode }) {
 
       const decimals = 18; // STRK uses 18 decimals
 
+      // Validate minimum asset amount to prevent contract errors
+      const minAmount = 1; // Minimum 1 token
+      if (formData.assetAmount < minAmount) {
+        throw new Error(`Asset amount must be at least ${minAmount} token`);
+      }
+
+      // Convert asset amount to smallest unit (like the working example)
       const assetAmountInSmallestUnit = BigInt(
         Math.floor(formData.assetAmount * Math.pow(10, decimals))
       );
+
+      // Ensure we have a valid amount after conversion
+      if (assetAmountInSmallestUnit <= 0) {
+        throw new Error("Invalid asset amount after conversion");
+      }
 
       console.log("XXXX ASSET AMOUNT: ", formData.assetAmount);
       console.log(
         "XXXX ASSET AMOUNT IN SMALLEST UNIT: ",
         assetAmountInSmallestUnit
       );
-
-      console.log("XXXX ASSET AMOUNT: ", formData.assetAmount);
 
       // Prepare contract parameters
       const contractParameters = {

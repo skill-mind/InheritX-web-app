@@ -34,8 +34,6 @@ const EditPlanPage = () => {
     newAmount: 0,
   });
 
-  console.log("editFormData", editFormData);
-
   // Beneficiary management state
   const [showBeneficiaryForm, setShowBeneficiaryForm] = useState(false);
   const [editingBeneficiary, setEditingBeneficiary] =
@@ -45,10 +43,6 @@ const EditPlanPage = () => {
     email: "",
     relationship: "",
   });
-
-  console.log("newBeneficiary BBBBBBBBBBBBBBBB", newBeneficiary);
-  console.log("editingBeneficiary BBBBBBBBBBBBBBBB", editingBeneficiary);
-  console.log("showBeneficiaryForm BBBBBBBBBBBBBBBB", showBeneficiaryForm);
 
   // Contract integration
   const { contract } = useContract({
@@ -174,8 +168,6 @@ const EditPlanPage = () => {
       const assetAmountInSmallestUnit = BigInt(
         Math.floor(editFormData.newAmount * Math.pow(10, decimals))
       );
-      console.log("User input amount:", editFormData.newAmount);
-      console.log("Converted to smallest unit:", assetAmountInSmallestUnit);
 
       // Determine which percentage to use based on original distribution method
       let monthlyPercentage = 0;
@@ -245,14 +237,9 @@ const EditPlanPage = () => {
           cairo.uint256(assetAmountInSmallestUnit),
         ]),
       };
-      console.log("editPlanCall", editPlanCall);
 
       // Execute the transaction directly using account.execute
       const result = await account.execute(editPlanCall);
-      console.log(
-        "resultaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-        result
-      );
 
       // const multicallData = [inheritXCall];
 
