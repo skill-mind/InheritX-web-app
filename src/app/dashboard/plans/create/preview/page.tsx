@@ -30,7 +30,7 @@ const PreviewPageContent = () => {
     formData.selectedBeneficiaries.includes(b.id)
   );
 
-  console.log("form data: ", formData);
+  // console.log("form data: ", formData);
 
   // Calculate asset percentages
   // const totalAssetAmount = formData.assets.reduce(
@@ -68,6 +68,9 @@ const PreviewPageContent = () => {
           calldata: CallData.compile(contractParams),
         };
 
+        console.log("InheritX Call:", inheritXCall);
+        console.log("Compiled Calldata:", inheritXCall.calldata);
+
         // Execute the transaction directly using account.execute
         const result = await account.execute(inheritXCall);
 
@@ -94,7 +97,6 @@ const PreviewPageContent = () => {
         const status = await myProvider.waitForTransaction(
           result?.transaction_hash as string
         );
-        console.log("Transaction submitted:", result);
 
         if (status.isSuccess()) {
           console.log("Success! 🎉 Your inheritance plan has been created.");
