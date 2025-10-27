@@ -8,13 +8,13 @@ import SuccessModal from "./SuccessModal";
 const TOKENS = [
   { symbol: "ETH", name: "Ethereum", icon: "/assets/icons/eth.svg" },
   { symbol: "STRK", name: "Starknet", icon: "/assets/icons/strk.svg" },
-  { symbol: "USDC", name: "USD Coin", icon: "/assets/icons/usdc.svg" },
   { symbol: "USDT", name: "Tether", icon: "/assets/icons/usdt.png" },
+  { symbol: "USDC", name: "USD Coin", icon: "/assets/icons/usdc.svg" },
 ];
 
 const SwapPage = () => {
   const [fromToken, setFromToken] = useState(TOKENS[0]);
-  const [toToken, setToToken] = useState(TOKENS[2]);
+  const [toToken, setToToken] = useState(TOKENS[1]);
   const [showFromDropdown, setShowFromDropdown] = useState(false);
   const [showToDropdown, setShowToDropdown] = useState(false);
   const [fromAmount, setFromAmount] = useState("");
@@ -395,10 +395,22 @@ const SwapPage = () => {
         />
       )}
       <style jsx>{`
-        .hover-raise { transition: transform .16s cubic-bezier(.2,.9,.2,1), box-shadow .16s ease; }
-        .hover-raise:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(3,10,14,0.36); }
-        .clickable { cursor: pointer; }
-        .button-focus:focus-visible { outline: 2px solid rgba(51,197,224,0.12); outline-offset: 2px; border-radius: 8px; }
+        .hover-raise {
+          transition: transform 0.16s cubic-bezier(0.2, 0.9, 0.2, 1),
+            box-shadow 0.16s ease;
+        }
+        .hover-raise:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 8px 24px rgba(3, 10, 14, 0.36);
+        }
+        .clickable {
+          cursor: pointer;
+        }
+        .button-focus:focus-visible {
+          outline: 2px solid rgba(51, 197, 224, 0.12);
+          outline-offset: 2px;
+          border-radius: 8px;
+        }
       `}</style>
     </main>
   );

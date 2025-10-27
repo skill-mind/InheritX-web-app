@@ -4,7 +4,11 @@ import React from "react";
 import Image from "next/image";
 import { useRouter, useParams } from "next/navigation";
 import { usePlanDetails } from "@/hooks/useBlockchain";
-import { truncateAddress } from "@/lib/utils";
+import {
+  truncateAddress,
+  getAssetTypeString,
+  formatAssetAmount,
+} from "@/lib/utils";
 
 const ViewPageContent = () => {
   const router = useRouter();
@@ -196,9 +200,9 @@ const ViewPageContent = () => {
                     height={24}
                     className="rounded-full"
                   />
-                  {planDetails?.beneficiary_name} (
+                  {/* {planDetails?.beneficiary_name} (
                   {planDetails?.beneficiary_relationship}) -{" "}
-                  {planDetails?.beneficiary_email}
+                  {planDetails?.beneficiary_email} */}
                 </span>
               </div>
             </div>
@@ -228,12 +232,17 @@ const ViewPageContent = () => {
                     ASSET TYPE:
                   </span>
                   <span className="text-[#FCFFFF] capitalize">
-                    {planDetails?.asset_type?.toString() || "Unknown"}
+                    {planDetails?.asset_type !== undefined
+                      ? getAssetTypeString(Number(planDetails.asset_type))
+                      : "Unknown"}
                   </span>
                   <span className="ml-auto text-[#FCFFFF]">
                     Amount:{" "}
                     <span className="font-semibold capitalize">
-                      {planDetails.asset_amount}
+                      {formatAssetAmount(
+                        Number(planDetails.asset_amount),
+                        Number(planDetails.asset_type)
+                      )}
                     </span>
                   </span>
                 </div>

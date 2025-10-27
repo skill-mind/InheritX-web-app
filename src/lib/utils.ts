@@ -44,3 +44,24 @@ export function truncateAddress(address?: string) {
   if (!address) return "";
   return `${address.slice(0, 6)}...${address.slice(-4)}`;
 }
+
+// Asset type enum to string conversion
+export function getAssetTypeString(assetType: number): string {
+  switch (assetType) {
+    case 0:
+      return "STRK";
+    case 1:
+      return "USDT";
+    case 2:
+      return "USDC";
+    default:
+      return "STRK";
+  }
+}
+
+// Format asset amount from wei-like units to human-readable format
+export function formatAssetAmount(amount: number, _assetType: number): string {
+  const decimals = 18; // Most tokens use 18 decimals
+  const formattedAmount = amount / Math.pow(10, decimals);
+  return formattedAmount.toFixed(2);
+}

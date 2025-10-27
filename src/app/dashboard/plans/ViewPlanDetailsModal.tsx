@@ -4,7 +4,11 @@ import React from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { usePlanDetails } from "@/hooks/useBlockchain";
-import { truncateAddress } from "@/lib/utils";
+import {
+  truncateAddress,
+  getAssetTypeString,
+  formatAssetAmount,
+} from "@/lib/utils";
 
 interface ViewPlanDetailsModalProps {
   isOpen: boolean;
@@ -194,10 +198,50 @@ const ViewPlanDetailsModal: React.FC<ViewPlanDetailsModalProps> = ({
                       height={24}
                       className="rounded-full"
                     />
-                    {planDetails?.beneficiary_name} (
-                    {planDetails?.beneficiary_relationship}) -{" "}
-                    {planDetails?.beneficiary_email}
                   </span>
+
+                  <div className="mt-3 flex flex-col gap-2">
+                    {Array.isArray(planDetails?.beneficiaries) &&
+                    planDetails.beneficiaries.length > 0 ? (
+                      planDetails.beneficiaries.map((beneficiary, idx) => (
+                        <div
+                          key={`${beneficiary.beneficiary_email ?? idx}`}
+                          className="flex items-center justify-between bg-[#182024] border border-[#232B36] rounded-[12px] p-3"
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 rounded-full bg-[#232B36] text-[#BFC6C8] text-xs flex items-center justify-center">
+                              {(beneficiary.beneficiary_name || "?")
+                                .toString()
+                                .charAt(0)
+                                .toUpperCase()}
+                            </div>
+                            <div className="flex flex-col">
+                              <span className="text-[#FCFFFF] font-medium">
+                                {beneficiary.beneficiary_name} (
+                                {beneficiary.beneficiary_relationship})
+                              </span>
+                              <span className="text-[#92A5A8] text-sm">
+                                {beneficiary.beneficiary_email}
+                              </span>
+                            </div>
+                          </div>
+                          <span
+                            className={
+                              beneficiary?.has_claimed
+                                ? "text-[#0DA314] text-xs bg-[#1C252A] px-2 py-1 rounded-full border border-[#0DA314]"
+                                : "text-[#EAB308] text-xs bg-[#1C252A] px-2 py-1 rounded-full border border-[#EAB308]"
+                            }
+                          >
+                            {beneficiary?.has_claimed ? "Claimed" : "Pending"}
+                          </span>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="text-[#BFC6C8] text-[14px]">
+                        No beneficiaries added yet
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -214,12 +258,17 @@ const ViewPlanDetailsModal: React.FC<ViewPlanDetailsModalProps> = ({
                       ASSET TYPE:
                     </span>
                     <span className="text-[#FCFFFF] capitalize">
-                      {planDetails?.asset_type?.toString() || "Unknown"}
+                      {planDetails?.asset_type !== undefined
+                        ? getAssetTypeString(Number(planDetails.asset_type))
+                        : "Unknown"}
                     </span>
                     <span className="ml-auto text-[#FCFFFF]">
                       Amount:{" "}
                       <span className="font-semibold capitalize">
-                        {planDetails.asset_amount}
+                        {formatAssetAmount(
+                          Number(planDetails.asset_amount),
+                          Number(planDetails.asset_type)
+                        )}
                       </span>
                     </span>
                   </div>

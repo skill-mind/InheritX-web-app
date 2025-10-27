@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 // import { StarknetProvider } from "@/components/Provider";
 import StarknetProvider from "@/provider/starknet-provider";
+import { Toaster } from "react-hot-toast";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -16,7 +17,7 @@ import StarknetProvider from "@/provider/starknet-provider";
 export const metadata: Metadata = {
   title: "InheritX - Securing Digital Legacies Through Blockchain Technology",
   description:
-    "InheritX is a revolutionary platform for digital asset inheritance. Leveraging StarkNet’s Layer 2 solution, InheritX ensures secure, automated, and trustless transfer of cryptocurrencies and NFTs to designated heirs—empowering you to safeguard your digital legacy with cutting-edge blockchain technology.",
+    "InheritX is a revolutionary platform for digital asset inheritance. Leveraging StarkNet's Layer 2 solution, InheritX ensures secure, automated, and trustless transfer of cryptocurrencies to designated heirs—empowering you to safeguard your digital legacy with cutting-edge blockchain technology.",
   keywords: [
     "digital inheritance",
     "blockchain",
@@ -98,6 +99,29 @@ export default function RootLayout({
     <html lang="en">
       <body className="antialiased" style={{ fontFamily: 'system-ui, sans-serif' }}>
         <StarknetProvider>{children}</StarknetProvider>
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            duration: 4000,
+            style: {
+              background: "#1C252A",
+              color: "#FCFFFF",
+              border: "1px solid #33C5E0",
+            },
+            success: {
+              iconTheme: {
+                primary: "#33C5E0",
+                secondary: "#1C252A",
+              },
+            },
+            error: {
+              iconTheme: {
+                primary: "#E53E3E",
+                secondary: "#1C252A",
+              },
+            },
+          }}
+        />
       </body>
     </html>
   );

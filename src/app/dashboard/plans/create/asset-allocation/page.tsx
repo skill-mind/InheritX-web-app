@@ -196,7 +196,12 @@ const AssetAllocationPageContent = () => {
                     min="0"
                     step="any"
                     value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      setAmount(value);
+                      // Update context immediately
+                      updateFormData({ assetAmount: parseFloat(value) || 0 });
+                    }}
                     className="w-full bg-[#182024] border border-[#232B36] rounded-[12px] px-4 py-3 text-[#FCFFFF] text-[15px] outline-none"
                     placeholder="0.00"
                   />
