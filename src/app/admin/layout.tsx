@@ -2,7 +2,6 @@ import AdminHeader from "./components/header/Header";
 import AdminSidebar from "./components/navbar/Navbar";
 import "./dashboard-fadein.css";
 
-
 export default function AdminLayout({
   children,
 }: {
@@ -16,9 +15,10 @@ export default function AdminLayout({
         <div className="fixed">
           <AdminSidebar />
         </div>
-        <main className="flex-1 p-4 md:p-10 ml-0 md:ml-[15rem]">{children}</main>
+        <main className="flex-1 p-4 md:p-10 ml-0 md:ml-[15rem]">
+          {children}
+        </main>
       </div>
     </div>
   );
 }
-

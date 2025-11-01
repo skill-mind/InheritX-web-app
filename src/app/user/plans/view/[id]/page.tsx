@@ -39,12 +39,12 @@ const ViewPageContent = () => {
   }
 
   // Edit button handlers
-  const handleEditPlan = () => router.push("/dashboard/plans/create");
+  const handleEditPlan = () => router.push("/user/plans/create");
   const handleEditAssets = () =>
-    router.push("/dashboard/plans/create/asset-allocation");
-  const handleEditRules = () => router.push("/dashboard/plans/create/rules");
+    router.push("/user/plans/create/asset-allocation");
+  const handleEditRules = () => router.push("/user/plans/create/rules");
   // const handleEditLegal = () =>
-  //   router.push("/dashboard/plans/create/rules-verification");
+  //   router.push("/user/plans/create/rules-verification");
 
   if (!planDetails) {
     return (

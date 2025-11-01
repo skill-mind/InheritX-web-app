@@ -44,7 +44,7 @@ const ViewPlanDetailsModal: React.FC<ViewPlanDetailsModalProps> = ({
 
   // Edit button handler - navigates to edit page
   const handleEditPlan = () => {
-    router.push(`/dashboard/plans/edit/${planId}`);
+    router.push(`/user/plans/edit/${planId}`);
     onClose();
   };
 
