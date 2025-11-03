@@ -60,7 +60,7 @@ export function getAssetTypeString(assetType: number): string {
 }
 
 // Format asset amount from wei-like units to human-readable format
-export function formatAssetAmount(amount: number, _assetType: number): string {
+export function formatAssetAmount(amount: number, assetType: number): string {
   const decimals = 18; // Most tokens use 18 decimals
   const formattedAmount = amount / Math.pow(10, decimals);
   return formattedAmount.toFixed(2);

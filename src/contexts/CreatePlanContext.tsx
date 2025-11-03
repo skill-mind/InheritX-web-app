@@ -405,12 +405,12 @@ export function CreatePlanProvider({ children }: { children: ReactNode }) {
       }
 
       // Convert UI beneficiaries to contract format
-      const contractBeneficiaries: BeneficiaryInput[] =
-        selectedBeneficiaries.map((beneficiary) => ({
-          name: beneficiary.name,
-          email: beneficiary.email,
-          relationship: beneficiary.relationship,
-        }));
+      // const contractBeneficiaries: BeneficiaryInput[] =
+      //   selectedBeneficiaries.map((beneficiary) => ({
+      //     name: beneficiary.name,
+      //     email: beneficiary.email,
+      //     relationship: beneficiary.relationship,
+      //   }));
 
       // Prepare distribution parameters based on selected method
       let lumpSumDate = 0;

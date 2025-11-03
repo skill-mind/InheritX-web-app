@@ -71,10 +71,10 @@ const EditPlanPage = () => {
         ) || [];
 
       // Convert asset amount from smallest unit to human-readable format
-      const decimals = 18;
-      const currentAmount = planDetails.asset_amount
-        ? Number(planDetails.asset_amount) / Math.pow(10, decimals)
-        : 0;
+      // const decimals = 18;
+      // const currentAmount = planDetails.asset_amount
+      //   ? Number(planDetails.asset_amount) / Math.pow(10, decimals)
+      //   : 0;
 
       setEditFormData({
         newBeneficiaries: existingBeneficiaries,

@@ -87,10 +87,10 @@ const PlansPage = () => {
 
   console.log("transaction XXXXXXXXXXXXXXX", getCreatedPlan);
 
-  const handleDelete = (idx: number) => {
-    setDeleteIdx(idx);
-    setShowDeleteModal(true);
-  };
+  // const handleDelete = (idx: number) => {
+  //   setDeleteIdx(idx);
+  //   setShowDeleteModal(true);
+  // };
 
   const confirmDelete = () => {
     if (deleteIdx !== null) {

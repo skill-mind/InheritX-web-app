@@ -215,7 +215,12 @@ const InheritancePlanModal: React.FC<InheritancePlanModalProps> = ({
                           </span>
                         </span>
                         <span className="ml-2 text-[#BFC6C8] text-[16px]">
-                          <img src="/assets/icons/grey_dropdown.svg" alt="" />
+                          <Image
+                            src="/assets/icons/grey_dropdown.svg"
+                            alt="dropdown"
+                            width={16}
+                            height={16}
+                          />
                         </span>
                       </button>
                     </div>
@@ -263,7 +268,12 @@ const InheritancePlanModal: React.FC<InheritancePlanModalProps> = ({
                           </span>
                         </span>
                         <span className="ml-2 text-[#BFC6C8] text-[16px]">
-                          <img src="/assets/icons/grey_dropdown.svg" alt="" />
+                          <Image
+                            src="/assets/icons/grey_dropdown.svg"
+                            alt="dropdown"
+                            width={16}
+                            height={16}
+                          />
                         </span>
                       </button>
                     </div>
@@ -316,7 +326,12 @@ const InheritancePlanModal: React.FC<InheritancePlanModalProps> = ({
                           </div>
                         </span>
                         <span className="ml-2 text-[#BFC6C8] text-[16px]">
-                          <img src="/assets/icons/grey_dropdown.svg" alt="" />
+                          <Image
+                            src="/assets/icons/grey_dropdown.svg"
+                            alt="dropdown"
+                            width={16}
+                            height={16}
+                          />
                         </span>
                       </button>
                     </div>
