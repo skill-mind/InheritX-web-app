@@ -6,6 +6,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 
+import { Analytics } from "@vercel/analytics/next";
+
 export default function SiteLayout({
   children,
 }: {
@@ -35,6 +37,8 @@ export default function SiteLayout({
 
       {children}
       <Footer />
+      {/* Vercel Web Analytics: Tracks page views and events across the site */}
+      <Analytics />
     </>
   );
 }

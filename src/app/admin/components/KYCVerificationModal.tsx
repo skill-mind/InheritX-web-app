@@ -38,6 +38,8 @@ export default function UserVerificationRequestModal({
   const [expandedDocIdx, setExpandedDocIdx] = useState<number | null>(null);
   const [showMessageModal, setShowMessageModal] = useState(false);
   const [showMessageSuccess, setShowMessageSuccess] = useState(false);
+  const [activityExpanded, setActivityExpanded] = useState(false);
+  const [notesExpanded, setNotesExpanded] = useState(false);
   if (!isOpen) return null;
 
   // Expanded document modal
@@ -200,31 +202,49 @@ export default function UserVerificationRequestModal({
           </div>
         </div>
         {renderExpandedDoc()}
-        {/* Activity History */}
+        {/* Activity History (collapsible) */}
         <div className="mb-[2rem]">
-          <span className="text-[#BFC6C8] text-[14px] font-normal mb-2 block">
-            Activity History
-          </span>
-          <div className="bg-[#182024] rounded-[12px] py-[16px] px-[24px] flex flex-col gap-1 text-[13px]">
-            {user.activityHistory.map((item, idx) => (
-              <div
-                key={idx}
-                className="flex items-center space-y-4 justify-between"
-              >
-                <span className="text-[#92A5A8]">{item.text}</span>
-                <span className="text-[#92A5A8]">{item.date}</span>
-              </div>
-            ))}
-          </div>
+          <button
+            className="w-full text-left text-[#BFC6C8] text-[14px] font-normal mb-2 focus:outline-none flex items-center justify-between"
+            onClick={() => setActivityExpanded((prev) => !prev)}
+            aria-expanded={activityExpanded}
+          >
+            <span>Activity History</span>
+            <span className={`transition-transform duration-200 ${activityExpanded ? 'rotate-90' : ''}`}>
+              <Image src="/assets/icons/arrowforward.svg" alt="toggle" width={11} height={6} />
+            </span>
+          </button>
+          {activityExpanded && (
+            <div className="bg-[#182024] rounded-[12px] py-[16px] px-[24px] flex flex-col gap-1 text-[13px]">
+              {user.activityHistory.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-center space-y-4 justify-between"
+                >
+                  <span className="text-[#92A5A8]">{item.text}</span>
+                  <span className="text-[#92A5A8]">{item.date}</span>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
-        {/* Notes */}
+        {/* Notes (collapsible) */}
         <div>
-          <span className="text-[#92A5A8] text-[14px] font-normal mb-2 block">
-            Notes
-          </span>
-          <div className="bg-[#182024] rounded-[12px] py-[16px] px-[24px] text-[13px] text-[#BFC6C8] min-h-[40px]">
-            {user.notes}
-          </div>
+          <button
+            className="w-full text-left text-[#92A5A8] text-[14px] font-normal mb-2 focus:outline-none flex items-center justify-between"
+            onClick={() => setNotesExpanded((prev) => !prev)}
+            aria-expanded={notesExpanded}
+          >
+            <span>Notes</span>
+            <span className={`transition-transform duration-200 ${notesExpanded ? 'rotate-90' : ''}`}>
+              <Image src="/assets/icons/arrowforward.svg" alt="toggle" width={11} height={6} />
+            </span>
+          </button>
+          {notesExpanded && (
+            <div className="bg-[#182024] rounded-[12px] py-[16px] px-[24px] text-[13px] text-[#BFC6C8] min-h-[40px]">
+              {user.notes}
+            </div>
+          )}
         </div>
         {/* Action Buttons */}
         <div className="flex flex-col md:flex-row gap-3 md:gap-4 mt-2">
