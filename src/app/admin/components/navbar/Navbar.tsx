@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Home, Activity, ShieldCheck, FileCheck } from "lucide-react";
 
-export default function AdminSidebar({ modalOpen = false }: { modalOpen?: boolean } = {}) {
+export default function AdminSidebar() {
   const pathname = usePathname();
 
   return (

@@ -16,7 +16,7 @@ const Hero = () => {
       });
       if (wallet) {
         // navigate to centralized unlock transition route which will redirect after animation
-        router.push(`/unlock?next=${encodeURIComponent("/dashboard")}`);
+        router.push(`/unlock?next=${encodeURIComponent("/user")}`);
       }
     } catch (err) {
       console.error("Wallet connection failed", err);

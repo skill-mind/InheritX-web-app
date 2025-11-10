@@ -38,8 +38,8 @@ const Benefits = () => {
   const handleCreatePlan = async () => {
     const result = await ensureConnectedAndNavigate();
     if (result?.connected) {
-      // navigate to centralized unlock transition page which will redirect to dashboard/plans
-      router.push(`/unlock?next=${encodeURIComponent("/dashboard/plans")}`);
+      // navigate to centralized unlock transition page which will redirect to user/plans
+      router.push(`/unlock?next=${encodeURIComponent("/user/plans")}`);
     }
   };
 

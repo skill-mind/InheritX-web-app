@@ -86,6 +86,8 @@ const InheritancePlanTable: React.FC<Props> = ({ plans }) => {
             rules: {
               claimCode: plans[showModalIdx].claimSummary.claimCode,
               distribution: "Yearly Release of funds (disbursement)", // fallback
+              escalation: "If my daughter is unable to receive it, let her brother receive it on her behalf.", // fallback
+              trigger: "If beneficiary is under 18, their share is held in trust until thet turn 18.", // fallback
             },
             // Optionally add legalDocs, trustee, notes if available in your data
           }}

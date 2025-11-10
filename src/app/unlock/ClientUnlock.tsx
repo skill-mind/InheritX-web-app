@@ -13,7 +13,7 @@ export default function ClientUnlock() {
   useEffect(() => {
     // Read search params on the client inside an effect to avoid
     // Suspense/CSR warnings and hydration mismatches.
-    const n = searchParams?.get("next") || "/dashboard";
+    const n = searchParams?.get("next") || "/user";
     setNext(n);
 
     // Start the transition immediately after search params are resolved
@@ -26,7 +26,7 @@ export default function ClientUnlock() {
         visible={started}
         duration={2200}
         onComplete={() => {
-          router.replace(next || "/dashboard");
+          router.replace(next || "/user");
         }}
       />
     </div>

@@ -39,7 +39,7 @@ const Navbar = () => {
   //     });
   //     if (wallet) {
   //       // navigate to the centralized unlock route which will run the transition
-  //       router.push(`/unlock?next=${encodeURIComponent("/dashboard")}`);
+  //       router.push(`/unlock?next=${encodeURIComponent("/user")}`);
   //     }
   //   } catch (err) {
   //     console.error("Wallet connection failed", err);
@@ -53,7 +53,7 @@ const Navbar = () => {
     }
     await connect({ connector: connector as Connector });
 
-    router.push(`/unlock?next=${encodeURIComponent("/dashboard")}`);
+    router.push(`/unlock?next=${encodeURIComponent("/user")}`);
   }
 
   return (

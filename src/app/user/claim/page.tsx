@@ -3,7 +3,8 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import ClaimPlanModal from "@/app/user/claim/ClaimPlanModal";
+import ClaimPlanModal from "./ClaimPlanModal";
+
 const tabs = ["Claims", "Activities"];
 
 const activities = [
@@ -30,12 +31,6 @@ const summaryCards = [
     label: "Tokens",
     value: 0,
     action: "Withraw Token",
-    actionLink: "#",
-  },
-  {
-    label: "NFT",
-    value: 0,
-    action: "Withraw NFT",
     actionLink: "#",
   },
   {
@@ -84,17 +79,17 @@ const ClaimPage = () => {
               className="w-fit text-[14px] p-[14px] cursor-pointer font-medium rounded-[24px] border border-[#33C5E03D] bg-[#33C5E014] text-[#33C5E0] transition-all duration-200 hover:bg-[#33C5E0] hover:text-[#161E22] hover:scale-105 focus:outline-none hover-raise clickable"
               onClick={() => {
                 if (card.action === "Set Guardian") {
-                  router.push("/dashboard/guardian");
+                  router.push("/user/guardian");
                 } else if (
                   card.action === "Create Plan" ||
                   card.action === "Total Plans"
                 ) {
-                  router.push("/dashboard/plans");
+                  router.push("/user/plans");
                 } else if (
                   card.action === "Withraw Asset" ||
                   card.action === "View Claims"
                 ) {
-                  router.push("/dashboard/claim");
+                  router.push("/user/claim");
                 }
               }}
             >
@@ -229,14 +224,21 @@ const ClaimPage = () => {
 
       <style jsx>{`
         .hover-raise {
-          transition: transform .18s cubic-bezier(.2,.9,.2,1), box-shadow .18s ease;
+          transition: transform 0.18s cubic-bezier(0.2, 0.9, 0.2, 1),
+            box-shadow 0.18s ease;
         }
         .hover-raise:hover {
           transform: translateY(-4px);
-          box-shadow: 0 6px 20px rgba(3,10,14,0.36);
+          box-shadow: 0 6px 20px rgba(3, 10, 14, 0.36);
         }
-        .clickable { cursor: pointer; }
-        .button-focus:focus-visible { outline: 2px solid rgba(51,197,224,0.18); outline-offset: 2px; border-radius: 8px; }
+        .clickable {
+          cursor: pointer;
+        }
+        .button-focus:focus-visible {
+          outline: 2px solid rgba(51, 197, 224, 0.18);
+          outline-offset: 2px;
+          border-radius: 8px;
+        }
       `}</style>
     </main>
   );

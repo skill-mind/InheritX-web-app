@@ -25,7 +25,7 @@ const RecentActivities: React.FC<Props> = ({ activities }) =>
         {activities.map((activity, index) => (
           <li
             key={activity.id}
-            className="flex items-center justify-between border-[#1C252A] pb-10 rounded-xl group cursor-pointer transition-transform transition-shadow duration-300 ease-out hover:shadow-lg hover:scale-[1.025]"
+            className="flex items-center justify-between border-[#1C252A] pb-10 rounded-xl group cursor-pointer transition-shadow duration-300 ease-out hover:shadow-lg hover:scale-[1.025]"
             style={{
               boxShadow: "0 0 0 rgba(0,0,0,0)",
               transition: "box-shadow 0.3s cubic-bezier(.22,1,.36,1), transform 0.3s cubic-bezier(.22,1,.36,1)",
