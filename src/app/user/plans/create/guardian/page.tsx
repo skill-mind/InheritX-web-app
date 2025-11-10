@@ -122,7 +122,7 @@ const GuardianPage = () => {
           <button
             type="button"
             disabled={!isFormValid}
-            className={`bg-[#33C5E0] text-[#161E22] px-8 py-3 rounded-b-[24px] rounded-t-[8px] font-medium text-[15px] w-full flex items-center justify-center gap-2 border border-[#232B36] transition-colors hover:bg-[#33C5E0]/90 disabled:bg-[#1C252A] disabled:text-[#FCFFFF] disabled:cursor-not-allowed`}
+            className={`bg-[#33C5E0] text-[#161E22] px-8 py-3 cursor-pointer rounded-b-[24px] rounded-t-[8px] font-medium text-[15px] w-full flex items-center justify-center gap-2 border border-[#232B36] transition-colors hover:bg-[#33C5E0]/90 disabled:bg-[#1C252A] disabled:text-[#FCFFFF] disabled:cursor-not-allowed`}
             onClick={handleAddGuardian}
           >
             {step === 1 ? "ADD GUARDIAN" : "ADD BENEFICIARY"}
