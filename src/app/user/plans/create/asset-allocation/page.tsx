@@ -241,7 +241,7 @@ const AssetAllocationPageContent = () => {
             </div>
             <button
               type="button"
-              className={`flex items-center justify-end self-end gap-2 w-full md:w-fit text-[15px] px-8 py-3 font-medium p-[14px] h-[56px] rounded-[24px] float-end border border-[#33C5E03D] transition-colors bg-[#1C252A] text-[#33C5E0] hover:text-[#1C252A] hover:bg-[#33C5E0]/90 ${
+              className={`flex items-center justify-end self-end gap-2 w-full cursor-pointer md:w-fit text-[15px] px-8 py-3 font-medium p-[14px] h-[56px] rounded-[24px] float-end border border-[#33C5E03D] transition-colors bg-[#1C252A] text-[#33C5E0] hover:text-[#1C252A] hover:bg-[#33C5E0]/90 ${
                 !isFormValid ||
                 formData.assets.some((a) => a.label === selectedAsset.label)
                   ? "opacity-50 cursor-not-allowed"
@@ -376,7 +376,7 @@ const AssetAllocationPageContent = () => {
         <div className="flex justify-start mt-8">
           <button
             type="button"
-            className={`bg-[#33C5E0] w-[243px] text-[#161E22] text-center px-8 py-3 font-medium rounded-[16px] h-[56px] rounded-t-[8px] rounded-b-[24px] flex items-center justify-center gap-2 border border-[#232B36] text-[14px] transition-colors hover:bg-[#33C5E0]/90 disabled:bg-[#1C252A] disabled:text-[#425558] disabled:cursor-not-allowed`}
+            className={`bg-[#33C5E0] w-[243px] text-[#161E22] text-center cursor-pointer px-8 py-3 font-medium rounded-[16px] h-[56px] rounded-t-[8px] rounded-b-[24px] flex items-center justify-center gap-2 border border-[#232B36] text-[14px] transition-colors hover:bg-[#33C5E0]/90 disabled:bg-[#1C252A] disabled:text-[#425558] disabled:cursor-not-allowed`}
             disabled={formData.assetAmount === 0}
             onClick={() => {
               if (formData.assetAmount > 0)

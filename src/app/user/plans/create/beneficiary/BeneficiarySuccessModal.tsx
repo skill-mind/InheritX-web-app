@@ -14,7 +14,7 @@ const BeneficiarySuccessModal: React.FC<BeneficiarySuccessModalProps> = ({ open,
   if (!open) return null;
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#161E22]/80">
-      <div className="bg-[#161E22] rounded-[32px] shadow-lg p-8 w-[95vw] max-w-[540px] flex flex-col items-center justify-center border border-[#232B36]">
+      <div className="bg-[#161E22] rounded-[32px] shadow-lg p-8 w-[95vw] max-w-[540px] flex flex-col gap-10 items-center justify-center border border-[#232B36]">
         <h3 className="text-[#FCFFFF] text-[18px] md:text-[22px] font-medium mb-8 text-center">
           Beneficiary <span className="text-cyan-400">&apos;{name}&apos;</span> added successfully
         </h3>
@@ -30,13 +30,13 @@ const BeneficiarySuccessModal: React.FC<BeneficiarySuccessModalProps> = ({ open,
         </div>
         <div className="flex flex-col md:flex-row gap-4 w-full mt-4">
           <button
-            className="bg-[#1C252A] text-[#FCFFFF] px-8 py-3 rounded-[24px] font-medium text-[15px] w-full"
+            className="bg-[#1C252A] text-[#FCFFFF] px-8 py-3 rounded-[24px] font-medium text-[15px] w-full cursor-pointer"
             onClick={onHome}
           >
             Go Back Home
           </button>
           <button
-            className="bg-[#33C5E0] text-[#161E22] px-8 py-3 rounded-[24px] font-medium text-[15px] w-full"
+            className="bg-[#33C5E0] text-[#161E22] px-8 py-3 rounded-[24px] font-medium text-[15px] w-full cursor-pointer"
             onClick={onNext}
           >
             Next Request

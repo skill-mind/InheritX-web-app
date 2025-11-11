@@ -191,7 +191,7 @@ const PreviewPageContent = () => {
                 Plan Summary
               </h3>
               <button
-                className="flex items-center gap-2 text-[#33C5E0] border border-[#33C5E03D] px-4 py-2 rounded-[24px] text-[14px] hover:bg-[#33C5E0] hover:text-[#161E22]"
+                className="flex items-center gap-2 text-[#33C5E0] border border-[#33C5E03D] px-4 py-2 cursor-pointer rounded-[24px] text-[14px] hover:bg-[#33C5E0] hover:text-[#161E22]"
                 onClick={handleEditPlan}
               >
                 <Image
@@ -247,7 +247,7 @@ const PreviewPageContent = () => {
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-[#FCFFFF] text-lg font-medium">Assets</h3>
               <button
-                className="flex items-center gap-2 text-[#33C5E0] border border-[#33C5E03D] px-4 py-2 rounded-[24px] text-[14px] hover:bg-[#33C5E0] hover:text-[#161E22]"
+                className="flex items-center gap-2 text-[#33C5E0] border border-[#33C5E03D] px-4 py-2 cursor-pointer rounded-[24px] text-[14px] hover:bg-[#33C5E0] hover:text-[#161E22]"
                 onClick={handleEditAssets}
               >
                 <Image
@@ -296,7 +296,7 @@ const PreviewPageContent = () => {
                 Rules & Conditions
               </h3>
               <button
-                className="flex items-center gap-2 text-[#33C5E0] border border-[#33C5E03D] px-4 py-2 rounded-[24px] text-[14px] hover:bg-[#33C5E0] hover:text-[#161E22]"
+                className="flex items-center gap-2 text-[#33C5E0] border border-[#33C5E03D] px-4 py-2 cursor-pointer rounded-[24px] text-[14px] hover:bg-[#33C5E0] hover:text-[#161E22]"
                 onClick={handleEditRules}
               >
                 <Image

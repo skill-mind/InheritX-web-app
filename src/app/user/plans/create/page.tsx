@@ -199,7 +199,7 @@ function CreatePlanPageContent() {
               <div className="flex flex-col items-center justify-center bg-transparent border border-[#33C5E03D] rounded-[18px] w-[144px] h-[144px] hover:bg-[#33C5E014] transition-colors">
                 <button
                   type="button"
-                  className="flex flex-col items-center justify-center"
+                  className="flex flex-col items-center justify-center cursor-pointer"
                   onClick={() =>
                     router.push("/user/plans/create/beneficiary")
                   }

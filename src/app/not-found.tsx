@@ -277,7 +277,7 @@ const InheritX404 = () => {
         <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
           {/* Go Home Button */}
           <button
-            className="group relative px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-cyan-500/25 focus:outline-none focus:ring-4 focus:ring-cyan-500/50"
+            className="group relative px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold rounded-xl overflow-hidden transition-all cursor-pointer duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-cyan-500/25 focus:outline-none focus:ring-4 focus:ring-cyan-500/50"
             onClick={() => (window.location.href = "/")}
           >
             {/* Button background animation */}
