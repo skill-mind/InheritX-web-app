@@ -179,7 +179,7 @@ const BeneficiaryPage = () => {
           <button
             type="button"
             disabled={!isFormValid}
-            className={`bg-[#33C5E0] text-[#161E22] px-8 py-3 rounded-t-[8px] rounded-b-[24px] font-medium text-[15px] w-full flex items-center justify-center gap-2 border border-[#232B36] transition-colors hover:bg-[#33C5E0]/90 disabled:bg-[#1C252A] disabled:text-[#FCFFFF] disabled:cursor-not-allowed`}
+            className={`bg-[#33C5E0] text-[#161E22] px-8 py-3 rounded-t-[8px] rounded-b-[24px] font-medium text-[15px] w-full flex items-center justify-center gap-2 border border-[#232B36] cursor-pointer transition-colors hover:bg-[#33C5E0]/90 disabled:bg-[#1C252A] disabled:text-[#FCFFFF] disabled:cursor-not-allowed`}
             onClick={() => {
               if (!isFormValid) return;
               if (form.name.trim().toLowerCase() === "error") {
